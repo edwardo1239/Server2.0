@@ -9,3 +9,6 @@ package-lock.json
 
 #ignora los files
 Files
+
+#base de datos
+DB/data
