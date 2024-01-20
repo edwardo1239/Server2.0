@@ -1,0 +1,11 @@
+# Ignorar los módulos de Node
+node_modules/
+
+# Ignorar package-lock.json
+package-lock.json
+
+# Ignorar las variables de entorno
+.env
+
+#ignora los files
+Files
