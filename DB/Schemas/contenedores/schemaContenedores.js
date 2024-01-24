@@ -57,6 +57,8 @@ const infoContenedorSchema = new Schema({
   observaciones:String,
   desverdizado: Boolean,
   pesoCaja: pesoCajaSchema,
+  fechaSalida: Date,
+  urlInforme: String
 }, { _id: false });
 
 

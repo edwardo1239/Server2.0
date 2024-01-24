@@ -20,6 +20,12 @@ const responseContenedores = {
   enviarDatosFormularioInspeccionMulas: async (data) =>{
     return {status:200, data:data.data, response:"success"};
   },
+  obtenerHistorialDataContenedorFormularioInspeccionMulas: async data => {
+    return {status:200, data: data.data};
+  },
+  ObtenerInfoContenedoresCelifrut: async data => {
+    return {status:200, data: data.data};
+  },
 };
 
 module.exports = {

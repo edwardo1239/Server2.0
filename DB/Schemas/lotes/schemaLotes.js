@@ -98,6 +98,14 @@ const inventarioSchema = new Schema({
   descarteLavado:  descarteLavadoInventarioSchema
 }, { _id : false });
 
+const salidaDirectoNacionalSchema = new Schema({
+  placa: String,
+  nombreConductor: String,
+  telefono: String,
+  cedula: String,
+  remision: String
+});
+
 const dataSchema = new Schema({
   _id: String,
   nombrePredio: String,
@@ -121,7 +129,8 @@ const dataSchema = new Schema({
   historialDescarte: mongoose.Types.ObjectId,
   informeEnviado: {type:Boolean, default:false},
   urlInformeCalidad: String,
-  inventarioActual: inventarioSchema
+  inventarioActual: inventarioSchema,
+  infoSalidaDirectoNacional: salidaDirectoNacionalSchema
 });
 
 dataSchema.post("save", function (doc) {

@@ -13,6 +13,7 @@ const connectProcesoDB = async () => {
   db.once("open", function () {
     console.log(`¡Conexión exitosa! se connecto como ${tipoBaseDatos}`);
   });
+  return db;
 };
 
 const connectPersonalDB = async () => {
@@ -24,9 +25,22 @@ const connectPersonalDB = async () => {
   db.once("open", function () {
     console.log(`¡Conexión exitosa! se connecto como ${tipoBaseDatos}`);
   });
+
+  return db;
+};
+
+const disconnectDB = (db) => {
+  db.close((err) => {
+    if (err) {
+      console.log("Hubo un error al cerrar la conexión:", err);
+    } else {
+      console.log("Conexión cerrada exitosamente");
+    }
+  });
 };
 
 module.exports = {
   connectProcesoDB,
-  connectPersonalDB
+  connectPersonalDB,
+  disconnectDB
 };

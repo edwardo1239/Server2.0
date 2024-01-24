@@ -67,7 +67,7 @@ try {
         timerId = setTimeout(async () => {
           // maneja la petición aquí
           process.send({ fn: data.data.action, data: data.data, query: "proceso", client:"Celifrut" });
-          process.on("message", async msg => {
+          process.once("message", async msg => {
             if(Object.prototype.hasOwnProperty.call(responseContenedores, msg.fn)){
               const response = await responseContenedores[msg.fn](msg);
               callback(response);

@@ -13,6 +13,7 @@ const {
 const { pesoTipoCaja } = require("../../ListaDeEmpaque/utils/pesoCajas");
 const { obtenerIDs, guardarIDs } = require("../../AppDesktopCelifrut/public/inventarioFruta/functions/savegetDataJSON");
 const fs = require("fs");
+const { fork } = require("child_process");
 const { rendimiento, deshidratacion, saveFiles } = require("../functions/proceso");
 const { recordProveedores } = require("../Schemas/proveedores/schemaRecordProveedores");
 
@@ -27,7 +28,6 @@ const obtenerProveedores = async data => {
 };
 const agregarProveedor = async data => {
   try {
-    //console.log(data.data.data.documentos);
 
     const info = data.data.data;
     const paths = await saveFiles(info.documentos, `./Files/proveedores/${info.nombrePredio}`, info.nombrePredio);
@@ -41,7 +41,7 @@ const agregarProveedor = async data => {
       N: info.naranja ? "X" : "",
       L: info.limon ? "X" : "",
       M: info.mandarina ? "X" : "",
-      urlArchivos: paths
+      urlArchivos: paths,
     });
 
     let record = new recordProveedores({
@@ -58,7 +58,7 @@ const agregarProveedor = async data => {
   }
 };
 const modificarProveedor = async data => {
-  try{
+  try {
     const info = data.data.data;
     const id = new mongoose.Types.ObjectId(info.id);
     const proveedor = await Proveedores.findById(id);
@@ -82,13 +82,12 @@ const modificarProveedor = async data => {
     await proveedor.save();
 
     return data;
-    
-  } catch(e){
+  } catch (e) {
     console.error(e);
   }
 };
 const eliminarProveedor = async data => {
-  try{
+  try {
     const info = data.data.data;
 
     const id = new mongoose.Types.ObjectId(info._id);
@@ -105,8 +104,7 @@ const eliminarProveedor = async data => {
     await proveedor.deleteOne();
 
     return data;
-
-  } catch (e){
+  } catch (e) {
     console.error(e);
   }
 };
@@ -240,6 +238,14 @@ const directoNacional = async data => {
   lote.inventarioActual.inventario -= Number(data.data.canastillas);
   lote.directoNacional += data.data.canastillas * lote.promedio;
 
+  if (Object.prototype.hasOwnProperty.call(lote, "infoSalidaDirectoNacional")) {
+    lote.infoSalidaDirectoNacional = {};
+  }
+  lote.infoSalidaDirectoNacional.placa = data.data.placa;
+  lote.infoSalidaDirectoNacional.nombreConductor = data.data.nombreConductor;
+  lote.infoSalidaDirectoNacional.telefono = data.data.telefono;
+  lote.infoSalidaDirectoNacional.cedula = data.data.cedula;
+  lote.infoSalidaDirectoNacional.remision = data.data.remision;
   lote._operationType = "Directo nacional";
   lote._canastillasProcesadas = Number(data.data.canastillas);
 
@@ -454,7 +460,7 @@ const ingresarDescarteLavado = async data => {
     lote.inventarioActual.descarteLavado.pareja += data.data.pareja;
     lote.inventarioActual.descarteLavado.descarteGeneral += data.data.descarteGeneral;
 
-    lote.rendimiento = rendimiento(lote);
+    lote.rendimiento = Number(rendimiento(lote));
     lote.deshidratacion = deshidratacion(lote);
 
     await lote.save();
@@ -811,7 +817,9 @@ const crearContenedor = async data => {
 };
 const obtenerDataContenedor = async data => {
   try {
-    const contenedores = await Contenedores.find({ "infoContenedor.cerrado": false }).select("pallets infoContenedor _id __v");
+    const contenedores = await Contenedores.find({ "infoContenedor.cerrado": false }).select(
+      "pallets infoContenedor _id __v",
+    );
     data.data = contenedores;
     return data;
   } catch (e) {
@@ -885,8 +893,12 @@ const guardarItem = async data => {
     } else if (data.data.item.calidad === 2) {
       lote.exportacion.get(String(numeroContenedor)).calidad2 += data.data.item.cajas * 40;
     }
-
-    lote.rendimiento = rendimiento(lote);
+    const resRendimiento = rendimiento(lote);
+    if(isNaN(resRendimiento)){
+      lote.rendimiento = 100;
+    } else{
+      lote.rendimiento = resRendimiento;
+    }
     lote.deshidratacion = deshidratacion(lote);
 
     lote.markModified("exportacion");
@@ -950,7 +962,12 @@ const eliminarItem = async data => {
       lote.exportacion.get(String(numeroContenedor)).calidad2 -= cajas * 40;
     }
 
-    lote.rendimiento = rendimiento(lote);
+    const resRendimiento = rendimiento(lote);
+    if(isNaN(resRendimiento)){
+      lote.rendimiento = 100;
+    } else{
+      lote.rendimiento = resRendimiento;
+    }
     lote.deshidratacion = deshidratacion(lote);
 
     lote.markModified("exportacion");
@@ -1179,11 +1196,18 @@ const liberacionPallet = async data => {
 };
 const cerrarContenedor = async data => {
   try {
-    const contenedor = await Contenedores.findById(data.contenedor);
-    contenedor.infoContenedor.cerrado = true;
-    contenedor.infoContenedor.fechaFinalizado = new Date();
+    const contenedor = await Contenedores.findById(data.data.contenedor);
+    const child = fork("./Api/CrearInformes/crearInformeListaEmpaque.js");
+    child.send(contenedor);
+    child.on("message", async (url) => {
+      contenedor.infoContenedor.urlInforme = url;
+      contenedor.infoContenedor.cerrado = true;
+      contenedor.infoContenedor.fechaFinalizado = new Date();
+  
+      await contenedor.save();
+      child.kill("SIGTERM");
+    });
 
-    await contenedor.save();
   } catch (e) {
     console.error(e);
   }
@@ -1407,34 +1431,34 @@ const obtenerDatosLotes = async data => {
     console.log(`${e.name}: ${e.message}`);
   }
 };
-const enviarDatosFormularioInspeccionMulas = async data =>{
-  try{
+const enviarDatosFormularioInspeccionMulas = async data => {
+  try {
     const info = data.data.data;
     const contenedor = await Contenedores.findById(Number(info.numContenedor));
     contenedor.formularioInspeccionMula = {};
     contenedor.formularioInspeccionMula.placa = info.placa;
     contenedor.formularioInspeccionMula.conductor = info.conductor;
     contenedor.formularioInspeccionMula.empresaTransporte = info.conductor;
-    contenedor.formularioInspeccionMula.cumpleRequisitos = info.cumpleRequisitos === "Si" ? true: false;
-
+    contenedor.formularioInspeccionMula.cumpleRequisitos = info.cumpleRequisitos === "Si" ? true : false;
+    contenedor.infoContenedor.fechaSalida = info.fecha;
 
     if (!contenedor.formularioInspeccionMula.criterios) {
       contenedor.formularioInspeccionMula.criterios = new Map();
     }
 
-    info.criterios.forEach((item, index )=> {
+    info.criterios.forEach((item, index) => {
       contenedor.formularioInspeccionMula.criterios.set(String(index), {
         nombre: item.nombre,
         cumplimiento: item.cumplimiento === "C" ? true : false,
-        observaciones: item.observaciones
+        observaciones: item.observaciones,
       });
     });
 
     contenedor.markModified("formularioInspeccionMula.criterios");
     await contenedor.save();
     const contenedores = await obtenerDataContenedorFormularioInspeccionMulas(data);
-    return contenedores;
-  } catch(e) {
+    return contenedores.data;
+  } catch (e) {
     console.error(e);
   }
 };
@@ -1442,7 +1466,82 @@ const obtenerDataContenedorFormularioInspeccionMulas = async data => {
   try {
     const contenedores = await Contenedores.find({ formularioInspeccionMula: { $exists: false } }, "infoContenedor");
     data.data = contenedores;
+    return data;
+  } catch (e) {
+    console.error(e);
+  }
+};
+const obtenerHistorialDataContenedorFormularioInspeccionMulas = async data => {
+  try {
 
+    const filtro = data.data.fechas;
+
+    let consulta = {formularioInspeccionMula: { $exists: true }};
+    let cantidad = 50;
+    if (data.data.tipoFruta !== "") {
+      consulta["infoContenedor.tipoFruta"] = data.data.tipoFruta;
+    }
+
+    if (filtro.fechaInicio !== null) {
+      consulta["infoContenedor.fechaSalida"] = {};
+      consulta["infoContenedor.fechaSalida"].$gte = new Date(filtro.fechaInicio);
+      consulta["infoContenedor.fechaSalida"].$lt = new Date();
+    }
+
+    if (filtro.fechaFin !== null) {
+      consulta["infoContenedor.fechaSalida"].$lt = new Date(filtro.fechaInicio);
+    }
+    if (filtro.cantidad !== "") {
+      cantidad = Number(filtro.cantidad);
+    }
+
+    const contenedores = await Contenedores.find(
+      consulta,
+      "formularioInspeccionMula infoContenedor.fechaSalida infoContenedor.tipoFruta",
+    ).sort({ fecha: -1 }).limit(cantidad);
+    data.data = contenedores;
+    return data;
+  } catch (e) {
+    console.error(e);
+  }
+};
+const ObtenerInfoContenedoresCelifrut = async data => {
+  try {
+    const filtro = data.data.filtro;
+    console.log(data.data)
+    let consulta = {};
+    let cantidad = 50;
+
+    if (filtro.fecha.entrada !== null) {
+      consulta["infoContenedor.fechaCreacion"] = {};
+      consulta["infoContenedor.fechaCreacion"].$gte = new Date(filtro.fecha.entrada);
+      const fecha = new Date(filtro.fecha.entrada);
+      fecha.setUTCHours(23);
+      fecha.setUTCMinutes(59);
+      fecha.setUTCSeconds(59);
+      consulta["infoContenedor.fechaCreacion"].$lt = fecha;
+    }
+    if (filtro.fecha.finalizado !== null) {
+      consulta["infoContenedor.fechaFinalizado"] = {};
+      consulta["infoContenedor.fechaFinalizado"].$gte = new Date(filtro.fecha.finalizado);
+      const fecha = new Date(filtro.fecha.finalizado);
+      fecha.setUTCHours(23);
+      fecha.setUTCMinutes(59);
+      fecha.setUTCSeconds(59);
+      consulta["infoContenedor.fechaFinalizado"].$lt = fecha;
+    }
+    if (filtro.fecha.salida !== null) {
+      consulta["infoContenedor.fechaSalida"] = {};
+      consulta["infoContenedor.fechaSalida"].$gte = new Date(filtro.fecha.salida);
+      const fecha = new Date(filtro.fecha.salida);
+      fecha.setUTCHours(23);
+      fecha.setUTCMinutes(59);
+      fecha.setUTCSeconds(59);
+      consulta["infoContenedor.fechaSalida"].$lt = fecha;
+    }
+ 
+    const contenedores = await Contenedores.find(consulta, "infoContenedor formularioInspeccionMula").sort({ fecha: -1 }).limit(cantidad);
+    data.data = contenedores;
     return data;
   } catch (e) {
     console.error(e);
@@ -1495,5 +1594,7 @@ module.exports = {
   obtenerInformesCalidad,
   obtenerDatosLotes,
   enviarDatosFormularioInspeccionMulas,
-  obtenerDataContenedorFormularioInspeccionMulas
+  obtenerDataContenedorFormularioInspeccionMulas,
+  obtenerHistorialDataContenedorFormularioInspeccionMulas,
+  ObtenerInfoContenedoresCelifrut
 };
