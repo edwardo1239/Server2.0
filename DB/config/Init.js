@@ -15,13 +15,17 @@ connectPersonalDB();
 connectProcesoDB();
 
 process.on("message", (msg) => {
-  if (msg.query === "personal") {
-    apiPersonal[msg.fn](msg)
-      .then((data) => process.send(data))
-      .catch((error) => process.send(error));
-  } else if(msg.query === "proceso"){
-    apiProceso[msg.fn](msg)  
-      .then((data) => process.send(data))
-      .catch((error) => process.send(error));
+  try{
+    if (msg.query === "personal") {
+      apiPersonal[msg.fn](msg)
+        .then((data) => process.send(data))
+        .catch((error) => process.send(error));
+    } else if(msg.query === "proceso"){
+      apiProceso[msg.fn](msg)  
+        .then((data) => process.send(data))
+        .catch((error) => process.send(error));
+    }
+  } catch(e){
+    console.error("Error mongoDB init => ", e.message);
   }
 });

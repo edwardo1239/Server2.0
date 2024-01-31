@@ -78,6 +78,9 @@ const responseProceso = {
   obtenerDatosLotes: async data => {
     return {status:200, data:data.data};
   },
+  obtenerHistorialFormularioInspeccionVehiculos: async data => {
+    return {status:200, data:data.data};
+  },
 };
 
 module.exports = {

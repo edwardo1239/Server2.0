@@ -26,6 +26,15 @@ const responseContenedores = {
   ObtenerInfoContenedoresCelifrut: async data => {
     return {status:200, data: data.data};
   },
+  ingresarCliente: async () => {
+    return {status:200};
+  },
+  eliminarCliente: async () => {
+    return {status:200};
+  },
+  modificarCliente: async () => {
+    return {status:200};
+  },
 };
 
 module.exports = {

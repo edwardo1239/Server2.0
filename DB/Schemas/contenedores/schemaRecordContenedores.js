@@ -5,18 +5,16 @@ const { Schema } = mongoose;
 const conn = mongoose.createConnection(process.env.MONGO_URL_PROCESO);
 
 
-const HistorialLotesSchema = new Schema({
+const HistorialContenedoresSchema = new Schema({
   nombreColeccion: String,
-  operacionRealizada: String,
-  documento: Object,
-  canastillas: Number,
   fecha: {type:Date, expires: "60d", default: Date.now},
+  documento: String
 });
 
 
 
-const recordLotes = conn.model("recordLote", HistorialLotesSchema);
+const recordContenedores = conn.model("recordContenedor", HistorialContenedoresSchema);
 
 
-module.exports.recordLotes = recordLotes;
+module.exports.recordContenedores = recordContenedores;
 

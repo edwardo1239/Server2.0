@@ -5,6 +5,7 @@ const { LimpiezaMensual } = require("../Schemas/formatosCalidad/schemalimpiezaMe
 const { User } = require("../Schemas/users/schemaUser");
 const { permisosUsusario } = require("../Schemas/users/schemaPermisos");
 const { registroVolanteCalidad } = require("../Schemas/formatosCalidad/schemaVolanteCalidad");
+const { default: mongoose } = require("mongoose");
 
 const logIn = async (data) => {
   try{
@@ -160,6 +161,28 @@ const obtenerVolanteCalidad = async (data) => {
     console.error(e);
   }
 };
+const obtenerCuentas = async data => {
+  try {
+    const cuentas = await User.find();
+    data.data = cuentas;
+    return data;
+  } catch (e){
+    console.error(e);
+  }
+};
+const eliminarCuenta = async data => {
+  try {
+    const id = new mongoose.Types.ObjectId(data.data.id);
+    const cuenta = await User.findById(id);
+
+    await cuenta.deleteOne();
+    const cuentas = await User.find();
+    data.data = cuentas;
+    return data;
+  } catch(e){
+    console.error(e);
+  }
+};
 
 module.exports = {
   logIn,
@@ -169,5 +192,7 @@ module.exports = {
   obtenerRegistroLimpiezaMensual,
   obtenerPermisosUsuario,
   crearUsuario,
-  obtenerVolanteCalidad
+  obtenerVolanteCalidad,
+  obtenerCuentas,
+  eliminarCuenta
 };

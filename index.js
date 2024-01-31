@@ -76,7 +76,7 @@ emitter.on("contenedores", msg => {
 });
 
 //obtiene los datos de higiene
-cron.schedule("25 16 * * *", () => {
+cron.schedule("25 21 * * *", () => {
   const child = exec("node " + [__dirname + "/Api/formatos/fetchHigiene.js"]);
 
   child.stderr.on("data", data => {
@@ -85,7 +85,7 @@ cron.schedule("25 16 * * *", () => {
 });
 
 //obtiene los datos de control de plagas
-cron.schedule("12 9 * * *", () => {
+cron.schedule("12 21 * * *", () => {
   const child = exec("node " + [__dirname + "/Api/formatos/fetchControlDePlagas.js"]);
 
   child.stderr.on("data", data => {
@@ -94,7 +94,7 @@ cron.schedule("12 9 * * *", () => {
 });
 
 //obtiene los datos de limpieza y desinfeccion de planta
-cron.schedule("39 9 * * *", () => {
+cron.schedule("39 21 * * *", () => {
   const child = exec("node " + [__dirname + "/Api/formatos/fetchLimpiezaDesinfeccionPlanta.js"]);
 
   child.stderr.on("data", data => {
@@ -112,7 +112,7 @@ cron.schedule("36 11 1 * *", () => {
 });
 
 //obtiene los datos de volante de calidad
-cron.schedule("36 16 * * *", () => {
+cron.schedule("36 21 * * *", () => {
   const child = exec("node " + [__dirname + "/Api/formatos/fetchVolanteCalidad.js"]);
 
   child.stderr.on("data", data => {
@@ -120,9 +120,36 @@ cron.schedule("36 16 * * *", () => {
   });
 });
 
+//obtiene los datos de formatos camiones
+cron.schedule("50 20 * * *", () => {
+  const child = exec("node " + [__dirname + "/Api/formatos/fetchFormatosCamionesLlegada.js"]);
+
+  child.stderr.on("data", data => {
+    console.error(`stderr: ${data}`);
+  });
+});
+
 //crear informes
-cron.schedule("54 16 * * *", () => {
+cron.schedule("4 21 * * *", () => {
   const child = exec("node " + [__dirname + "/Api/CrearInformes/crearInformesCalidad.js"]);
+
+  child.stderr.on("data", data => {
+    console.error(`stderr: ${data}`);
+  });
+});
+
+//subir los datos de lotes a el drive de google
+cron.schedule("00 21 * * *", () => {
+  const child = exec("node " + [__dirname + "/Api/subirData/sendLotesInfo.js"]);
+
+  child.stderr.on("data", data => {
+    console.error(`stderr: ${data}`);
+  });
+});
+
+//subir los datos de Contenedore a el drive de google
+cron.schedule("39 20 * * *", () => {
+  const child = exec("node " + [__dirname + "/Api/subirData/sendContenedores.js"]);
 
   child.stderr.on("data", data => {
     console.error(`stderr: ${data}`);

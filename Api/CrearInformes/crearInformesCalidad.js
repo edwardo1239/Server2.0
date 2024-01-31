@@ -23,7 +23,7 @@ const { connectProcesoDB } = require("../../DB/config/configDB");
 
     for (const lote of lotes) {
  
-      if (lote.deshidratacion <= 8) {
+      if (lote.deshidratacion <= 2) {
         const response = await fetch(url, {
           method: "POST",
           body: JSON.stringify({
@@ -41,7 +41,7 @@ const { connectProcesoDB } = require("../../DB/config/configDB");
           await lote.save();
         }
         else{
-          console.log("server 401 response", data);
+          console.error("server 401 response", data);
         }
       }
     }

@@ -16,6 +16,7 @@ const fs = require("fs");
 const { fork } = require("child_process");
 const { rendimiento, deshidratacion, saveFiles } = require("../functions/proceso");
 const { recordProveedores } = require("../Schemas/proveedores/schemaRecordProveedores");
+const { formularioCamiones } = require("../Schemas/formatosCarros/schemaFormatoCamionesLlegada");
 
 const obtenerProveedores = async data => {
   try {
@@ -160,9 +161,9 @@ const obtenerFrutaActual = async data => {
         "inventarioActual.inventario": { $gt: 0 },
       },
       "nombrePredio fechaIngreso observaciones tipoFruta promedio inventarioActual.inventario",
-    );
+    ).sort({"fechaIngreso": -1});
     const arrayNombrePredios = lotes.map(lote => lote.nombrePredio);
-    const proveedores = await Proveedores.find({ PREDIO: { $in: arrayNombrePredios } }, "ICA PREDIO");
+    const proveedores = await Proveedores.find({ PREDIO: { $in: arrayNombrePredios } }, "ICA PREDIO").sort({ fecha: -1 });
     const objFrutaActual = lotes.map(lote => {
       const proveedor = proveedores.find(item => item.PREDIO === lote.nombrePredio);
 
@@ -749,7 +750,7 @@ const obtenerHistorialDescarte = async data => {
 };
 const obtenerClientes = async data => {
   try {
-    const clientes = await Clientes.find().select("CLIENTE");
+    const clientes = await Clientes.find().sort({CODIGO: 1});
     data.data = clientes;
     return data;
   } catch (e) {
@@ -1386,7 +1387,7 @@ const obtenerInfoRotulosCajas = async data => {
 };
 const obtenerInformesCalidad = async data => {
   try {
-    const lotes = await Lotes.find({ informeEnviado: true }, "_id nombrePredio tipoFruta urlInformeCalidad");
+    const lotes = await Lotes.find().sort({fechaIngreso: -1}).limit(50);
     data.data = lotes;
     return data;
   } catch (e) {
@@ -1398,6 +1399,7 @@ const obtenerDatosLotes = async data => {
     const filtro = data.data.data.filtros;
     let consulta = {};
     let cantidad = 50;
+    let ordenar = { fechaIngreso: -1 };
 
     if (filtro.tipoFruta !== "") {
       consulta.tipoFruta = filtro.tipoFruta;
@@ -1424,7 +1426,23 @@ const obtenerDatosLotes = async data => {
     if (filtro.cantidad !== "") {
       cantidad = Number(filtro.cantidad);
     }
-    const lotes = await Lotes.find(consulta).sort({ fecha: -1 }).limit(cantidad);
+    if (filtro.tipoDato && Object.keys(filtro.tipoDato).length !== 0){
+      const key = Object.keys(filtro.tipoDato)[0];
+      consulta["calidad.calidadInterna." + key] = {};
+      consulta["calidad.calidadInterna." + key].$gte = Number(filtro.tipoDato[key].$gte);
+      if(filtro.tipoDato[key].$lt === ""){
+        consulta["calidad.calidadInterna." + key].$lt = 10000;
+      } else {
+        consulta["calidad.calidadInterna." + key].$lt = Number(filtro.tipoDato[key].$lt);
+      }
+    }
+    if (filtro.tipoDato && Object.prototype.hasOwnProperty.call(filtro, "ordenar") && filtro.ordenar !== "") {
+      const key = Object.keys(filtro.tipoDato)[0];
+
+      ordenar["calidad.calidadInterna." + key] = Number(filtro.ordenar);
+      delete ordenar.fechaIngreso;
+    }
+    const lotes = await Lotes.find(consulta).sort(ordenar).limit(cantidad);
     data.data = lotes;
     return data;
   } catch (e) {
@@ -1441,6 +1459,7 @@ const enviarDatosFormularioInspeccionMulas = async data => {
     contenedor.formularioInspeccionMula.empresaTransporte = info.conductor;
     contenedor.formularioInspeccionMula.cumpleRequisitos = info.cumpleRequisitos === "Si" ? true : false;
     contenedor.infoContenedor.fechaSalida = info.fecha;
+    contenedor.formularioInspeccionMula.responsable = info.responsable;
 
     if (!contenedor.formularioInspeccionMula.criterios) {
       contenedor.formularioInspeccionMula.criterios = new Map();
@@ -1466,6 +1485,7 @@ const obtenerDataContenedorFormularioInspeccionMulas = async data => {
   try {
     const contenedores = await Contenedores.find({ formularioInspeccionMula: { $exists: false } }, "infoContenedor");
     data.data = contenedores;
+
     return data;
   } catch (e) {
     console.error(e);
@@ -1500,6 +1520,7 @@ const obtenerHistorialDataContenedorFormularioInspeccionMulas = async data => {
       "formularioInspeccionMula infoContenedor.fechaSalida infoContenedor.tipoFruta",
     ).sort({ fecha: -1 }).limit(cantidad);
     data.data = contenedores;
+
     return data;
   } catch (e) {
     console.error(e);
@@ -1507,10 +1528,10 @@ const obtenerHistorialDataContenedorFormularioInspeccionMulas = async data => {
 };
 const ObtenerInfoContenedoresCelifrut = async data => {
   try {
+    
     const filtro = data.data.filtro;
-    console.log(data.data)
     let consulta = {};
-    let cantidad = 50;
+    let cantidad = 0;
 
     if (filtro.fecha.entrada !== null) {
       consulta["infoContenedor.fechaCreacion"] = {};
@@ -1533,11 +1554,10 @@ const ObtenerInfoContenedoresCelifrut = async data => {
     if (filtro.fecha.salida !== null) {
       consulta["infoContenedor.fechaSalida"] = {};
       consulta["infoContenedor.fechaSalida"].$gte = new Date(filtro.fecha.salida);
-      const fecha = new Date(filtro.fecha.salida);
-      fecha.setUTCHours(23);
-      fecha.setUTCMinutes(59);
-      fecha.setUTCSeconds(59);
-      consulta["infoContenedor.fechaSalida"].$lt = fecha;
+      consulta["infoContenedor.fechaSalida"].$lt = new Date();
+    }
+    if (filtro.cantidad !== "") {
+      cantidad = Number(filtro.cantidad);
     }
  
     const contenedores = await Contenedores.find(consulta, "infoContenedor formularioInspeccionMula").sort({ fecha: -1 }).limit(cantidad);
@@ -1547,6 +1567,141 @@ const ObtenerInfoContenedoresCelifrut = async data => {
     console.error(e);
   }
 };
+const dataHistorialCalidadInterna = async data => {
+  try{
+    const filtro = data.data.data.filtros;
+
+    const query = { "calidad.calidadInterna": { $exists: true }, "calidad.calidadInterna.fecha": { $exists: true } };
+    let cantidad = 50;
+    if (filtro.tipoFruta !== "") {
+      query.tipoFruta = filtro.tipoFruta;
+    }
+    if (filtro.fechaIngreso.$gte !== null) {
+      query["calidad.calidadInterna.fecha"] = {};
+      query["calidad.calidadInterna.fecha"].$gte = filtro.fechaIngreso.$gte;
+      query["calidad.calidadInterna.fecha"].$lt = new Date();
+    }
+    if (filtro.fechaIngreso.$lt !== null) {
+      query["calidad.calidadInterna.fecha"].$lt = filtro.fechaIngreso.$lt;
+    }
+    if (filtro.cantidad !== "") {
+      cantidad = Number(filtro.cantidad);
+    }
+    const lotes = await Lotes.find(query, "calidad.calidadInterna tipoFruta nombrePredio").sort({ fecha: -1 }).limit(cantidad);
+    data.data = lotes;
+    return data;
+  } catch(e) {
+    console.error(e);
+  }
+};
+const dataHistorialClasificacionCalidad= async data => {
+  try{
+    const filtro = data.data.data.filtros;
+
+    const query = { "calidad.clasificacionCalidad": { $exists: true }, "calidad.clasificacionCalidad.fecha": { $exists: true }  };
+    let cantidad = 50;
+    if (filtro.tipoFruta !== "") {
+      query.tipoFruta = filtro.tipoFruta;
+    }
+    if (filtro.fechaIngreso.$gte !== null) {
+      query["calidad.clasificacionCalidad.fecha"] = {};
+      query["calidad.clasificacionCalidad.fecha"].$gte = filtro.fechaIngreso.$gte;
+      query["calidad.clasificacionCalidad.fecha"].$lt = new Date();
+    }
+    if (filtro.fechaIngreso.$lt !== null) {
+      query["calidad.clasificacionCalidad.fecha"].$lt = filtro.fechaIngreso.$lt;
+    }
+    if (filtro.cantidad !== "") {
+      cantidad = Number(filtro.cantidad);
+    }
+    const lotes = await Lotes.find(query, "calidad.clasificacionCalidad tipoFruta nombrePredio").sort({ fecha: -1 }).limit(cantidad);
+    data.data = lotes;
+    return data;
+  } catch(e) {
+    console.error(e);
+  }
+};
+const obtenerHistorialFormularioInspeccionVehiculos = async data => {
+  try{
+    const filtro = data.data;
+
+    const query = {};
+    let cantidad = 50;
+ 
+    if (filtro.fechaInicio !== null) {
+      query.fecha = {};
+      query.fecha.$gte = new Date(filtro.fechaInicio);
+      query.fecha.$lt = new Date();
+    }
+    if (filtro.fechaFin !== null) {
+      query.fecha.$lt = new Date(filtro.fechaFin);
+    }
+    if (filtro.cantidad !== "") {
+      cantidad = Number(filtro.cantidad);
+    }
+    if (filtro.nombreConductor !== "") {
+      query.nombreConductor = filtro.nombreConductor;
+    }
+
+    const fomularios = await formularioCamiones.find(query).sort({fecha: -1}).limit(cantidad);
+    data.data = fomularios;
+    
+    return data;
+  }catch(e){
+    console.error(e);
+  }
+};
+const ingresarCliente = async data => {
+  try {
+    const cliente = data.data.data;
+    const clienteNuevo = new Clientes({
+      CODIGO:Number(cliente.codigo),
+      CLIENTE: cliente.cliente,
+      CORREO: cliente.correo,
+      DIRECCIÓN: cliente.direccion,
+      PAIS_DESTINO: cliente.pais,
+      TELEFONO: cliente.telefono,
+      ID:cliente.id
+    });
+    await clienteNuevo.save();
+    return data;
+  } catch(e) {
+    console.error(e);
+  }
+};
+const eliminarCliente = async data => {
+  try{
+    const info = data.data.data;
+
+    const id = new mongoose.Types.ObjectId(info);
+    const cliente = await Clientes.findById(id);
+    await cliente.deleteOne();
+
+    return data;
+
+  } catch(e) {
+    console.error(e);
+  }
+};
+const modificarCliente = async data => {
+  try{
+    const info = data.data.data;
+    const id = new mongoose.Types.ObjectId(info._id);
+    const cliente = await Clientes.findById(id);
+    cliente.CODIGO = info.codigo;
+    cliente.CLIENTE = info.cliente;
+    cliente.CORREO = info.correo;
+    cliente.PAIS_DESTINO = info.pais;
+    cliente.TELEFONO = info.telefono;
+    cliente.ID = info.id;
+
+    await cliente.save();
+    return data;
+  }catch(e){
+    console.error(e);
+  }
+};
+
 
 module.exports = {
   obtenerProveedores,
@@ -1596,5 +1751,11 @@ module.exports = {
   enviarDatosFormularioInspeccionMulas,
   obtenerDataContenedorFormularioInspeccionMulas,
   obtenerHistorialDataContenedorFormularioInspeccionMulas,
-  ObtenerInfoContenedoresCelifrut
+  ObtenerInfoContenedoresCelifrut,
+  dataHistorialCalidadInterna,
+  dataHistorialClasificacionCalidad,
+  obtenerHistorialFormularioInspeccionVehiculos,
+  ingresarCliente,
+  eliminarCliente,
+  modificarCliente
 };

@@ -13,6 +13,12 @@ const responseUser = {
   crearUsuario: async () => {
     return { status: 200 };
   },
+  obtenerCuentas: async (data) => {
+    return { status: 200, data: data.data };
+  },
+  eliminarCuenta: async (data) => {
+    return { status: 200, data: data.data };
+  },
 };
 
 module.exports = {

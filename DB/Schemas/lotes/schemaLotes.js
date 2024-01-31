@@ -11,7 +11,8 @@ const calidadInternaSchema = new Schema({
   brix: Number,
   ratio: Number,
   peso: Number,
-  zumo: Number
+  zumo: Number,
+  fecha: {type:Date, default: Date.now}
 }, { _id : false });
 
 const clasificacionCalidadSchema = new Schema({
@@ -37,7 +38,8 @@ const clasificacionCalidadSchema = new Schema({
   antracnosis: Number,
   frutaRajada: Number,
   ombligona: Number,
-  despezonada: Number
+  despezonada: Number,
+  fecha: {type:Date, default: Date.now}
 
 }, { _id : false });
 

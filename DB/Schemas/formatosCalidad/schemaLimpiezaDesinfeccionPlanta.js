@@ -80,7 +80,8 @@ const limpiezaSchema = new Schema({
   area_comunes_cuarto_residuos: Boolean,
   area_comunes_cuarto_residuos_observaciones: String,
   area_comunes_alrededores_observaciones: String,
-  fecha: Date
+  fecha: Date,
+  responsable: String
 });
 
 const LimpiezaDesinfeccionPlanta = conn.model("LimpiezaDesinfeccionPlanta", limpiezaSchema);

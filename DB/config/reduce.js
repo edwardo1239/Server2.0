@@ -49,8 +49,14 @@ const {
   obtenerDataContenedorFormularioInspeccionMulas,
   obtenerHistorialDataContenedorFormularioInspeccionMulas,
   ObtenerInfoContenedoresCelifrut,
+  dataHistorialCalidadInterna,
+  dataHistorialClasificacionCalidad,
+  obtenerHistorialFormularioInspeccionVehiculos,
+  ingresarCliente,
+  eliminarCliente,
+  modificarCliente,
 } = require("../queries/queryProceso");
-const { logIn, obtenerRegistroHigiene, obtenerRegistroControlPlagas, obtenerRegistroLimpiezaDesinfeccionPlanta, obtenerRegistroLimpiezaMensual, obtenerPermisosUsuario, crearUsuario, obtenerVolanteCalidad } = require("../queries/querypersonal");
+const { logIn, obtenerRegistroHigiene, obtenerRegistroControlPlagas, obtenerRegistroLimpiezaDesinfeccionPlanta, obtenerRegistroLimpiezaMensual, obtenerPermisosUsuario, crearUsuario, obtenerVolanteCalidad, obtenerCuentas, eliminarCuenta } = require("../queries/querypersonal");
 
 const apiPersonal = {
   logIn: async (data) => {
@@ -84,7 +90,15 @@ const apiPersonal = {
   obtenerVolanteCalidad:async (data) => {
     const response = await obtenerVolanteCalidad(data);
     return response;
-  }
+  },
+  obtenerCuentas: async (data) => {
+    const response = await obtenerCuentas(data);
+    return response;
+  },
+  eliminarCuenta: async (data) => {
+    const response = await eliminarCuenta(data);
+    return response;
+  },
 };
 const apiProceso = {
   obtenerProveedores: async (data) => {
@@ -308,6 +322,30 @@ const apiProceso = {
   },
   obtenerInformesCalidad: async (data) => {
     const response = await obtenerInformesCalidad(data);
+    return response;
+  },
+  dataHistorialCalidadInterna: async (data) => {
+    const response = await dataHistorialCalidadInterna(data);
+    return response;
+  },
+  dataHistorialClasificacionCalidad: async (data) => {
+    const response = await dataHistorialClasificacionCalidad(data);
+    return response;
+  },
+  obtenerHistorialFormularioInspeccionVehiculos: async (data) => {
+    const response = await obtenerHistorialFormularioInspeccionVehiculos(data);
+    return response;
+  },
+  ingresarCliente: async (data) => {
+    const response = await ingresarCliente(data);
+    return response;
+  },
+  eliminarCliente: async (data) => {
+    const response = await eliminarCliente(data);
+    return response;
+  },
+  modificarCliente: async (data) => {
+    const response = await modificarCliente(data);
     return response;
   }
 };

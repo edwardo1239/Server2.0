@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
+const { recordContenedores } = require("./schemaRecordContenedores.js");
 
 const conn = mongoose.createConnection(process.env.MONGO_URL_PROCESO);
 
@@ -73,6 +74,7 @@ const schemaFormularioInspeccionMulas = new Schema({
   conductor: String,
   empresaTransporte: String,
   cumpleRequisitos: Boolean,
+  responsable: String,
   criterios:{
     type: Map,
     of: criteriosSchema
@@ -90,6 +92,14 @@ const listaEmpaqueSchema = new Schema({
   },
   infoContenedor: infoContenedorSchema,
   formularioInspeccionMula: schemaFormularioInspeccionMulas
+});
+
+listaEmpaqueSchema.post("save", function (doc){
+  let record = new recordContenedores({
+    nombreColeccion : "contenedores",
+    documento: doc._id,
+  });
+  record.save().catch(error => console.error("Error al guardar recordContenedor", error.message));
 });
 
 

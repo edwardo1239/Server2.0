@@ -35,6 +35,12 @@ const responseCalidad = {
   obtenerVolanteCalidad: async data => {
     return {status:200, data: data.data};
   },
+  dataHistorialCalidadInterna: async data => {
+    return {status:200, data: data.data};
+  },
+  dataHistorialClasificacionCalidad: async data => {
+    return {status:200, data: data.data};
+  },
 };
 
 module.exports = {
