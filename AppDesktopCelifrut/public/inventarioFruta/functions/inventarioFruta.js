@@ -18,7 +18,6 @@ const guardarLote = async () => {
 };
 const vaciarLote = async data => {
   try{ 
-
     const ids = await obtenerIDs();
     ids["ENF-vaciando"] = data.data.enf;
     ids["kilosVaciados"] = Number(data.data.canastillas) * Number(data.data.promedio);

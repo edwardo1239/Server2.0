@@ -3,7 +3,6 @@ const { fork, exec } = require("child_process");
 const EventEmitter = require("events");
 const cron = require("node-cron");
 
-
 const CelifrutApp = fork("./AppDesktopCelifrut/index.js");
 const Descartes = fork("./Descartes/index.js");
 const ListaDeEmpaque = fork("./ListaDeEmpaque/index.js");
@@ -11,6 +10,8 @@ const mongoBD = fork("./DB/config/Init.js");
 
 // Crear una nueva instancia de EventEmitter
 const emitter = new EventEmitter();
+
+
 
 CelifrutApp.on("message", msg => {
   if (msg.query) {

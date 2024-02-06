@@ -22,136 +22,156 @@ const obtenerProveedores = async data => {
   try {
     const proveedores = await Proveedores.find();
     data.data = proveedores;
-    return data;
+    return { ...data, status: 200, message: "Ok" };
   } catch (e) {
     console.error(e);
+    return { ...data, status: 401, message: "Error en obtenerProveedores del servidor" };
   }
 };
 const agregarProveedor = async data => {
   try {
+    if (data.userSession.cargo === "cordinadora de calidad") {
+      const info = data.data.data;
+      const paths = await saveFiles(info.documentos, `./Files/proveedores/${info.nombrePredio}`, info.nombrePredio);
+      const proveedor = new Proveedores({
+        "CODIGO INTERNO": info.codigoInterno,
+        PREDIO: info.nombrePredio,
+        ICA: info.ICA,
+        DEPARTAMENTO: info.departamento,
+        GGN: info.GGN,
+        "FECHA VENCIMIENTO GGN": info.fechaVencimiento,
+        N: info.naranja ? "X" : "",
+        L: info.limon ? "X" : "",
+        M: info.mandarina ? "X" : "",
+        urlArchivos: paths,
+      });
 
-    const info = data.data.data;
-    const paths = await saveFiles(info.documentos, `./Files/proveedores/${info.nombrePredio}`, info.nombrePredio);
-    const proveedor = new Proveedores({
-      "CODIGO INTERNO": info.codigoInterno,
-      PREDIO: info.nombrePredio,
-      ICA: info.ICA,
-      DEPARTAMENTO: info.departamento,
-      GGN: info.GGN,
-      "FECHA VENCIMIENTO GGN": info.fechaVencimiento,
-      N: info.naranja ? "X" : "",
-      L: info.limon ? "X" : "",
-      M: info.mandarina ? "X" : "",
-      urlArchivos: paths,
-    });
+      let record = new recordProveedores({
+        operacionRealizada: "añadir",
+        nombreProveedor: proveedor.PREDIO,
+        fecha: new Date(),
+      });
 
-    let record = new recordProveedores({
-      operacionRealizada: "añadir",
-      nombreProveedor: proveedor.PREDIO,
-      fecha: new Date(),
-    });
-
-    await record.save();
-    await proveedor.save();
-    return data;
+      await record.save();
+      await proveedor.save();
+      return { ...data, status: 200, message: "Ok" };
+    } else {
+      return { ...data, status: 403, message: "Acceso no permitido" };
+    }
   } catch (e) {
     console.error(e);
+    return { ...data, status: 401, message: "Error en agregarProveedor del servidor" };
   }
 };
 const modificarProveedor = async data => {
   try {
-    const info = data.data.data;
-    const id = new mongoose.Types.ObjectId(info.id);
-    const proveedor = await Proveedores.findById(id);
-    proveedor["CODIGO INTERNO"] = info.codigoInterno;
-    proveedor.PREDIO = info.nombrePredio;
-    proveedor.ICA = info.ICA;
-    proveedor.GGN = info.GGN;
-    proveedor["FECHA VENCIMIENTO GGN"] = info.fechaVencimiento;
-    proveedor.N = info.naranja ? "X" : "";
-    proveedor.L = info.limon ? "X" : "";
-    proveedor.M = info.mandarina ? "X" : "";
+    if (data.userSession.cargo === "cordinadora de calidad") {
+      const info = data.data.data;
+      const id = new mongoose.Types.ObjectId(info.id);
+      const proveedor = await Proveedores.findById(id);
+      proveedor["CODIGO INTERNO"] = info.codigoInterno;
+      proveedor.PREDIO = info.nombrePredio;
+      proveedor.ICA = info.ICA;
+      proveedor.GGN = info.GGN;
+      proveedor["FECHA VENCIMIENTO GGN"] = info.fechaVencimiento;
+      proveedor.N = info.naranja ? "X" : "";
+      proveedor.L = info.limon ? "X" : "";
+      proveedor.M = info.mandarina ? "X" : "";
 
-    let record = new recordProveedores({
-      operacionRealizada: "modificar",
-      nombreProveedor: proveedor.PREDIO,
-      fecha: new Date(),
-    });
+      let record = new recordProveedores({
+        operacionRealizada: "modificar",
+        nombreProveedor: proveedor.PREDIO,
+        fecha: new Date(),
+      });
 
-    // Guarda el registro
-    await record.save();
-    await proveedor.save();
+      // Guarda el registro
+      await record.save();
+      await proveedor.save();
 
-    return data;
+      return { ...data, status: 200, message: "Ok" };
+    } else {
+      return { ...data, status: 403, message: "Acceso no permitido" };
+    }
   } catch (e) {
     console.error(e);
+    return { ...data, status: 401, message: "Error en modificarProveedor del servidor" };
   }
 };
 const eliminarProveedor = async data => {
   try {
-    const info = data.data.data;
+    if (data.userSession.cargo === "cordinadora de calidad") {
 
-    const id = new mongoose.Types.ObjectId(info._id);
-    const proveedor = await Proveedores.findById(id);
+      const info = data.data.data;
 
-    let record = new recordProveedores({
-      operacionRealizada: "eliminar",
-      nombreProveedor: proveedor.PREDIO,
-      fecha: new Date(),
-    });
+      const id = new mongoose.Types.ObjectId(info._id);
+      const proveedor = await Proveedores.findById(id);
 
-    // Guarda el registro
-    await record.save();
-    await proveedor.deleteOne();
+      let record = new recordProveedores({
+        operacionRealizada: "eliminar",
+        nombreProveedor: proveedor.PREDIO,
+        fecha: new Date(),
+      });
 
-    return data;
+      // Guarda el registro
+      await record.save();
+      await proveedor.deleteOne();
+
+      return { ...data, status: 200, message: "Ok" };
+    } else {
+      return { ...data, status: 403, message: "Acceso no permitido" };
+    }
   } catch (e) {
     console.error(e);
+    return { ...data, status: 401, message: "Error en modificarProveedor del servidor" };
   }
 };
 const guardarLote = async data => {
   try {
     const ids = await obtenerIDs();
+    if (data.userSession.cargo === "recepcion") {
+      let fecha = new Date();
+      let year = fecha.getFullYear().toString().slice(-2);
+      let month = String(fecha.getMonth() + 1).padStart(2, "0");
+      let enf;
+      if (ids.enf < 10) {
+        enf = "EF1-" + year + month + "0" + ids.enf;
+      } else {
+        enf = "EF1-" + year + month + ids.enf;
+      }
 
-    let fecha = new Date();
-    let year = fecha.getFullYear().toString().slice(-2);
-    let month = String(fecha.getMonth() + 1).padStart(2, "0");
-    let enf;
-    if (ids.enf < 10) {
-      enf = "EF1-" + year + month + "0" + ids.enf;
+      const datos = data.data.data;
+      const lote = new Lotes({
+        _id: enf,
+        nombrePredio: datos.nombre,
+        fechaIngreso: new Date(),
+        canastillas: Number(datos.canastillas),
+        tipoFruta: datos.tipoFruta,
+        observaciones: datos.observaciones,
+        kilos: Number(datos.kilos),
+        placa: datos.placa,
+        promedio: datos.promedio,
+        inventarioActual: {
+          inventario: Number(datos.canastillas),
+          descarteLavado: { balin: 0, pareja: 0, descarteGeneral: 0 },
+          descarteEncerado: { balin: 0, pareja: 0, extra: 0, descarteEncerado: 0 },
+        },
+        descarteLavado: {},
+        descarteEncerado: {},
+        calidad: {},
+        exportacion: {},
+      });
+      lote._operationType = "Se añadio un lote";
+      ids.enf += 1;
+
+      await lote.save();
+      await guardarIDs(ids);
+      return { ...data, status: 200, message: "Ok" };
     } else {
-      enf = "EF1-" + year + month + ids.enf;
+      return { ...data, status: 403, message: "Acceso no permitido" };
     }
-
-    const datos = data.data.data;
-    const lote = new Lotes({
-      _id: enf,
-      nombrePredio: datos.nombre,
-      fechaIngreso: new Date(),
-      canastillas: Number(datos.canastillas),
-      tipoFruta: datos.tipoFruta,
-      observaciones: datos.observaciones,
-      kilos: Number(datos.kilos),
-      placa: datos.placa,
-      promedio: datos.promedio,
-      inventarioActual: {
-        inventario: Number(datos.canastillas),
-        descarteLavado: { balin: 0, pareja: 0, descarteGeneral: 0 },
-        descarteEncerado: { balin: 0, pareja: 0, extra: 0, descarteEncerado: 0 },
-      },
-      descarteLavado: {},
-      descarteEncerado: {},
-      calidad: {},
-      exportacion: {},
-    });
-    lote._operationType = "Se añadio un lote";
-    ids.enf += 1;
-
-    await lote.save();
-    await guardarIDs(ids);
-    return { ...data, status: 200 };
   } catch (e) {
     console.error(e);
+    return { ...data, status: 401, message: "Error en la funcion crear lote" };
   }
 };
 const obtenerFrutaActual = async data => {
@@ -161,9 +181,11 @@ const obtenerFrutaActual = async data => {
         "inventarioActual.inventario": { $gt: 0 },
       },
       "nombrePredio fechaIngreso observaciones tipoFruta promedio inventarioActual.inventario",
-    ).sort({"fechaIngreso": -1});
+    ).sort({ fechaIngreso: -1 });
     const arrayNombrePredios = lotes.map(lote => lote.nombrePredio);
-    const proveedores = await Proveedores.find({ PREDIO: { $in: arrayNombrePredios } }, "ICA PREDIO").sort({ fecha: -1 });
+    const proveedores = await Proveedores.find({ PREDIO: { $in: arrayNombrePredios } }, "ICA PREDIO").sort({
+      fecha: -1,
+    });
     const objFrutaActual = lotes.map(lote => {
       const proveedor = proveedores.find(item => item.PREDIO === lote.nombrePredio);
 
@@ -180,157 +202,199 @@ const obtenerFrutaActual = async data => {
     });
 
     data.data = objFrutaActual;
+    return {...data, status:200};
+  } catch (e) {
+    console.error(e);
+    return { ...data, status: 401, message: "Error obteniendo fruta sin procesar" };
+  }
+};
+const vaciarLote = async data => {
+  try {
+    if (data.userSession.cargo === "recepcion") {
+      const enf = data.data.enf;
+      const canastillas = data.data.canastillas;
+      const lote = await Lotes.findById(
+        enf,
+        "promedio rendimiento kilosVaciados tipoFruta nombrePredio inventarioActual.inventario",
+      );
+
+      const promedio = lote.promedio;
+
+      lote.inventarioActual.inventario -= Number(canastillas);
+      lote.kilosVaciados += canastillas * lote.promedio;
+
+      lote._operationType = "Vaciado";
+      lote._canastillasProcesadas = Number(canastillas);
+
+      await lote.save();
+
+      data.data = {
+        promedio: promedio,
+        enf: enf,
+        tipoFruta: lote.tipoFruta,
+        nombrePredio: lote.nombrePredio,
+        canastillas: canastillas,
+      };
+      return { ...data, status: 200, message: "Ok" };
+    } else {
+      return { ...data, status: 403, message: "Acceso no permitido" };
+    }
+  } catch (e) {
+    console.error(e);
+    return { ...data, status: 401, message: "Error al modificar los datos en la base de datos" };
+  }
+};
+const obtenerHistorialProceso = async data => {
+  try{
+    const historial = await recordLotes.find({ operacionRealizada: "Vaciado" }).sort({ fecha: -1 }).limit(200);
+    const enfs = historial.map(item => item.documento._id);
+    const lotes = await Lotes.find({ _id: enfs }, "tipoFruta nombrePredio rendimiento");
+  
+    let datos = historial.map(item => {
+      const lote = lotes.find(lot => lot._id === item.documento._id);
+      return {
+        _id: item._id,
+        enf: item.documento._id,
+        nombre: lote.nombrePredio,
+        canastillas: item.canastillas,
+        kilos: Number(item.canastillas) * Number(item.documento.promedio),
+        tipoFruta: lote.tipoFruta,
+        fecha: item.fecha,
+        rendimiento: lote.rendimiento,
+      };
+    });
+    data.data = datos;
+    return {...data, status:200};
+  } catch (e) {
+    console.error(e);
+    return { ...data, status: 401, message: "Error obteniendo fruta sin procesar" };
+  }
+};
+const directoNacional = async data => {
+  try {
+    if (data.userSession.cargo === "recepcion") {
+      const lote = await Lotes.findById(data.data.enf);
+
+      lote.inventarioActual.inventario -= Number(data.data.canastillas);
+      lote.directoNacional += data.data.canastillas * lote.promedio;
+
+      if (Object.prototype.hasOwnProperty.call(lote, "infoSalidaDirectoNacional")) {
+        lote.infoSalidaDirectoNacional = {};
+      }
+      lote.infoSalidaDirectoNacional.placa = data.data.placa;
+      lote.infoSalidaDirectoNacional.nombreConductor = data.data.nombreConductor;
+      lote.infoSalidaDirectoNacional.telefono = data.data.telefono;
+      lote.infoSalidaDirectoNacional.cedula = data.data.cedula;
+      lote.infoSalidaDirectoNacional.remision = data.data.remision;
+      lote._operationType = "Directo nacional";
+      lote._canastillasProcesadas = Number(data.data.canastillas);
+
+      lote.deshidratacion = deshidratacion(lote);
+
+      await lote.save();
+
+      return { ...data, status: 200, message: "Ok" };
+    } else {
+      return { ...data, status: 403, message: "Acceso no permitido" };
+    }
+  } catch (e) {
+    console.error(e);
+    return { ...data, status: 401, message: "Error al modificar los datos en la base de datos" };
+  }
+};
+const obtenerHistorialDirectoNacional = async data => {
+  try {
+    const historial = await recordLotes.find({ operacionRealizada: "Directo nacional" }).sort({ fecha: -1 }).limit(200);
+    const enfs = historial.map(item => item.documento._id);
+    const lotes = await Lotes.find({ _id: enfs }, "tipoFruta nombrePredio");
+
+    let datos = historial.map(item => {
+      const lote = lotes.find(lot => lot._id === item.documento._id);
+      return {
+        _id: item._id,
+        enf: item.documento._id,
+        nombre: lote.nombrePredio,
+        canastillas: item.canastillas,
+        kilos: Number(item.canastillas) * Number(item.documento.promedio),
+        tipoFruta: lote.tipoFruta,
+        fecha: item.fecha,
+      };
+    });
+    data.data = datos;
     return data;
   } catch (e) {
     console.error(e);
   }
 };
-const vaciarLote = async data => {
-  const enf = data.data.enf;
-  const canastillas = data.data.canastillas;
-  const lote = await Lotes.findById(
-    enf,
-    "promedio rendimiento kilosVaciados tipoFruta nombrePredio inventarioActual.inventario",
-  );
-
-  const promedio = lote.promedio;
-
-  lote.inventarioActual.inventario -= Number(canastillas);
-  lote.kilosVaciados += canastillas * lote.promedio;
-
-  lote._operationType = "Vaciado";
-  lote._canastillasProcesadas = Number(canastillas);
-
-  await lote.save();
-
-  data.data = {
-    promedio: promedio,
-    enf: enf,
-    tipoFruta: lote.tipoFruta,
-    nombrePredio: lote.nombrePredio,
-    canastillas: canastillas,
-  };
-  return data;
-};
-const obtenerHistorialProceso = async data => {
-  const historial = await recordLotes.find({ operacionRealizada: "Vaciado" }).sort({ fecha: -1 }).limit(200);
-  const enfs = historial.map(item => item.documento._id);
-  const lotes = await Lotes.find({ _id: enfs }, "tipoFruta nombrePredio rendimiento");
-
-  let datos = historial.map(item => {
-    const lote = lotes.find(lot => lot._id === item.documento._id);
-    return {
-      _id: item._id,
-      enf: item.documento._id,
-      nombre: lote.nombrePredio,
-      canastillas: item.canastillas,
-      kilos: Number(item.canastillas) * Number(item.documento.promedio),
-      tipoFruta: lote.tipoFruta,
-      fecha: item.fecha,
-      rendimiento: lote.rendimiento,
-    };
-  });
-  data.data = datos;
-  return data;
-};
-const directoNacional = async data => {
-  const lote = await Lotes.findById(data.data.enf);
-
-  lote.inventarioActual.inventario -= Number(data.data.canastillas);
-  lote.directoNacional += data.data.canastillas * lote.promedio;
-
-  if (Object.prototype.hasOwnProperty.call(lote, "infoSalidaDirectoNacional")) {
-    lote.infoSalidaDirectoNacional = {};
-  }
-  lote.infoSalidaDirectoNacional.placa = data.data.placa;
-  lote.infoSalidaDirectoNacional.nombreConductor = data.data.nombreConductor;
-  lote.infoSalidaDirectoNacional.telefono = data.data.telefono;
-  lote.infoSalidaDirectoNacional.cedula = data.data.cedula;
-  lote.infoSalidaDirectoNacional.remision = data.data.remision;
-  lote._operationType = "Directo nacional";
-  lote._canastillasProcesadas = Number(data.data.canastillas);
-
-  lote.deshidratacion = deshidratacion(lote);
-
-  await lote.save();
-
-  return data;
-};
-const obtenerHistorialDirectoNacional = async data => {
-  const historial = await recordLotes.find({ operacionRealizada: "Directo nacional" }).sort({ fecha: -1 }).limit(200);
-  const enfs = historial.map(item => item.documento._id);
-  const lotes = await Lotes.find({ _id: enfs }, "tipoFruta nombrePredio");
-
-  let datos = historial.map(item => {
-    const lote = lotes.find(lot => lot._id === item.documento._id);
-    return {
-      _id: item._id,
-      enf: item.documento._id,
-      nombre: lote.nombrePredio,
-      canastillas: item.canastillas,
-      kilos: Number(item.canastillas) * Number(item.documento.promedio),
-      tipoFruta: lote.tipoFruta,
-      fecha: item.fecha,
-    };
-  });
-  data.data = datos;
-  return data;
-};
 const desverdizado = async data => {
-  const canastillas = data.data.canastillas;
-  const cuartoDesverdizado = data.data.cuartoDesverdizado;
-  const lotes = await Lotes.findById(data.data.enf, "promedio rendimiento desverdizado inventarioActual");
-  lotes.inventarioActual.inventario -= Number(canastillas);
+  try {
+    if (data.userSession.cargo === "recepcion") {
+      const canastillas = data.data.canastillas;
+      const cuartoDesverdizado = data.data.cuartoDesverdizado;
+      const lotes = await Lotes.findById(data.data.enf, "promedio rendimiento desverdizado inventarioActual");
+      lotes.inventarioActual.inventario -= Number(canastillas);
 
-  let desverdizando;
-  desverdizando = await Desverdizado.findById({ _id: data.data.enf });
-  if (desverdizando) {
-    desverdizando.canastillas += Number(canastillas);
-    desverdizando.canastillasIngreso += Number(canastillas);
-    desverdizando.kilosIngreso += Number(canastillas) * lotes.promedio;
-    desverdizando.kilos += Number(canastillas) * lotes.promedio;
-    desverdizando.cuartoDesverdizado += cuartoDesverdizado + " ";
-  } else {
-    desverdizando = new Desverdizado({
-      _id: data.data.enf,
-      fechaIngreso: new Date(),
-      desverdizando: true,
-    });
-    desverdizando.canastillas += Number(canastillas);
-    desverdizando.canastillasIngreso += Number(canastillas);
-    desverdizando.kilosIngreso += Number(canastillas) * lotes.promedio;
-    desverdizando.kilos += Number(canastillas) * lotes.promedio;
-    desverdizando.cuartoDesverdizado += cuartoDesverdizado + " ";
+      let desverdizando;
+      desverdizando = await Desverdizado.findById({ _id: data.data.enf });
+      if (desverdizando) {
+        desverdizando.canastillas += Number(canastillas);
+        desverdizando.canastillasIngreso += Number(canastillas);
+        desverdizando.kilosIngreso += Number(canastillas) * lotes.promedio;
+        desverdizando.kilos += Number(canastillas) * lotes.promedio;
+        desverdizando.cuartoDesverdizado += cuartoDesverdizado + " ";
+      } else {
+        desverdizando = new Desverdizado({
+          _id: data.data.enf,
+          fechaIngreso: new Date(),
+          desverdizando: true,
+        });
+        desverdizando.canastillas += Number(canastillas);
+        desverdizando.canastillasIngreso += Number(canastillas);
+        desverdizando.kilosIngreso += Number(canastillas) * lotes.promedio;
+        desverdizando.kilos += Number(canastillas) * lotes.promedio;
+        desverdizando.cuartoDesverdizado += cuartoDesverdizado + " ";
+      }
+
+      lotes.desverdizado += canastillas * lotes.promedio;
+      lotes._operationType = "Desverdizado";
+
+      await lotes.save();
+      await desverdizando.save();
+
+      return { ...data, status: 200, message: "Ok" };
+    } else {
+      return { ...data, status: 403, message: "Acceso no permitido" };
+    }
+  } catch (e) {
+    console.error(e);
+    return { ...data, status: 401, message: "Error al modificar los datos en la base de datos" };
   }
-
-  lotes.desverdizado += canastillas * lotes.promedio;
-  lotes._operationType = "Desverdizado";
-
-  await lotes.save();
-  await desverdizando.save();
-
-  return data;
 };
 const modificarHistorialVaciado = async data => {
   try {
-    const lotes = await Lotes.findById(data.data.enf, "promedio kilosVaciados inventarioActual");
-    const id = new mongoose.Types.ObjectId(data.data.id);
-    const historial = await recordLotes.findById({ _id: id });
+    if (data.userSession.cargo === "recepcion") {
+      const lotes = await Lotes.findById(data.data.enf, "promedio kilosVaciados inventarioActual");
+      const id = new mongoose.Types.ObjectId(data.data.id);
+      const historial = await recordLotes.findById({ _id: id });
 
-    lotes.inventarioActual.inventario += Number(data.data.canastillas);
-    historial.canastillas -= Number(data.data.canastillas);
+      lotes.inventarioActual.inventario += Number(data.data.canastillas);
+      historial.canastillas -= Number(data.data.canastillas);
 
-    lotes.kilosVaciados -= Number(data.data.canastillas) * lotes.promedio;
-    lotes._operationType = "ModificarVaciado";
-    lotes._canastillasProcesadas = Number(data.data.canastillas);
+      lotes.kilosVaciados -= Number(data.data.canastillas) * lotes.promedio;
+      lotes._operationType = "ModificarVaciado";
+      lotes._canastillasProcesadas = Number(data.data.canastillas);
 
-    await historial.save();
-    await lotes.save();
-    data.promedio = lotes.promedio;
+      await historial.save();
+      await lotes.save();
+      data.promedio = lotes.promedio;
 
-    return data;
+      return { ...data, status: 200, message: "Ok" };
+    } else {
+      return { ...data, status: 403, message: "Acceso no permitido" };
+    }
   } catch (e) {
-    return console.error(`${e.name}: ${e.message}`);
+    console.error(`${e.name}: ${e.message}`);
+    return { ...data, status: 401, message: "Error al modificar los datos en la base de datos" };
   }
 };
 const modificarHistorialDirectoNacional = async data => {
@@ -750,7 +814,7 @@ const obtenerHistorialDescarte = async data => {
 };
 const obtenerClientes = async data => {
   try {
-    const clientes = await Clientes.find().sort({CODIGO: 1});
+    const clientes = await Clientes.find().sort({ CODIGO: 1 });
     data.data = clientes;
     return data;
   } catch (e) {
@@ -895,9 +959,9 @@ const guardarItem = async data => {
       lote.exportacion.get(String(numeroContenedor)).calidad2 += data.data.item.cajas * 40;
     }
     const resRendimiento = rendimiento(lote);
-    if(isNaN(resRendimiento)){
+    if (isNaN(resRendimiento)) {
       lote.rendimiento = 100;
-    } else{
+    } else {
       lote.rendimiento = resRendimiento;
     }
     lote.deshidratacion = deshidratacion(lote);
@@ -964,9 +1028,9 @@ const eliminarItem = async data => {
     }
 
     const resRendimiento = rendimiento(lote);
-    if(isNaN(resRendimiento)){
+    if (isNaN(resRendimiento)) {
       lote.rendimiento = 100;
-    } else{
+    } else {
       lote.rendimiento = resRendimiento;
     }
     lote.deshidratacion = deshidratacion(lote);
@@ -1200,15 +1264,14 @@ const cerrarContenedor = async data => {
     const contenedor = await Contenedores.findById(data.data.contenedor);
     const child = fork("./Api/CrearInformes/crearInformeListaEmpaque.js");
     child.send(contenedor);
-    child.on("message", async (url) => {
+    child.on("message", async url => {
       contenedor.infoContenedor.urlInforme = url;
       contenedor.infoContenedor.cerrado = true;
       contenedor.infoContenedor.fechaFinalizado = new Date();
-  
+
       await contenedor.save();
       child.kill("SIGTERM");
     });
-
   } catch (e) {
     console.error(e);
   }
@@ -1388,10 +1451,10 @@ const obtenerInfoRotulosCajas = async data => {
 const obtenerInformesCalidad = async data => {
   try {
     let salto = 0;
-    if(data.data.data){
+    if (data.data.data) {
       salto = 50 * data.data.data;
     }
-    const lotes = await Lotes.find().sort({fechaIngreso: -1}).skip(salto).limit(50);
+    const lotes = await Lotes.find().sort({ fechaIngreso: -1 }).skip(salto).limit(50);
     data.data = lotes;
     return data;
   } catch (e) {
@@ -1430,11 +1493,11 @@ const obtenerDatosLotes = async data => {
     if (filtro.cantidad !== "") {
       cantidad = Number(filtro.cantidad);
     }
-    if (filtro.tipoDato && Object.keys(filtro.tipoDato).length !== 0){
+    if (filtro.tipoDato && Object.keys(filtro.tipoDato).length !== 0) {
       const key = Object.keys(filtro.tipoDato)[0];
       consulta["calidad.calidadInterna." + key] = {};
       consulta["calidad.calidadInterna." + key].$gte = Number(filtro.tipoDato[key].$gte);
-      if(filtro.tipoDato[key].$lt === ""){
+      if (filtro.tipoDato[key].$lt === "") {
         consulta["calidad.calidadInterna." + key].$lt = 10000;
       } else {
         consulta["calidad.calidadInterna." + key].$lt = Number(filtro.tipoDato[key].$lt);
@@ -1453,14 +1516,38 @@ const obtenerDatosLotes = async data => {
     console.log(`${e.name}: ${e.message}`);
   }
 };
+const enviarDatosFormularioProgramacionMulas = async data => {
+  try {
+    const info = data.data.data;
+    const contenedor = await Contenedores.findById(Number(info.contenedor));
+    contenedor.formularioInspeccionMula = {};
+    contenedor.formularioInspeccionMula.placa = info.placa;
+    contenedor.formularioInspeccionMula.trailer = info.trailer;
+    contenedor.formularioInspeccionMula.conductor = info.conductor;
+    contenedor.formularioInspeccionMula.cedula = info.cedula;
+    contenedor.formularioInspeccionMula.celular = info.celular;
+    contenedor.formularioInspeccionMula.color = info.color;
+    contenedor.formularioInspeccionMula.modelo = info.modelo;
+    contenedor.formularioInspeccionMula.marca = info.marca;
+    contenedor.formularioInspeccionMula.prof = info.prof;
+    contenedor.formularioInspeccionMula.puerto = info.puerto;
+    contenedor.formularioInspeccionMula.naviera = info.naviera;
+    contenedor.formularioInspeccionMula.agenciaAduanas = info.agenciaAduanas;
+
+    await contenedor.save();
+
+    const contenedores = await obtenerDataContenedorFormularioProgramacionMulas(data);
+    data.data = contenedores.data;
+    return data;
+  } catch (e) {
+    console.error("enviarDatosFormularioProgramacionMulas", e);
+  }
+};
 const enviarDatosFormularioInspeccionMulas = async data => {
   try {
     const info = data.data.data;
     const contenedor = await Contenedores.findById(Number(info.numContenedor));
     contenedor.formularioInspeccionMula = {};
-    contenedor.formularioInspeccionMula.placa = info.placa;
-    contenedor.formularioInspeccionMula.conductor = info.conductor;
-    contenedor.formularioInspeccionMula.empresaTransporte = info.conductor;
     contenedor.formularioInspeccionMula.cumpleRequisitos = info.cumpleRequisitos === "Si" ? true : false;
     contenedor.infoContenedor.fechaSalida = info.fecha;
     contenedor.formularioInspeccionMula.responsable = info.responsable;
@@ -1485,7 +1572,7 @@ const enviarDatosFormularioInspeccionMulas = async data => {
     console.error(e);
   }
 };
-const obtenerDataContenedorFormularioInspeccionMulas = async data => {
+const obtenerDataContenedorFormularioProgramacionMulas = async data => {
   try {
     const contenedores = await Contenedores.find({ formularioInspeccionMula: { $exists: false } }, "infoContenedor");
     data.data = contenedores;
@@ -1495,12 +1582,24 @@ const obtenerDataContenedorFormularioInspeccionMulas = async data => {
     console.error(e);
   }
 };
+const obtenerDataContenedorFormularioInspeccionMulas = async data => {
+  try {
+    const contenedores = await Contenedores.find(
+      { "formularioInspeccionMula.criterios": { $exists: false } },
+      "infoContenedor",
+    );
+    data.data = contenedores;
+
+    return data;
+  } catch (e) {
+    console.error(e);
+  }
+};
 const obtenerHistorialDataContenedorFormularioInspeccionMulas = async data => {
   try {
-
     const filtro = data.data.fechas;
 
-    let consulta = {formularioInspeccionMula: { $exists: true }};
+    let consulta = { formularioInspeccionMula: { $exists: true } };
     let cantidad = 50;
     if (data.data.tipoFruta !== "") {
       consulta["infoContenedor.tipoFruta"] = data.data.tipoFruta;
@@ -1522,7 +1621,9 @@ const obtenerHistorialDataContenedorFormularioInspeccionMulas = async data => {
     const contenedores = await Contenedores.find(
       consulta,
       "formularioInspeccionMula infoContenedor.fechaSalida infoContenedor.tipoFruta",
-    ).sort({ fecha: -1 }).limit(cantidad);
+    )
+      .sort({ fecha: -1 })
+      .limit(cantidad);
     data.data = contenedores;
 
     return data;
@@ -1532,17 +1633,15 @@ const obtenerHistorialDataContenedorFormularioInspeccionMulas = async data => {
 };
 const ObtenerInfoContenedoresCelifrut = async data => {
   try {
-    
     const filtro = data.data.filtro;
     let consulta = {};
     let cantidad = 0;
 
     if (filtro.fecha.tipo === "entrada") {
-
-      if(filtro.fecha.inicio !== null){
+      if (filtro.fecha.inicio !== null) {
         consulta["infoContenedor.fechaCreacion"] = {};
         consulta["infoContenedor.fechaCreacion"].$gte = new Date(filtro.fecha.inicio);
-        if(filtro.fecha.fin === null){
+        if (filtro.fecha.fin === null) {
           const fecha = new Date();
           consulta["infoContenedor.fechaCreacion"].$lt = fecha;
         } else {
@@ -1552,14 +1651,13 @@ const ObtenerInfoContenedoresCelifrut = async data => {
           fecha.setUTCSeconds(59);
           consulta["infoContenedor.fechaCreacion"].$lt = fecha;
         }
-
-      } 
+      }
     }
     if (filtro.fecha.tipo === "finalizado") {
-      if(filtro.fecha.inicio !== null){
+      if (filtro.fecha.inicio !== null) {
         consulta["infoContenedor.fechaFinalizado"] = {};
         consulta["infoContenedor.fechaFinalizado"].$gte = new Date(filtro.fecha.inicio);
-        if(filtro.fecha.fin === null){
+        if (filtro.fecha.fin === null) {
           const fecha = new Date();
           consulta["infoContenedor.fechaFinalizado"].$lt = fecha;
         } else {
@@ -1569,14 +1667,13 @@ const ObtenerInfoContenedoresCelifrut = async data => {
           fecha.setUTCSeconds(59);
           consulta["infoContenedor.fechaFinalizado"].$lt = fecha;
         }
-
       }
     }
     if (filtro.fecha.tipo === "salida") {
-      if(filtro.fecha.inicio !== null){
+      if (filtro.fecha.inicio !== null) {
         consulta["infoContenedor.fechaSalida"] = {};
         consulta["infoContenedor.fechaSalida"].$gte = new Date(filtro.fecha.inicio);
-        if(filtro.fecha.fin === null){
+        if (filtro.fecha.fin === null) {
           const fecha = new Date();
           consulta["infoContenedor.fechaSalida"].$lt = fecha;
         } else {
@@ -1586,14 +1683,15 @@ const ObtenerInfoContenedoresCelifrut = async data => {
           fecha.setUTCSeconds(59);
           consulta["infoContenedor.fechaSalida"].$lt = fecha;
         }
-
       }
     }
 
     // if (filtro.cantidad !== "") {
     //   cantidad = Number(filtro.cantidad);
     // }
-    const contenedores = await Contenedores.find(consulta, "infoContenedor formularioInspeccionMula").sort({ _id: -1 }).limit(cantidad);
+    const contenedores = await Contenedores.find(consulta, "infoContenedor formularioInspeccionMula")
+      .sort({ _id: -1 })
+      .limit(cantidad);
     data.data = contenedores;
     return data;
   } catch (e) {
@@ -1601,7 +1699,7 @@ const ObtenerInfoContenedoresCelifrut = async data => {
   }
 };
 const dataHistorialCalidadInterna = async data => {
-  try{
+  try {
     const filtro = data.data.data.filtros;
 
     const query = { "calidad.calidadInterna": { $exists: true }, "calidad.calidadInterna.fecha": { $exists: true } };
@@ -1620,18 +1718,23 @@ const dataHistorialCalidadInterna = async data => {
     if (filtro.cantidad !== "") {
       cantidad = Number(filtro.cantidad);
     }
-    const lotes = await Lotes.find(query, "calidad.calidadInterna tipoFruta nombrePredio").sort({ fecha: -1 }).limit(cantidad);
+    const lotes = await Lotes.find(query, "calidad.calidadInterna tipoFruta nombrePredio")
+      .sort({ fecha: -1 })
+      .limit(cantidad);
     data.data = lotes;
     return data;
-  } catch(e) {
+  } catch (e) {
     console.error(e);
   }
 };
-const dataHistorialClasificacionCalidad= async data => {
-  try{
+const dataHistorialClasificacionCalidad = async data => {
+  try {
     const filtro = data.data.data.filtros;
 
-    const query = { "calidad.clasificacionCalidad": { $exists: true }, "calidad.clasificacionCalidad.fecha": { $exists: true }  };
+    const query = {
+      "calidad.clasificacionCalidad": { $exists: true },
+      "calidad.clasificacionCalidad.fecha": { $exists: true },
+    };
     let cantidad = 50;
     if (filtro.tipoFruta !== "") {
       query.tipoFruta = filtro.tipoFruta;
@@ -1647,20 +1750,22 @@ const dataHistorialClasificacionCalidad= async data => {
     if (filtro.cantidad !== "") {
       cantidad = Number(filtro.cantidad);
     }
-    const lotes = await Lotes.find(query, "calidad.clasificacionCalidad tipoFruta nombrePredio").sort({ fecha: -1 }).limit(cantidad);
+    const lotes = await Lotes.find(query, "calidad.clasificacionCalidad tipoFruta nombrePredio")
+      .sort({ fecha: -1 })
+      .limit(cantidad);
     data.data = lotes;
     return data;
-  } catch(e) {
+  } catch (e) {
     console.error(e);
   }
 };
 const obtenerHistorialFormularioInspeccionVehiculos = async data => {
-  try{
+  try {
     const filtro = data.data;
 
     const query = {};
     let cantidad = 50;
- 
+
     if (filtro.fechaInicio !== null) {
       query.fecha = {};
       query.fecha.$gte = new Date(filtro.fechaInicio);
@@ -1676,11 +1781,11 @@ const obtenerHistorialFormularioInspeccionVehiculos = async data => {
       query.nombreConductor = filtro.nombreConductor;
     }
 
-    const fomularios = await formularioCamiones.find(query).sort({fecha: -1}).limit(cantidad);
+    const fomularios = await formularioCamiones.find(query).sort({ fecha: -1 }).limit(cantidad);
     data.data = fomularios;
-    
+
     return data;
-  }catch(e){
+  } catch (e) {
     console.error(e);
   }
 };
@@ -1688,22 +1793,22 @@ const ingresarCliente = async data => {
   try {
     const cliente = data.data.data;
     const clienteNuevo = new Clientes({
-      CODIGO:Number(cliente.codigo),
+      CODIGO: Number(cliente.codigo),
       CLIENTE: cliente.cliente,
       CORREO: cliente.correo,
       DIRECCIÓN: cliente.direccion,
       PAIS_DESTINO: cliente.pais,
       TELEFONO: cliente.telefono,
-      ID:cliente.id
+      ID: cliente.id,
     });
     await clienteNuevo.save();
     return data;
-  } catch(e) {
+  } catch (e) {
     console.error(e);
   }
 };
 const eliminarCliente = async data => {
-  try{
+  try {
     const info = data.data.data;
 
     const id = new mongoose.Types.ObjectId(info);
@@ -1711,13 +1816,12 @@ const eliminarCliente = async data => {
     await cliente.deleteOne();
 
     return data;
-
-  } catch(e) {
+  } catch (e) {
     console.error(e);
   }
 };
 const modificarCliente = async data => {
-  try{
+  try {
     const info = data.data.data;
     const id = new mongoose.Types.ObjectId(info._id);
     const cliente = await Clientes.findById(id);
@@ -1730,11 +1834,10 @@ const modificarCliente = async data => {
 
     await cliente.save();
     return data;
-  }catch(e){
+  } catch (e) {
     console.error(e);
   }
 };
-
 
 module.exports = {
   obtenerProveedores,
@@ -1790,5 +1893,7 @@ module.exports = {
   obtenerHistorialFormularioInspeccionVehiculos,
   ingresarCliente,
   eliminarCliente,
-  modificarCliente
+  modificarCliente,
+  enviarDatosFormularioProgramacionMulas,
+  obtenerDataContenedorFormularioProgramacionMulas,
 };

@@ -1,3 +1,4 @@
+const { iniciarRedisDB } = require("../DB_redis/config/init");
 const { responseCalidad } = require("./public/calidad/response");
 const { responseContenedores } = require("./public/contenedores/response");
 const { responseProceso } = require("./public/inventarioFruta/response");
@@ -12,6 +13,7 @@ try {
   const port = process.env.PORT_APP_CELIFRUT;
 
   const server = http.createServer();
+  const clientePromise  = iniciarRedisDB();
 
   const io = socketIO(server, { maxHttpBufferSize: 5 * 1024 * 1024 });
 
@@ -23,13 +25,18 @@ try {
     });
     //login
     socket.on("user", async (data, callback) => {
-      process.send({ fn: data.data.action, data:data.data, query: data.data.query, client:"Celifrut" });
+      process.send({ fn: data.data.action, data:data.data, query: data.data.query, client:"Celifrut", socket: socket.id });
       process.once("message", async msg => {
         if(Object.prototype.hasOwnProperty.call(responseUser, msg.fn)){
           const response = await responseUser[msg.fn](msg);
 
           if(msg.fn === "logIn" && response.status === 200){
-            console.log("logueado con exito");
+            const cliente = await clientePromise ;
+            await cliente.hSet(`${socket.id}`, {
+              user: msg.data.user,
+              cargo: msg.data.cargo,
+              fecha: new Date().toDateString()
+            });
           }
           callback(response);
         }
@@ -43,7 +50,7 @@ try {
         clearTimeout(timerId); // limpia el temporizador existente
         timerId = setTimeout(async () => {
           // maneja la petición aquí
-          process.send({ fn: data.data.action, data: data.data, query:"proceso", client:"Celifrut" });
+          process.send({ fn: data.data.action, data: data.data, query:"proceso", client:"Celifrut", socket: socket.id  });
           process.once("message", async msg => {
 
             if(msg.fn === "ingresarDescarteLavado" || msg.fn === "ingresarDescarteEncerado"){

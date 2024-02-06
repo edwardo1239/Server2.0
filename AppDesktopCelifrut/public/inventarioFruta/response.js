@@ -4,43 +4,93 @@ const { obtenerIDs } = require("./functions/savegetDataJSON");
 
 const responseProceso = {
   obtenerProveedores: async data => {
-    const enf = await obtenerIDs();
-    return {status:200, data: data.data, enf:enf.enf};
+    if(data.status === 200){
+      const enf = await obtenerIDs();
+      return {status:data.status, data: data.data, enf:enf.enf, message:data.message};
+    } else {
+      return {status:data.status, message:data.message, enf:"???"};
+    }
+ 
   },
-  agregarProveedor: async ()=> {
-    return {status:200};
+  agregarProveedor: async (data)=> {
+    if(data.status === 200){
+      return {status:data.status, message:data.message};
+    } 
+    else{
+      return {status:data.status, message:data.message};
+    }
   },
-  modificarProveedor: async ()=> {
-    return {status:200};
+  modificarProveedor: async (data)=> {
+    if(data.status === 200){
+      return {status:data.status, message:data.message};
+    } 
+    else{
+      return {status:data.status, message:data.message};
+    }
   },
-  eliminarProveedor: async ()=> {
-    return {status:200};
+  eliminarProveedor: async (data)=> {
+    if(data.status === 200){
+      return {status:data.status, message:data.message};
+    } 
+    else{
+      return {status:data.status, message:data.message};
+    }
   },
-  guardarLote: async () => {
-    return {status:200};
+  guardarLote: async (data) => {
+    if(data.status === 200){
+      return {status:data.status, message:data.message};
+    } 
+    else{
+      return {status:data.status, message:data.message};
+    }
   },
   obtenerFrutaActual: async data =>{
-    return {status:200, data:data.data};
+    if(data.status === 200){
+      return {status:data.status, data: data.data,  message:data.message};
+    } else {
+      return {status:data.status, message:data.message};
+    }
   },
   vaciarLote: async data => {
-    await vaciarLote(data);
-    return {status:200};
+    if(data.status === 200){
+      await vaciarLote(data);
+      return {status:data.status, message:data.message};
+    } else {
+      return {status:data.status, message:data.message};
+    }
   },
   obtenerHistorialProceso: async data =>{
-    return {status:200, data:data.data};
+    if(data.status === 200){
+      return {status:data.status, data: data.data, message:data.message};
+    } else {
+      return {status:data.status, message:data.message};
+    }
   },
-  directoNacional: async () => {
-    return {status:200};
+  directoNacional: async (data) => {
+    if(data.status === 200){
+      return {status:data.status, message:data.message};
+    } else {
+      return {status:data.status, message:data.message};
+    }
   },
   obtenerHistorialDirectoNacional: async data => {
     return {status:200, data:data.data};
   },
-  desverdizado: async () =>{
-    return {status:200};
+  desverdizado: async (data) =>{
+    if(data.status === 200){
+      return {status:data.status, message:data.message};
+    } else {
+      return {status:data.status, message:data.message};
+    }
   },
   modificarHistorialVaciado: async data =>{
-    await modificarHistorialVaciado(data);
-    return {status:200};
+    if(data.status === 200){
+      await modificarHistorialVaciado(data);
+      return {status:data.status, message:data.message};
+    } else {
+      return {status:data.status, message:data.message};
+    }
+   
   },
   modificarHistorialDirectoNacional: async () => {
     return {status:200};

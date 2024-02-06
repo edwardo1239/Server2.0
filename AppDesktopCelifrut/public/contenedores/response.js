@@ -17,6 +17,9 @@ const responseContenedores = {
   obtenerDataContenedorFormularioInspeccionMulas: async data => {
     return {status:200, data: data.data};
   },
+  obtenerDataContenedorFormularioProgramacionMulas: async data => {
+    return {status:200, data: data.data};
+  },
   enviarDatosFormularioInspeccionMulas: async (data) =>{
     return {status:200, data:data.data, response:"success"};
   },

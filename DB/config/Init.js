@@ -2,6 +2,7 @@ require("dotenv").config();
 const { exec } = require("child_process");
 const { connectPersonalDB, connectProcesoDB } = require("./configDB");
 const { apiPersonal, apiProceso } = require("./reduce");
+const { iniciarRedisDB } = require("../../DB_redis/config/init");
 
 exec("mongod --port 27019 --dbpath ./DB/data", (error, stdout) => {
   if (error) {
@@ -14,16 +15,22 @@ exec("mongod --port 27019 --dbpath ./DB/data", (error, stdout) => {
 connectPersonalDB();
 connectProcesoDB();
 
-process.on("message", (msg) => {
+process.on("message", async (msg) => {
   try{
+    console.log(msg);
+    const cliente  = await iniciarRedisDB();
+    let userSession;
+    if(msg.socket){
+      userSession = await cliente.hGetAll(`${msg.socket}`);
+      msg = {...msg, userSession: userSession};
+    }
     if (msg.query === "personal") {
-      apiPersonal[msg.fn](msg)
-        .then((data) => process.send(data))
-        .catch((error) => process.send(error));
+      const data = await apiPersonal[msg.fn](msg);
+      process.send(data);
+        
     } else if(msg.query === "proceso"){
-      apiProceso[msg.fn](msg)  
-        .then((data) => process.send(data))
-        .catch((error) => process.send(error));
+      const data = await apiProceso[msg.fn](msg);
+      process.send(data);
     }
   } catch(e){
     console.error("Error mongoDB init => ", e.message);

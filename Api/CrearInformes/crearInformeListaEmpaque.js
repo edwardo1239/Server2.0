@@ -58,8 +58,8 @@ process.on("message", async contenedor => {
         // se añade el numero de cajas
         rowInfo.push(item.cajas);
         //se añade el ICA
-        console.log(pallet)
-        console.log(lote.nombrePredio)
+        console.log(pallet);
+        console.log(lote);
 
         const proveedor = proveedores.find(proveedor => proveedor.PREDIO === lote.nombrePredio);
         rowInfo.push(proveedor.ICA);

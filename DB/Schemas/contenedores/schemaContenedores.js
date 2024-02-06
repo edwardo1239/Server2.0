@@ -71,7 +71,17 @@ const criteriosSchema = new Schema({
 
 const schemaFormularioInspeccionMulas = new Schema({
   placa: String,
+  trailer: String,
   conductor: String,
+  cedula: String,
+  celular: String,
+  color: String,
+  modelo: String,
+  marca: String,
+  prof: String,
+  puerto: String,
+  naviera: String,
+  agenciaAduanas: String,
   empresaTransporte: String,
   cumpleRequisitos: Boolean,
   responsable: String,

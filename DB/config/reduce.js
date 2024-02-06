@@ -55,6 +55,8 @@ const {
   ingresarCliente,
   eliminarCliente,
   modificarCliente,
+  enviarDatosFormularioProgramacionMulas,
+  obtenerDataContenedorFormularioProgramacionMulas,
 } = require("../queries/queryProceso");
 const { logIn, obtenerRegistroHigiene, obtenerRegistroControlPlagas, obtenerRegistroLimpiezaDesinfeccionPlanta, obtenerRegistroLimpiezaMensual, obtenerPermisosUsuario, crearUsuario, obtenerVolanteCalidad, obtenerCuentas, eliminarCuenta, editarCuenta } = require("../queries/querypersonal");
 
@@ -225,6 +227,10 @@ const apiProceso = {
     const dataContenedor = await obtenerDataContenedorFormularioInspeccionMulas(data);
     return dataContenedor;
   }, 
+  obtenerDataContenedorFormularioProgramacionMulas: async (data) => {
+    const response = await obtenerDataContenedorFormularioProgramacionMulas(data);
+    return response;
+  },
   obtenerHistorialDataContenedorFormularioInspeccionMulas: async (data = {}) => {
     const dataContenedor = await obtenerHistorialDataContenedorFormularioInspeccionMulas(data);
     return dataContenedor;
@@ -290,6 +296,10 @@ const apiProceso = {
     data.data = response;
     return data;
   },
+  enviarDatosFormularioProgramacionMulas: async (data) => {
+    const response = await enviarDatosFormularioProgramacionMulas(data);
+    return response;
+  },
   enviarDatosFormularioInspeccionMulas: async (data) => {
     const response = await enviarDatosFormularioInspeccionMulas(data);
     data.data = response;
@@ -299,6 +309,7 @@ const apiProceso = {
     const response = await ObtenerInfoContenedoresCelifrut(data);
     return response;
   },
+
   //calidad
   obtenerLotesCalidadInterna: async (data) => {
     const response = await obtenerLotesCalidadInterna(data);
