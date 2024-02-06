@@ -27,6 +27,10 @@ try {
       process.once("message", async msg => {
         if(Object.prototype.hasOwnProperty.call(responseUser, msg.fn)){
           const response = await responseUser[msg.fn](msg);
+
+          if(msg.fn === "logIn" && response.status === 200){
+            console.log("logueado con exito");
+          }
           callback(response);
         }
 

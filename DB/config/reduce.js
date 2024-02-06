@@ -56,7 +56,7 @@ const {
   eliminarCliente,
   modificarCliente,
 } = require("../queries/queryProceso");
-const { logIn, obtenerRegistroHigiene, obtenerRegistroControlPlagas, obtenerRegistroLimpiezaDesinfeccionPlanta, obtenerRegistroLimpiezaMensual, obtenerPermisosUsuario, crearUsuario, obtenerVolanteCalidad, obtenerCuentas, eliminarCuenta } = require("../queries/querypersonal");
+const { logIn, obtenerRegistroHigiene, obtenerRegistroControlPlagas, obtenerRegistroLimpiezaDesinfeccionPlanta, obtenerRegistroLimpiezaMensual, obtenerPermisosUsuario, crearUsuario, obtenerVolanteCalidad, obtenerCuentas, eliminarCuenta, editarCuenta } = require("../queries/querypersonal");
 
 const apiPersonal = {
   logIn: async (data) => {
@@ -97,6 +97,10 @@ const apiPersonal = {
   },
   eliminarCuenta: async (data) => {
     const response = await eliminarCuenta(data);
+    return response;
+  },
+  editarCuenta: async (data) => {
+    const response = await editarCuenta(data);
     return response;
   },
 };

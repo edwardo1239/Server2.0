@@ -1387,7 +1387,11 @@ const obtenerInfoRotulosCajas = async data => {
 };
 const obtenerInformesCalidad = async data => {
   try {
-    const lotes = await Lotes.find().sort({fechaIngreso: -1}).limit(50);
+    let salto = 0;
+    if(data.data.data){
+      salto = 50 * data.data.data;
+    }
+    const lotes = await Lotes.find().sort({fechaIngreso: -1}).skip(salto).limit(50);
     data.data = lotes;
     return data;
   } catch (e) {
@@ -1533,34 +1537,63 @@ const ObtenerInfoContenedoresCelifrut = async data => {
     let consulta = {};
     let cantidad = 0;
 
-    if (filtro.fecha.entrada !== null) {
-      consulta["infoContenedor.fechaCreacion"] = {};
-      consulta["infoContenedor.fechaCreacion"].$gte = new Date(filtro.fecha.entrada);
-      const fecha = new Date(filtro.fecha.entrada);
-      fecha.setUTCHours(23);
-      fecha.setUTCMinutes(59);
-      fecha.setUTCSeconds(59);
-      consulta["infoContenedor.fechaCreacion"].$lt = fecha;
+    if (filtro.fecha.tipo === "entrada") {
+
+      if(filtro.fecha.inicio !== null){
+        consulta["infoContenedor.fechaCreacion"] = {};
+        consulta["infoContenedor.fechaCreacion"].$gte = new Date(filtro.fecha.inicio);
+        if(filtro.fecha.fin === null){
+          const fecha = new Date();
+          consulta["infoContenedor.fechaCreacion"].$lt = fecha;
+        } else {
+          const fecha = new Date(filtro.fecha.fin);
+          fecha.setUTCHours(23);
+          fecha.setUTCMinutes(59);
+          fecha.setUTCSeconds(59);
+          consulta["infoContenedor.fechaCreacion"].$lt = fecha;
+        }
+
+      } 
     }
-    if (filtro.fecha.finalizado !== null) {
-      consulta["infoContenedor.fechaFinalizado"] = {};
-      consulta["infoContenedor.fechaFinalizado"].$gte = new Date(filtro.fecha.finalizado);
-      const fecha = new Date(filtro.fecha.finalizado);
-      fecha.setUTCHours(23);
-      fecha.setUTCMinutes(59);
-      fecha.setUTCSeconds(59);
-      consulta["infoContenedor.fechaFinalizado"].$lt = fecha;
+    if (filtro.fecha.tipo === "finalizado") {
+      if(filtro.fecha.inicio !== null){
+        consulta["infoContenedor.fechaFinalizado"] = {};
+        consulta["infoContenedor.fechaFinalizado"].$gte = new Date(filtro.fecha.inicio);
+        if(filtro.fecha.fin === null){
+          const fecha = new Date();
+          consulta["infoContenedor.fechaFinalizado"].$lt = fecha;
+        } else {
+          const fecha = new Date(filtro.fecha.fin);
+          fecha.setUTCHours(23);
+          fecha.setUTCMinutes(59);
+          fecha.setUTCSeconds(59);
+          consulta["infoContenedor.fechaFinalizado"].$lt = fecha;
+        }
+
+      }
     }
-    if (filtro.fecha.salida !== null) {
-      consulta["infoContenedor.fechaSalida"] = {};
-      consulta["infoContenedor.fechaSalida"].$gte = new Date(filtro.fecha.salida);
-      consulta["infoContenedor.fechaSalida"].$lt = new Date();
+    if (filtro.fecha.tipo === "salida") {
+      if(filtro.fecha.inicio !== null){
+        consulta["infoContenedor.fechaSalida"] = {};
+        consulta["infoContenedor.fechaSalida"].$gte = new Date(filtro.fecha.inicio);
+        if(filtro.fecha.fin === null){
+          const fecha = new Date();
+          consulta["infoContenedor.fechaSalida"].$lt = fecha;
+        } else {
+          const fecha = new Date(filtro.fecha.fin);
+          fecha.setUTCHours(23);
+          fecha.setUTCMinutes(59);
+          fecha.setUTCSeconds(59);
+          consulta["infoContenedor.fechaSalida"].$lt = fecha;
+        }
+
+      }
     }
-    if (filtro.cantidad !== "") {
-      cantidad = Number(filtro.cantidad);
-    }
- 
-    const contenedores = await Contenedores.find(consulta, "infoContenedor formularioInspeccionMula").sort({ fecha: -1 }).limit(cantidad);
+
+    // if (filtro.cantidad !== "") {
+    //   cantidad = Number(filtro.cantidad);
+    // }
+    const contenedores = await Contenedores.find(consulta, "infoContenedor formularioInspeccionMula").sort({ _id: -1 }).limit(cantidad);
     data.data = contenedores;
     return data;
   } catch (e) {

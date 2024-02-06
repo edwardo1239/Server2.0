@@ -19,6 +19,9 @@ const responseUser = {
   eliminarCuenta: async (data) => {
     return { status: 200, data: data.data };
   },
+  editarCuenta: async (data) => {
+    return { status: 200, data: data.data };
+  },
 };
 
 module.exports = {

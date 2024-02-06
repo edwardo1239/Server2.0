@@ -183,6 +183,26 @@ const eliminarCuenta = async data => {
     console.error(e);
   }
 };
+const editarCuenta = async data => {
+  try{
+    const info = data.data.formData;
+    const id = new mongoose.Types.ObjectId(info._id);
+    const cuenta = await User.findById(id);
+
+    cuenta.user = info.user;
+    cuenta.password = info.password;
+    cuenta.cargo = info.cargo;
+    cuenta.correo = info.correo;
+    cuenta.permisos = info.permisos;
+
+    await cuenta.save();
+    const cuentas = await User.find();
+    data.data = cuentas;
+    return data;
+  } catch(e){
+    console.error(e);
+  }
+};
 
 module.exports = {
   logIn,
@@ -194,5 +214,6 @@ module.exports = {
   crearUsuario,
   obtenerVolanteCalidad,
   obtenerCuentas,
-  eliminarCuenta
+  eliminarCuenta,
+  editarCuenta
 };
