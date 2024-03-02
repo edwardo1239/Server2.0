@@ -57,6 +57,8 @@ const {
   modificarCliente,
   enviarDatosFormularioProgramacionMulas,
   obtenerDataContenedorFormularioProgramacionMulas,
+  obtenerFormularioProgramacionMula,
+  editarFormularioProgramacionMula,
 } = require("../queries/queryProceso");
 const { logIn, obtenerRegistroHigiene, obtenerRegistroControlPlagas, obtenerRegistroLimpiezaDesinfeccionPlanta, obtenerRegistroLimpiezaMensual, obtenerPermisosUsuario, crearUsuario, obtenerVolanteCalidad, obtenerCuentas, eliminarCuenta, editarCuenta } = require("../queries/querypersonal");
 
@@ -220,8 +222,8 @@ const apiProceso = {
   },
   obtenerDataContenedor: async (data = {}) => {
     const dataContenedor = await obtenerDataContenedor(data);
-    const sinPallet = await obtenerCajasSinPallet(data);
-    return {...data, data:dataContenedor.data, sinPallet:sinPallet.data};
+    //const sinPallet = await obtenerCajasSinPallet(data);
+    return {...data, data:dataContenedor.data, status:200, message:"Ok"};
   },
   obtenerDataContenedorFormularioInspeccionMulas: async (data = {}) => {
     const dataContenedor = await obtenerDataContenedorFormularioInspeccionMulas(data);
@@ -307,6 +309,14 @@ const apiProceso = {
   },
   ObtenerInfoContenedoresCelifrut: async (data) => {
     const response = await ObtenerInfoContenedoresCelifrut(data);
+    return response;
+  },
+  obtenerFormularioProgramacionMula: async (data) => {
+    const response = await obtenerFormularioProgramacionMula(data);
+    return response;
+  },
+  editarFormularioProgramacionMula: async (data) => {
+    const response = await editarFormularioProgramacionMula(data);
     return response;
   },
 

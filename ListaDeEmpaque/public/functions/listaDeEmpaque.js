@@ -39,7 +39,7 @@ const guardarCajasSinpallet = async (cajasSinPallet) => {
 const obtenerLoteVaciando = async () =>{
   try{
     const ids = await obtenerIDs();
-    return  {enf:ids["ENF-vaciando"], nombrePredio:ids.nombrePredio, tipoFruta:ids.tipoFruta};
+    return  {enf:ids["ENF-vaciando"], nombrePredio:ids.nombrePredio, tipoFruta:ids.tipoFruta, "predioId":"655e68b24e055637327c2f0b"};
   }catch(e){
     console.error(e);
   }
@@ -62,24 +62,24 @@ const guardarSettingsPallet = async data =>{
     console.error(e);
   }
 };
-const guardarItem = async data => {
-  try{
-    process.send({
-      fn:data.fn,
-      query:"proceso",
-      data: data.data
-    });
-    return new Promise((resolve) =>{
-      process.on("message", (msg) => {
-        if(msg.fn === data.fn){
-          resolve({status:200, data:msg.data});
-        }
-      });
-    });
-  }catch(e){
-    console.error(e);
-  }
-};
+// const guardarItem = async data => {
+//   try{
+//     process.send({
+//       fn:data.fn,
+//       query:"proceso",
+//       data: data.data
+//     });
+//     return new Promise((resolve) =>{
+//       process.on("message", (msg) => {
+//         if(msg.fn === data.fn){
+//           resolve({status:200, data:msg.data});
+//         }
+//       });
+//     });
+//   }catch(e){
+//     console.error(e);
+//   }
+// };
 const eliminarItem = async data => {
   try{
     process.send({
@@ -176,7 +176,7 @@ module.exports = {
   obtenerCajasSinPallet,
   obtenerLoteVaciando,
   guardarSettingsPallet,
-  guardarItem,
+  // guardarItem,
   guardarCajasSinpallet,
   eliminarItem,
   moverItem,

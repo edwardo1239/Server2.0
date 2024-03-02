@@ -20,6 +20,9 @@ const rendimiento = (lote) => {
   }  
 
   const total = descarteEnceradoToral + descarteLavadoTotal + exportacionTotal;
+  if(total === 0){
+    return 0;
+  }
   const rendimiento = (exportacionTotal * 100) / total;
 
   return rendimiento;

@@ -204,6 +204,7 @@ const editarCuenta = async data => {
   }
 };
 
+
 module.exports = {
   logIn,
   obtenerRegistroHigiene,

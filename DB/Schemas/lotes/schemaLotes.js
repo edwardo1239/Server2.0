@@ -1,6 +1,7 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
 const { recordLotes } = require("./schemaRecordLotes");
+const { Proveedores } = require("../proveedores/schemaProveedores");
 const { Schema } = mongoose;
 
 const conn = mongoose.createConnection(process.env.MONGO_URL_PROCESO);
@@ -110,7 +111,8 @@ const salidaDirectoNacionalSchema = new Schema({
 
 const dataSchema = new Schema({
   _id: String,
-  nombrePredio: String,
+  predio:{type: Schema.Types.ObjectId, ref: Proveedores},
+  nombrePredio:String,
   fechaIngreso: Date,
   canastillas: String,
   tipoFruta: String,

@@ -38,12 +38,13 @@ try {
       msg.fn === "ReprocesarDescarteCelifrut" ||
       msg.fn === "procesarDesverdizado"
     ) {
-      if (msg.status !== 403) {
+      if (msg.status === 200) {
         io.emit("vaciarLote", msg.data);
         const ids = await obtenerIDs();
         ids["ENF-vaciando"] = msg.data.enf;
         ids.tipoFruta = msg.data.tipoFruta;
         ids.nombrePredio = msg.data.nombrePredio;
+        ids.predioId = msg.data.predioId;
         await guardarIDs(ids);
       }
     }

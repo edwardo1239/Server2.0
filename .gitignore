@@ -6,9 +6,13 @@ package-lock.json
 
 # Ignorar las variables de entorno
 .env
+develop.env
 
 #ignora los files
 Files
 
 #base de datos
 DB/data/
+
+#ignorar servidor de desarrollo
+serverless/

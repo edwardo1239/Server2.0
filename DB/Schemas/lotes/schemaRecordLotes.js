@@ -10,11 +10,11 @@ const HistorialLotesSchema = new Schema({
   operacionRealizada: String,
   documento: Object,
   canastillas: Number,
-  fecha: {type:Date, expires: "60d", default: Date.now},
+  fecha: {type:Date, default: Date.now},
 });
 
 
-
+HistorialLotesSchema.index({ fecha: 1 }, { expireAfterSeconds: 600 });
 const recordLotes = conn.model("recordLote", HistorialLotesSchema);
 
 

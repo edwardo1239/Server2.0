@@ -27,6 +27,7 @@ try {
     socket.on("user", async (data, callback) => {
       process.send({ fn: data.data.action, data:data.data, query: data.data.query, client:"Celifrut", socket: socket.id });
       process.once("message", async msg => {
+
         if(Object.prototype.hasOwnProperty.call(responseUser, msg.fn)){
           const response = await responseUser[msg.fn](msg);
 
@@ -47,6 +48,7 @@ try {
     //inventario
     socket.on("proceso", async (data, callback) => {
       try {
+
         clearTimeout(timerId); // limpia el temporizador existente
         timerId = setTimeout(async () => {
           // maneja la petición aquí
@@ -73,14 +75,16 @@ try {
 
     socket.on("contenedoresService", async (data, callback) => {
       try {
+        console.log(data);
         clearTimeout(timerId); // limpia el temporizador existente
-
         timerId = setTimeout(async () => {
           // maneja la petición aquí
-          process.send({ fn: data.data.action, data: data.data, query: "proceso", client:"Celifrut" });
+          process.send({ fn: data.data.action, data: data.data, query: "proceso", client:"Celifrut", socket: socket.id  });
           process.once("message", async msg => {
+            
             if(Object.prototype.hasOwnProperty.call(responseContenedores, msg.fn)){
               const response = await responseContenedores[msg.fn](msg);
+
               callback(response);
             }
           });
@@ -93,6 +97,7 @@ try {
 
     socket.on("calidad", async (data, callback) => {
       try {
+
         clearTimeout(timerId); // limpia el temporizador existente
 
         timerId = setTimeout(async () => {

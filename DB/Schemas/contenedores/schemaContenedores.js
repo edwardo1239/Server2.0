@@ -1,6 +1,10 @@
+require("dotenv").config();
+
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 const { recordContenedores } = require("./schemaRecordContenedores.js");
+const { Clientes } = require("../clientes/schemaClientes");
+const { Proveedores } = require("../proveedores/schemaProveedores.js");
 
 const conn = mongoose.createConnection(process.env.MONGO_URL_PROCESO);
 
@@ -21,6 +25,7 @@ const settingsSchema = new Schema({
 const EF1Schema = new Schema({
   id: String,
   nombre: String,
+  predioId: {type: Schema.Types.ObjectId, ref: Proveedores},
   cajas: Number,
   tipoCaja: String,
   calibre: Number,
@@ -36,8 +41,8 @@ const subSchema = new Schema({
 }, { _id: false });
 
 const pesoCajaSchema = new Schema({
-  "G-37": {type:Number, default:16.1},
-  "B-37": {type:Number, default:16.1},
+  "G-37": {type:Number, default:16.5},
+  "B-37": {type:Number, default:16.5},
   "G-4_5": {type:Number, default:4.5},
   "G-30": {type:Number, default:13.5},
   "B-30": {type:Number, default:13.5},
@@ -48,6 +53,7 @@ const pesoCajaSchema = new Schema({
 }, {_id: false});
 
 const infoContenedorSchema = new Schema({
+  clienteInfo: {type: Schema.Types.ObjectId, ref: Clientes},
   nombreCliente: String,
   fechaCreacion:Date,
   fechaInicio: Date,
@@ -60,7 +66,7 @@ const infoContenedorSchema = new Schema({
   pesoCaja: pesoCajaSchema,
   fechaSalida: Date,
   urlInforme: String
-}, { _id: false });
+});
 
 
 const criteriosSchema = new Schema({

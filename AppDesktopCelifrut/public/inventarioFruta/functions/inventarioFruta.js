@@ -21,6 +21,7 @@ const vaciarLote = async data => {
     const ids = await obtenerIDs();
     ids["ENF-vaciando"] = data.data.enf;
     ids["kilosVaciados"] = Number(data.data.canastillas) * Number(data.data.promedio);
+    ids.predioId = data.data.predioId;
     ids.kilosProcesados = 0;
     await guardarIDs(ids);
         

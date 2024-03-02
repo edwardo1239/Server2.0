@@ -74,7 +74,11 @@ const responseProceso = {
     }
   },
   obtenerHistorialDirectoNacional: async data => {
-    return {status:200, data:data.data};
+    if(data.status === 200){
+      return {status:data.status, data: data.data, message:data.message};
+    } else {
+      return {status:data.status, message:data.message};
+    }
   },
   desverdizado: async (data) =>{
     if(data.status === 200){
@@ -92,38 +96,78 @@ const responseProceso = {
     }
    
   },
-  modificarHistorialDirectoNacional: async () => {
-    return {status:200};
+  modificarHistorialDirectoNacional: async (data) => {
+    if(data.status === 200){
+      return {status:data.status, message:data.message};
+    } else {
+      return {status:data.status, message:data.message};
+    }
   },
   obtenerFrutaDesverdizando: async data =>{
-    return {status:200, data:data.data};
+    if(data.status === 200){
+      return {status:data.status, data: data.data, message:data.message};
+    } else {
+      return {status:data.status, message:data.message};
+    }
   },
-  setParametrosDesverdizado: async () => {
-    return {status:200};
+  setParametrosDesverdizado: async (data) => {
+    if(data.status === 200){
+      return {status:data.status, message:data.message};
+    } else {
+      return {status:data.status, message:data.message};
+    }
   },
-  finalizarDesverdizado: async () => {
-    return {status:200};
+  finalizarDesverdizado: async (data) => {
+    if(data.status === 200){
+      return {status:data.status, message:data.message};
+    } else {
+      return {status:data.status, message:data.message};
+    }
   },
   procesarDesverdizado: async data => {
-    await procesarDesverdizado(data);
-    return {status:200};
+    if(data.status === 200){
+      await procesarDesverdizado(data);
+      return {status:data.status, message:data.message};
+    } else {
+      return {status:data.status, message:data.message};
+    }
   },
   obtenerDescarte: async data => {
-    return {status:200, data:data.data};
+    if(data.status === 200){
+      return {status:data.status, data: data.data, message:data.message};
+    } else {
+      return {status:data.status, message:data.message};
+    }
   },
   reprocesarDescarteUnPredio: async data => {
-    await reprocesarDescarteUnPredio(data);
-    return {status:200};
+    if(data.status === 200){
+      await reprocesarDescarteUnPredio(data);
+      return {status:data.status, message:data.message};
+    } else {
+      return {status:data.status, message:data.message};
+    }
   },
   ReprocesarDescarteCelifrut: async data =>{
-    await ReprocesarDescarteCelifrut(data);
-    return {status:200};
+    if(data.status === 200){
+      await ReprocesarDescarteCelifrut(data);
+      return {status:data.status, message:data.message};
+    } else {
+      return {status:data.status, message:data.message};
+    }
   },
-  eliminarFrutaDescarte: async () => {
-    return {status:200};
+  eliminarFrutaDescarte: async (data) => {
+    if(data.status === 200){
+      return {status:data.status, message:data.message};
+    } else {
+      return {status:data.status, message:data.message};
+    }
   },
   obtenerHistorialDescarte: async data => {
-    return {status:200, data:data.data};
+    if(data.status === 200){
+      return {status:data.status, data: data.data, message:data.message};
+    } else {
+      return {status:data.status, message:data.message};
+    }
   },
   obtenerDatosLotes: async data => {
     return {status:200, data:data.data};

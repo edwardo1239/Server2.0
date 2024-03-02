@@ -28,7 +28,6 @@ const PredioSchema = new Schema(
   {
     descarteLavado: DescarLavadoteSchema,
     descarteEncerado: DescarEnceradoteSchema,
-    cliente: String,
   },
   { _id: false, strict: false },
 );
@@ -36,6 +35,12 @@ const PredioSchema = new Schema(
 const RegistroSchema = new Schema({
   fecha: Date,
   accion: String,
+  cliente: String,
+  placa: String,
+  nombreConductor: String,
+  telefono:String,
+  cedula: String,
+  remision: String,
   predios: {
     type: Map,
     of: PredioSchema,

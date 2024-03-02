@@ -3,7 +3,11 @@ const responseListaEmpaque = {
     return {status:200, data:data.data};
   },
   obtenerCajasSinPallet: async data =>{
-    return data.data;
+    if(data.status === 200){
+      return {status:data.status, data: data.data, message:data.message};
+    } else {
+      return {status:data.status, message:data.message};
+    }
   },
   obtenerLoteVaciando: async data => {
     return {status:200, data:data.data};

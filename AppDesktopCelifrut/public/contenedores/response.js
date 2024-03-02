@@ -1,12 +1,24 @@
 const responseContenedores = {
   obtenerClientes: async data => {
-    return {status:200, data: data.data};
+    if(data.status === 200){
+      return {status:data.status, data: data.data, message:data.message};
+    } else {
+      return {status:data.status, message:data.message};
+    }
   },
-  crearContenedor: async () => {
-    return {status:200};
+  crearContenedor: async (data) => {
+    if(data.status === 200){
+      return {status:data.status, message:data.message};
+    } else {
+      return {status:data.status, message:data.message};
+    }
   },
   obtenerDataContenedor: async data => {
-    return {status:200, data: data.data};
+    if(data.status === 200){
+      return {status:data.status, data: data.data, message:data.message};
+    } else {
+      return {status:data.status, message:data.message};
+    }
   },
   obtenerRendimiento: async data => {
     return {status:200, data: data.data};
@@ -23,6 +35,9 @@ const responseContenedores = {
   enviarDatosFormularioInspeccionMulas: async (data) =>{
     return {status:200, data:data.data, response:"success"};
   },
+  enviarDatosFormularioProgramacionMulas: async (data) =>{
+    return {status:200, data:data.data, response:"success"};
+  },
   obtenerHistorialDataContenedorFormularioInspeccionMulas: async data => {
     return {status:200, data: data.data};
   },
@@ -37,6 +52,12 @@ const responseContenedores = {
   },
   modificarCliente: async () => {
     return {status:200};
+  },
+  obtenerFormularioProgramacionMula: async (data) => {
+    return {status:200, data:data.data};
+  },
+  editarFormularioProgramacionMula: async (data) => {
+    return {status:200, data:data.data};
   },
 };
 

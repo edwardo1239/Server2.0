@@ -6,6 +6,7 @@ const { iniciarRedisDB } = require("../../DB_redis/config/init");
 
 exec("mongod --port 27019 --dbpath ./DB/data", (error, stdout) => {
   if (error) {
+
     process.send(`Error al iniciar MongoDB: ${error}`);
     return;
   }
@@ -17,7 +18,6 @@ connectProcesoDB();
 
 process.on("message", async (msg) => {
   try{
-    console.log(msg);
     const cliente  = await iniciarRedisDB();
     let userSession;
     if(msg.socket){
