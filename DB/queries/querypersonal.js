@@ -54,7 +54,7 @@ const obtenerRegistroHigiene = async (data) => {
     if(data.data.data){
       const fechaInicio = new Date(data.data.data);
       const fechaFin = new Date(data.data.data+"T23:59:59Z");
-      console.log(fechaFin);
+      // console.log(fechaFin);
       registros = await registroHigiene.find({
         fecha: {
           $gte: fechaInicio,

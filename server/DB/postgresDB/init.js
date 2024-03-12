@@ -16,11 +16,11 @@ client.connect(err => {
   }
 });
 
-client.query('select * FROM "Users"', (err, res) => {
-  if (err) {
-    console.error("Error al realizar la consulta", err.stack);
-  } else {
-    console.log(res.rows);
-  }
-});
+// client.query('select * FROM "Users"', (err, res) => {
+//   if (err) {
+//     console.error("Error al realizar la consulta", err.stack);
+//   } else {
+//     console.log(res.rows);
+//   }
+// });
   

@@ -1,7 +1,7 @@
 const pesoCaja = require("../../../constant/pesoCajas.json");
 const calidad = require("../../../constant/calidad.json");
 const { sendData } = require("../sendData");
-const { Lotes } = require("../../../DB/mongoDB/schemas/lotes/schemaLotes");
+const { apiVariablesProceso } = require("../../../variablesDeProceso/reduce");
 
 const addExportacionLote = async (data) => {
   const item = data.data.contenedor.item;
@@ -20,6 +20,8 @@ const addExportacionLote = async (data) => {
   };
   requestLotes.data.lote.$inc[calidad[String(item.calidad)]] = kilos;
   const response = await sendData({...requestLotes, fn:"PUT", client: "listaDeEmpaque"});
+  await apiVariablesProceso.ingresarExportacion(kilos);
+  process.send({...data, fn:"procesoLote", response:response, status:200});
   return response.response;
 };
 const subExportacionLote = async (data) => {
@@ -39,6 +41,9 @@ const subExportacionLote = async (data) => {
     };
     requestLotes.data.lote.$inc[calidad[String(item.calidad)]] = -kilos;
     const response = await sendData({...requestLotes, fn:"PUT", client: "listaDeEmpaque"});
+    await apiVariablesProceso.ingresarExportacion(-kilos);
+    process.send({...data, fn:"procesoLote", response:response, status:200});
+
     return response.response;
   } catch(e) {
     return {status:401, message:`Error subExportacionLote => ${e}`};
@@ -70,9 +75,25 @@ const addContenedorLote = async (data) => {
 const obtener_datos_lotes_cajas_sin_pallet = async (cajas) => {
   try{
     const ids = cajas.map(caja => caja.lote);
-    const lotes = await Lotes.find({ _id:ids }).select({enf:1}).populate("predio", "PREDIO");
+    const request = {
+      data: {
+        query: {
+          _id: { $in: ids }
+        },
+        select: {enf:1},
+        populate: {
+          path: "predio",
+          select: "PREDIO ICA"
+        },
+        sort: {  }
+      },
+      collection: "lotes",
+      action: "getLotes",
+      query: "proceso",
+    };
+    const lotes = await sendData({...request, fn:"GET", client: "listaDeEmpaque"});
     for(let i = 0; i<cajas.length; i++){
-      const lote = lotes.find(item => item._id.toString() === cajas[i].lote);
+      const lote = lotes.response.data.find(item => item._id.toString() === cajas[i].lote);
       cajas[i].lote = {enf:lote.enf, predio:lote.predio.PREDIO};
     }
     return cajas;

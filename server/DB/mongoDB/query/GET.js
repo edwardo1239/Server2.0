@@ -7,7 +7,7 @@ const apiGET = {
     process.send(response);
   },
   proceso: async(data) => {
-    const response = await apiProceso[data.collection](data);
+    const response = await apiProceso.request(data);
     process.send(response);
   }
 };

@@ -13,7 +13,7 @@ const ParametroSchema = new mongoose.Schema({
 
 
 const desverdizadoSchema = new Schema({
-  enf: String,
+  _id: String,
   canastillasIngreso: {type:Number, default:0},
   canastillas: {type:Number, default:0},
   kilos: {type:Number, default:0},

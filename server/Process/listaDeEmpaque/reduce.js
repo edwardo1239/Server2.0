@@ -11,7 +11,7 @@ const apiListaEmpaque = {
       return response;
     }
     else {
-      return({status:501, message:"Function don't found on apiLotes"});
+      throw new Error("Function don't found on apiContenedores");
     }
   },
   variablesListaEmpaque: async (data) => {
@@ -23,7 +23,7 @@ const apiListaEmpaque = {
       return response;
     }
     else {
-      return({status:501, message:"Function don't found on variablesListaEmpaque"});
+      throw new Error("Function don't found on variablesListaEmpaque");    
     }
   },
   lotes: async (data) => {
@@ -32,7 +32,7 @@ const apiListaEmpaque = {
       return response;
     }
     else {
-      return({status:501, message:"Function don't found on apiLotes"});
+      throw new Error("Function don't found on apiLotes");
     }
   },
   historialLotes: async (data) => {
@@ -41,7 +41,7 @@ const apiListaEmpaque = {
       return response;
     }
     else {
-      return({status:501, message:"Function don't found on apiLotes"});
+      throw new Error("Function don't found on apiLotes");
     }
   },
 };

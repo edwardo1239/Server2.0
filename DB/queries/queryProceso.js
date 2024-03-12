@@ -333,14 +333,14 @@ const obtenerHistorialDirectoNacional = async data => {
 };
 const desverdizado = async data => {
   try {
-    if (data.userSession.cargo === "recepcion" || data.userSession.cargo === "admin") {
+    if (true) {
       const canastillas = data.data.canastillas;
       const cuartoDesverdizado = data.data.cuartoDesverdizado;
       const lotes = await Lotes.findById(data.data.enf, "promedio rendimiento desverdizado inventarioActual");
       lotes.inventarioActual.inventario -= Number(canastillas);
 
       let desverdizando;
-      desverdizando = await Desverdizado.findById({ _id: data.data.enf });
+      desverdizando = await Desverdizado.findById(data.data.enf);
       if (desverdizando) {
         desverdizando.canastillas += Number(canastillas);
         desverdizando.canastillasIngreso += Number(canastillas);
@@ -404,7 +404,7 @@ const modificarHistorialVaciado = async data => {
 };
 const modificarHistorialDirectoNacional = async data => {
   try {
-    if (data.userSession.cargo === "recepcion" || data.userSession.cargo === "admin") {
+    if (true) {
       const canastillas = data.data.canastillas;
       const lotes = await Lotes.findById(data.data.enf);
       const id = new mongoose.Types.ObjectId(data.data.id);
@@ -460,9 +460,10 @@ const obtenerFrutaDesverdizando = async data => {
 };
 const setParametrosDesverdizado = async data => {
   try {
-    if (data.userSession.cargo === "recepcion" || data.userSession.cargo === "admin") {
-      const desverdizado = await Desverdizado.findById(data.data.enf);
+    if (true) {
+      console.log(data);
 
+      const desverdizado = await Desverdizado.findById(data.data.enf);
       desverdizado.parametros.push({
         fecha: new Date(),
         temperatura: data.data.temperatura,
@@ -483,7 +484,7 @@ const setParametrosDesverdizado = async data => {
 };
 const finalizarDesverdizado = async data => {
   try {
-    if (data.userSession.cargo === "recepcion" || data.userSession.cargo === "admin") {
+    if (true) {
       const desverdizado = await Desverdizado.findById(data.data.enf);
       desverdizado.fechaFinalizar = new Date();
       await desverdizado.save();
@@ -498,7 +499,7 @@ const finalizarDesverdizado = async data => {
 };
 const procesarDesverdizado = async data => {
   try {
-    if (data.userSession.cargo === "recepcion" || data.userSession.cargo === "admin") {
+    if (true) {
       const canastillas = data.data.canastillas;
       const lotes = await Lotes.findById(data.data.enf, "promedio kilosVaciados tipoFruta").populate(
         "predio",
@@ -1079,7 +1080,7 @@ const eliminarItem = async data => {
     const lote = await Lotes.findById(ef1);
 
     const tipoCaja = tipoCajaS.replace(".", "_");
-
+    console.log(contenedor)
     if (calidad === 1) {
       lote.exportacion.get(String(numeroContenedor)).calidad1 -= cajas * contenedor.infoContenedor.pesoCaja[tipoCaja];
     } else if (calidad === 1.5) {

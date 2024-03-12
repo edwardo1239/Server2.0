@@ -1,8 +1,11 @@
+// Load environment variables from .env file
 require("dotenv").config();
+// Import necessary modules
 const { fork, exec } = require("child_process");
 const EventEmitter = require("events");
 const cron = require("node-cron");
-
+const { valoresDelSistema_por_hora, reiniciar_valores_del_sistema } = require("./server/functions/sistema");
+// Declare variables for different tasks
 let CelifrutApp; 
 let Descartes; 
 let ListaDeEmpaque; 
@@ -10,86 +13,35 @@ let mongoBD;
 let Fotos;
 let postgresDB;
 
-// Crear una nueva instancia de EventEmitter
+
+// Create a new instance of EventEmitter for inter-process communication
 const emitter = new EventEmitter();
-
-if (process.argv[2] === "develop") {
+// Check if the script is run in development mode
+if (process.argv[2] === "production"){
   console.log(process.argv[2]);
-  mongoBD = fork("./serverless/DB/config/Init.js");
-  CelifrutApp = fork("./serverless/AppDesktopCelifrut/index.js");
-  CelifrutApp.on("message", msg => {
-    emitter.emit("request", msg);
-  });
-  Descartes = fork("./serverless/Descartes/index.js");
-  Descartes.on("message", msg =>{
-    emitter.emit("request", msg);
-  });
-
-  ListaDeEmpaque = fork("./serverless/listaDeEmpaque/index.js");
-  ListaDeEmpaque.on("message", msg =>{
-    emitter.emit("request", msg);
-  });
-
-  Fotos = fork("./serverless/fotos/index.js");
-  Fotos.on("message", msg =>{
-    emitter.emit("request", msg);
-  });
-
-  mongoBD.on("message", msg => {
-    emitter.emit("response", msg);
-  });
-
-  emitter.on("request", msg => {
-    if(msg.fn === "GET" || msg.fn === "POST" || msg.fn === "PUT" || msg.fn === "DELETE"){
-      mongoBD.send(msg);
-    } else if(msg.fn === "vaciado"){
-      Descartes.send(msg);
-      ListaDeEmpaque.send(msg);
-    } 
-    else if(msg.fn === "descartesToDescktop"){
-      CelifrutApp.send(msg);
-    }
-  });
-
-  emitter.on("response", msg => {
-    if(msg.client === "Desktop"){
-      CelifrutApp.send(msg);
-    } else if (msg.client === "Descartes"){
-      Descartes.send(msg);
-    } else if (msg.client === "listaDeEmpaque"){
-      ListaDeEmpaque.send(msg);
-    } else if (msg.client === "fotos"){
-      Fotos.send(msg);
-    }
-  });
-
-
-} else if (process.argv[2] === "production"){
-  console.log(process.argv[2]);
+  // Similar to the above, but with different paths for the child processes
   CelifrutApp = fork("./server/Process/AppDesktopCelifrut/index.js");
+  Descartes = fork("./server/Process/Descartes/index.js");
+  ListaDeEmpaque = fork("./server/Process/listaDeEmpaque/index.js");
+  Fotos = fork("./server/Process/fotos/index.js");
+  mongoBD = fork("./server/DB/mongoDB/config/Init.js");
+  postgresDB = fork("./server/DB/postgresDB/init.js");
+  // Similar event handlers as above
   CelifrutApp.on("message", msg => {
     emitter.emit("request", msg);
   });
-  Descartes = fork("./server/Process/Descartes/index.js");
   Descartes.on("message", msg =>{
     emitter.emit("request", msg);
   });
-
-  ListaDeEmpaque = fork("./server/Process/listaDeEmpaque/index.js");
   ListaDeEmpaque.on("message", msg =>{
     emitter.emit("request", msg);
   });
-
-  Fotos = fork("./server/Process/fotos/index.js");
   Fotos.on("message", msg =>{
     emitter.emit("request", msg);
   });
-  mongoBD = fork("./server/DB/mongoDB/config/Init.js");
   mongoBD.on("message", msg => {
     emitter.emit("response", msg);
   });
-
-  postgresDB = fork("./server/DB/postgresDB/init.js");
   postgresDB.on("message", msg => {
     emitter.emit("response", msg);
   });
@@ -97,12 +49,30 @@ if (process.argv[2] === "develop") {
   emitter.on("request", msg => {
     if(msg.fn === "GET" || msg.fn === "POST" || msg.fn === "PUT" || msg.fn === "DELETE"){
       mongoBD.send(msg);
-    } else if(msg.fn === "vaciado"){
+    } 
+    else if(msg.fn === "vaciado"){
       Descartes.send(msg);
       ListaDeEmpaque.send(msg);
+      CelifrutApp.send(msg);
     } 
     else if(msg.fn === "descartesToDescktop"){
       CelifrutApp.send(msg);
+    } 
+    else if(msg.fn === "listaEmpaqueToDescktop"){
+      CelifrutApp.send(msg);
+      ListaDeEmpaque.send(msg);
+    }
+    else if (msg.fn === "listaEmpaqueToDescktopSinPallet"){
+      ListaDeEmpaque.send(msg);
+    }
+    else if(msg.fn === "ingresoLote"){
+      CelifrutApp.send(msg);
+    }
+    else if(msg.fn === "procesoLote"){
+      CelifrutApp.send(msg);
+    } 
+    else if (msg.fn === "procesoContenedor"){
+      ListaDeEmpaque.send(msg);
     }
   });
 
@@ -118,7 +88,18 @@ if (process.argv[2] === "develop") {
     }
   });
 
+  //reiniciar valores del sistema
+  cron.schedule("1 9 * * *", async () => {
+    await reiniciar_valores_del_sistema();
+  });
+
+  //se obtienen los valores del sistema de cada hora
+  cron.schedule("*/1 * * * *", async () => {
+    await valoresDelSistema_por_hora();
+  });
+
 }
+// If the script is not run in development or production mode
 else {
   CelifrutApp = fork("./AppDesktopCelifrut/index.js");
   Descartes = fork("./Descartes/index.js");

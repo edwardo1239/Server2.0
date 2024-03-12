@@ -17,7 +17,6 @@ io.on("connection", socket => {
       if (ongoingRequests[data.data.action]) {
         return;
       }
-
       // Marca la solicitud como en curso
       ongoingRequests[data.data.action] = true;
       if (Object.prototype.hasOwnProperty.call(apiListaEmpaque, data.data.collection)) {
@@ -29,14 +28,12 @@ io.on("connection", socket => {
         callback({ status: 501, message: "Function don't found" });
       }
     } catch (e) {
-      callback({ status: 502, data: e });
+      callback({ status: 502, data: e.message });
     } finally {
       // Una vez que la solicitud se ha completado, elimina la marca
       delete ongoingRequests[data.data.action];
     }
   });
-
-
 
   socket.on("disconnect", () => {
     process.send("an user has disconnected");
@@ -47,6 +44,12 @@ io.on("connection", socket => {
 process.on("message", msg => {
   if(msg.fn === "vaciado"){
     io.emit("vaciarLote", msg.data);
+  } else if(msg.fn === "listaEmpaqueToDescktop") {
+    io.emit("listaEmpaque", msg);
+  } else if (msg.fn === "listaEmpaqueToDescktopSinPallet"){
+    io.emit("cajasSinPallet", msg);
+  } else if (msg.fn === "procesoContenedor"){
+    io.emit("newData", msg);
   }
 });
 

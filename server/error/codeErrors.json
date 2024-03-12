@@ -1,0 +1,7 @@
+{
+    "STATUS_DESKTOP_NOT_FOUND":{"code":501, "message":"Function in socket Desktop don't found"},
+    "STATUS_USER_NOT_FOUND":{"code":501, "message":"Function in socket Desktop don't found"},
+    "STATUS_SERVER_ERROR":{"code": 502, "message":"Error en el socket"},
+    "STATUS_FUNCTION_DONT_FOUND":{"code": 503, "message":"Function don't found on"},
+    "STATUS_ERROR_FUNCTION":{"code":401, "message":"Error en la comunicacion con los modulos"}
+}

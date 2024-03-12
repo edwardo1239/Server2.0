@@ -1,28 +1,40 @@
 
 const { exec } = require("child_process");
-
 const { api } = require("./reducer");
 const { connectPersonalDB, connectProcesoDB } = require("./configDB");
+const { logger } = require("../../../error/config");
 
 
+const startMongoDB = () => {
+  return new Promise((resolve, reject) => {
+    exec("mongod --port 27017 --dbpath ./serverless/DB/data", (error, stdout) => {
+      if (error) {
+        reject(`Error al iniciar MongoDB: ${error}`);
+      } else {
+        resolve(`Resultado de MongoDB: ${stdout}`);
+      }
+    });
+  });
+};
 
-exec("mongod --port 27017 --dbpath ./serverless/DB/data", (error, stdout) => {
-  if (error) {
-    process.send(`Error al iniciar MongoDB: ${error}`);
-    return;
+const init = async () => {
+  try {
+    await startMongoDB();
+    connectPersonalDB();
+    connectProcesoDB();
+  } catch (error) {
+    console.error(error);
+    logger.error(error);
   }
-  process.send(`Resultado de MongoDB: ${stdout}`);
-});
-
-connectPersonalDB();
-connectProcesoDB();
-
+};
+init();
 
 process.on("message", async (msg) => {
   try{
     await api[msg.fn](msg);
   } catch(e){
-    console.error("Error mongoDB init => ", e.message);
+    logger.error("Error mongoDB init => ", e.message);
+    return {response:{status:504, message:e.message}};
   }
 });
 

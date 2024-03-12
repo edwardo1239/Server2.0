@@ -27,7 +27,7 @@ io.on("connection", socket => {
         callback({ status: 501, message: "Function socket descartes don't found" });
       }
     } catch (e) {
-      callback({ status: 502, data: e });
+      callback({ status: 502, data: e, message: e.message  });
     } finally {
       // Una vez que la solicitud se ha completado, elimina la marca
       delete ongoingRequests[data.data.action];

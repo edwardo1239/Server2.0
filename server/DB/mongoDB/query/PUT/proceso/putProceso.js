@@ -4,12 +4,19 @@ const { recordLotes } = require("../../../schemas/lotes/schemaRecordLotes");
 const { Proveedores } = require("../../../schemas/proveedores/schemaProveedores");
 const { Clientes } = require("../../../schemas/clientes/schemaClientes");
 const { Contenedores } = require("../../../schemas/contenedores/schemaContenedores");
+const { deshidratacion_lote, rendimiento_lote } = require("../../../functions/proceso");
 
 const putLote = async data => {
   try {
+    
     const id = new mongoose.Types.ObjectId(data.data.lote._id);
-    await Lotes.updateOne({ _id: id }, data.data.lote);
-
+    const lote = await Lotes.findOneAndUpdate({ _id: id }, data.data.lote, { new: true });
+    const lote_obj = new Object(lote.toObject());
+    const deshidratacion = await deshidratacion_lote(lote_obj);
+    const rendimiento = await rendimiento_lote(lote_obj);
+    lote.deshidratacion = deshidratacion;
+    lote.rendimiento = rendimiento;
+    await lote.save();
     let record = new recordLotes({
       operacionRealizada: data.record,
       documento: data.data.lote,
@@ -159,6 +166,17 @@ const restarItem = async data => {
     return { ...data, response: { status: 400, message: "Error en la funcion restarItem" } };
   }
 };
+const putHistorialLote = async data => {
+  try {
+    const id = new mongoose.Types.ObjectId(data.data.lote._id);
+    await recordLotes.findByIdAndUpdate({ _id: id }, data.data.lote, { new: true });
+
+    return { ...data, response: { status: 200, message: "Ok" } };
+  } catch (e) {
+    console.error(e);
+    return { ...data, response: { status: 400, message: "Error en la funcion putProveedor" } };
+  }
+};
 
 
 
@@ -171,5 +189,6 @@ module.exports = {
   addPallet,
   eliminarItem,
   restarItem,
-  liberarPallet
+  liberarPallet,
+  putHistorialLote
 };

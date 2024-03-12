@@ -1,5 +1,4 @@
 const fs = require("fs");
-const { descarteTotal } = require("./functions/proceso");
 const { iniciarRedisDB } = require("../../DB_redis/config/init");
 
 const clientePromise = iniciarRedisDB();
@@ -49,7 +48,7 @@ const apiVariablesProceso = {
   procesarEF1: async data => {
     try {
       const pathListaEmpaqueIDs = "./serverless/variablesDeProceso/listaEmpaque/predioListaEmpaque.json";
-      const pathDescartesIDs = "./serverless/variablesDeProceso/descartes/predioDescartes.json";
+      // const pathDescartesIDs = "./serverless/variablesDeProceso/descartes/predioDescartes.json";
       const pathIDs = "./serverless/variablesDeProceso/ids.json";
 
       const idsJSON = fs.readFileSync(pathIDs);
@@ -66,10 +65,18 @@ const apiVariablesProceso = {
 
       const kilosVaciados = lote.promedio * data.data.vaciado;
 
+      const kilosVaciadosExist = await cliente.exists("kilosVaciadosHoy");
+      if(kilosVaciadosExist !== 1){
+        await cliente.set("kilosVaciadosHoy", 0);
+      }
+      const kilosVaciadosHoy = await cliente.get("kilosVaciadosHoy");
       ids.kilosVaciados = kilosVaciados;
       ids.kilosProcesados = 0;
+      const kilosVaciadosRedis = Number(kilosVaciadosHoy) + Number(kilosVaciados);
+      //se ingresa los datos a redis
       await cliente.set("descarteLavado", 0);
       await cliente.set("descarteEncerado", 0);
+      await cliente.set("kilosVaciadosHoy", kilosVaciadosRedis);
       await cliente.hSet("predioProcesando", {
         _id: lote._id,
         enf: lote.enf,
@@ -77,9 +84,16 @@ const apiVariablesProceso = {
         nombrePredio: lote.predio.PREDIO,
         tipoFruta: lote.tipoFruta,
       });
+      await cliente.hSet("predioProcesandoDescartes", {
+        _id: lote._id,
+        enf: lote.enf,
+        predio: lote.predio._id,
+        nombrePredio: lote.predio.PREDIO,
+        tipoFruta: lote.tipoFruta,
+      });
 
-      const newidsDescartesJSON = JSON.stringify(obj);
-      fs.writeFileSync(pathDescartesIDs, newidsDescartesJSON);
+      // const newidsDescartesJSON = JSON.stringify(obj);
+      // fs.writeFileSync(pathDescartesIDs, newidsDescartesJSON);
       const newidsListaEmpaqueJSON = JSON.stringify(obj);
       fs.writeFileSync(pathListaEmpaqueIDs, newidsListaEmpaqueJSON);
       const newIdsJSON = JSON.stringify(ids);
@@ -92,10 +106,10 @@ const apiVariablesProceso = {
   },
   obtenerEF1Descartes: async data => {
     try {
-      const pathDescartesIDs = "./serverless/variablesDeProceso/descartes/predioDescartes.json";
-      const idsJSON = fs.readFileSync(pathDescartesIDs);
-      const ids = JSON.parse(idsJSON);
-      return { ...data, response: ids, status: 200, message: "Ok" };
+      const cliente = await clientePromise;
+      const predioData = await cliente.hGetAll("predioProcesando");
+
+      return { ...data, response: predioData, status: 200, message: "Ok" };
     } catch (e) {
       return { status: 402, message: "Error obteniendo el EF1" };
     }
@@ -113,9 +127,27 @@ const apiVariablesProceso = {
   obtenerEF1Sistema: async data => {
     try {
       const cliente = await clientePromise;
+      const inicioProceso = await cliente.get("inicioProceso");
       const predioData = await cliente.hGetAll("predioProcesando");
-
-      return { ...data, response: predioData, status: 200, message: "Ok" };
+      const kilosVaciadosHoy = await cliente.get("kilosVaciadosHoy");
+      const kilosProcesadosHoy = await cliente.get("kilosProcesadosHoy");
+      const kilosExportacionHoy = await cliente.get("kilosExportacionHoy");
+      const kilosProcesadosHora = await cliente.get("kilosProcesadosHora");
+      const kilosExportacionHora = await cliente.get("kilosExportacionHora");
+      const renimientoTotal = (Number(kilosExportacionHoy) * 100) / Number(kilosProcesadosHoy);
+      return { ...data, response: {
+        predioProcesando: predioData, 
+        kilosVaciadosHoy: Number(kilosVaciadosHoy),
+        kilosProcesadosHoy: Number(kilosProcesadosHoy),
+        inicioProceso: inicioProceso,
+        kilosProcesadosHora: Number(kilosProcesadosHora),
+        kilosExportacionHoy: Number(kilosExportacionHoy),
+        kilosExportacionHora: Number(kilosExportacionHora),
+        rendimiento: Number(renimientoTotal)
+      }, 
+      status: 200,
+      message: "Ok" 
+      };
     } catch (e) {
       return { status: 402, message: "Error obteniendo el EF1" };
     }
@@ -139,7 +171,7 @@ const apiVariablesProceso = {
   },
   obtenerCajasSinPallet: async data => {
     try {
-      const pathCajasSinPallet = "./serverless/variablesDeProceso/listaEmpaque/cajasSinPallet.json";
+      const pathCajasSinPallet = "./server/variablesDeProceso/listaEmpaque/cajasSinPallet.json";
       const cajasJSON = fs.readFileSync(pathCajasSinPallet);
       const cajas = JSON.parse(cajasJSON);
       return { ...data, response:{data: cajas, status: 200, message: "Ok"}};
@@ -149,7 +181,7 @@ const apiVariablesProceso = {
   },
   guardarCajasSinPallet: async data => {
     try {
-      const pathCajasSinPallet = "./serverless/variablesDeProceso/listaEmpaque/cajasSinPallet.json";
+      const pathCajasSinPallet = "./server/variablesDeProceso/listaEmpaque/cajasSinPallet.json";
       const newCajasSinPalletJSON = JSON.stringify(data);
       fs.writeFileSync(pathCajasSinPallet, newCajasSinPalletJSON);
       return { ...data, status: 200, message: "Ok" };
@@ -178,31 +210,16 @@ const apiVariablesProceso = {
     }
   },
   ingresoDescarte: async data => {
-    try{
-      const pathIDs = "./serverless/variablesDeProceso/ids.json";
-      const idsJSON = fs.readFileSync(pathIDs);
-      const ids = JSON.parse(idsJSON);
+    try {
+      const kilos = data.data.lote.$inc;
       const cliente = await clientePromise;
-      if(Object.prototype.hasOwnProperty.call(data.data.lote, "descarteLavado")){
-        const descarteLavado = await descarteTotal(data.data.lote.descarteLavado);
-        await cliente.set("descarteLavado", descarteLavado);
-      }
-      if(Object.prototype.hasOwnProperty.call(data.data.lote, "descarteEncerado")){
-        const descarteEncerado = await descarteTotal(data.data.lote.descarteEncerado);
-        await cliente.set("descarteEncerado", descarteEncerado);
-      }
-      const descarteLavado = await cliente.get("descarteLavado");
-      const descarteEncerado = await cliente.get("descarteEncerado");
-
-      const descarte = Number(descarteLavado) + Number(descarteEncerado);
-      ids.kilosProcesados = descarte;
-
-      const newIdsJSON = JSON.stringify(ids);
-      fs.writeFileSync(pathIDs, newIdsJSON);
-
+      const kilosProcesadosHoy = await cliente.get("kilosProcesadosHoy");
+      const sumKilos = Object.entries(kilos)
+        .filter(([key]) => key.startsWith("descarteLavado") || key.startsWith("descarteEncerado"))
+        .reduce((sum, [, value]) => sum + value, Number(kilosProcesadosHoy));
+      await cliente.set("kilosProcesadosHoy", sumKilos);
       return { status: 200, message: "Ok" };
-
-    } catch (e){
+    } catch (e) {
       console.error(`Error en ingresoDescarte, ${e}`);
       return {response:{ status: 402, message: `Error en ingresoDescarte, ${e}`} };
     }
@@ -210,13 +227,30 @@ const apiVariablesProceso = {
   fechaInicioProceso: async data => {
     try {
       const cliente = await clientePromise;
-
-      await cliente.set("inicioProceso", data.fechaInicio);
-  
- 
+      const fechaInicio = await cliente.get("inicioProceso");
+      if (Number(fechaInicio) === 0) {
+        await cliente.set("inicioProceso", data.fechaInicio);
+      } 
+      
+      console.log(fechaInicio);
       return { status: 200, message: "Ok" };
     } catch (e) {
       return { status: 402, message: `Error ingresando la fecha de inicio: ${e}` };
+    }
+  },
+  ingresarExportacion: async data => {
+    try {
+      const cliente = await clientePromise;
+      const kilosProcesadosHoy = await cliente.get("kilosProcesadosHoy");
+      const kilosExportacionHoy = await cliente.get("kilosExportacionHoy");
+      const kilos = Number(kilosProcesadosHoy) + data;
+      const kilosExportacion = Number(kilosExportacionHoy) + data;
+      await cliente.set("kilosProcesadosHoy", kilos);
+      await cliente.set("kilosExportacionHoy", kilosExportacion);
+
+    } catch(e) {
+      console.error(`Error en ingresarExportacion, ${e}`);
+      return {response:{ status: 402, message: `Error en ingreso exportacion variables proceso, ${e}`} };
     }
   }
 };

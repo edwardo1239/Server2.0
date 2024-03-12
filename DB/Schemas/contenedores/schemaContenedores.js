@@ -41,8 +41,8 @@ const subSchema = new Schema({
 }, { _id: false });
 
 const pesoCajaSchema = new Schema({
-  "G-37": {type:Number, default:16.5},
-  "B-37": {type:Number, default:16.5},
+  "G-37": {type:Number, default:16.65},
+  "B-37": {type:Number, default:16.65},
   "G-4_5": {type:Number, default:4.5},
   "G-30": {type:Number, default:13.5},
   "B-30": {type:Number, default:13.5},

@@ -6,10 +6,11 @@ const apiLotes = {
   putLotes: async (data) => {
     try {
       const response = await sendData({...data, fn:"PUT"});
+      
       if(response.response.status === 200){
         const addKilosProceso = await apiVariablesProceso.ingresoDescarte(data);
         if(addKilosProceso.status === 200) {
-          process.send({...data, fn:"descartesToDescktop", response:response, status:200});
+          process.send({fn:"descartesToDescktop", response:response, status:200});
         }else {
           return {status: 401, message: "Hubo un error al sumar los kilos del proceso."};
         }

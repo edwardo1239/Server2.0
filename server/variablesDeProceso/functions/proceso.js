@@ -1,3 +1,5 @@
+
+
 const descarteTotal = async (descarte) => {
   try{
     const sum = Object.values(descarte).reduce((acu, descarte) => acu += descarte, 0);
@@ -9,6 +11,7 @@ const descarteTotal = async (descarte) => {
 };
 
 
+
 module.exports = {
-  descarteTotal,
+  descarteTotal
 };

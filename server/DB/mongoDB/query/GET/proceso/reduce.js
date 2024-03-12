@@ -1,30 +1,21 @@
-const { getProveedores, getClientes, getlotes, getHistorialLotes, getContenedores, getHistorialDescartes } = require("./getProceso");
+const funciones = {
+  proveedors: require("./getProceso").getProveedores,
+  clientes: require("./getProceso").getClientes,
+  lotes: require("./getProceso").getlotes,
+  historialLotes: require("./getProceso").getHistorialLotes,
+  contenedores: require("./getProceso").getContenedores,
+  historialDescartes: require("./getProceso").getHistorialDescartes
+};
 
 const apiProceso = {
-  proveedors: async(data) => {
-    const response = await getProveedores(data);
-    return response;
-  },
-  clientes: async(data) => {
-    const response = await getClientes(data);
-    return response;
-  },
-  lotes: async(data) => {
-    const response = await getlotes(data);
-    return response;
-  },
-  historialLotes: async(data) => {
-    const response = await getHistorialLotes(data);
-    return response;
-  },
-  contenedores: async(data) => {
-    const response = await getContenedores(data);
-    return response;
-  },
-  historialDescartes: async(data) => {
-    const response = await getHistorialDescartes(data);
-    return response;
-  },
+  request: async (data) => {
+    if (funciones[data.collection]) {
+      const response = await funciones[data.collection](data);
+      return response;
+    } else {
+      throw new Error(`Función ${data.collection} no soportada`);
+    }
+  }
 };
 
 module.exports.apiProceso = apiProceso;
