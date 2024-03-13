@@ -63,9 +63,24 @@ const infoContenedorSchema = new Schema({
 });
 
 const criteriosSchema = new Schema({
-  nombre: String,
-  cumplimiento: Boolean,
-  observaciones: String,
+  cumple:Boolean,
+  observaciones: String
+},
+{ _id: false });
+
+const inspeccionMulasSchema = new Schema({
+  funcionamiento: criteriosSchema,
+  temperatura: criteriosSchema,
+  talanquera: criteriosSchema,
+  dannos: criteriosSchema,
+  sellos_puertas: criteriosSchema,
+  materiales:criteriosSchema,
+  reparaciones: criteriosSchema,
+  limpio: criteriosSchema,
+  plagas: criteriosSchema,
+  olores: criteriosSchema,
+  insumos: criteriosSchema,
+  medidas: criteriosSchema
 });
 
 const schemaFormularioInspeccionMulas = new Schema({
@@ -84,10 +99,7 @@ const schemaFormularioInspeccionMulas = new Schema({
   empresaTransporte: String,
   cumpleRequisitos: Boolean,
   responsable: String,
-  criterios: {
-    type: Map,
-    of: criteriosSchema,
-  },
+  criterios: inspeccionMulasSchema,
 });
 
 const listaEmpaqueSchema = new Schema({

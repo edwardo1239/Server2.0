@@ -61,10 +61,10 @@ io.on("connection", socket => {
       if (Object.prototype.hasOwnProperty.call(apiDesktop, data.data.collection)) {
         // Execute the collection and get the response
         const response = await apiDesktop[data.data.collection]({...data.data, client: "Desktop", socketId: socket.id,});
-        //console.log(response.response);
+        // console.log(response.response);
         callback(response.response);
       } else {
-        callback({ status: codeError.STATUS_DESKTOP_NOT_FOUND.code, message: codeError.STATUS_DESKTOP_NOT_FOUND.message });
+        callback({ response:{status: codeError.STATUS_DESKTOP_NOT_FOUND.code, message: codeError.STATUS_DESKTOP_NOT_FOUND.message }});
       }
     } catch (e) {
       callback({ status: codeError.STATUS_SERVER_ERROR.code, message:`${codeError.STATUS_SERVER_ERROR.message} desktop => ${e.message}` });

@@ -94,7 +94,7 @@ const obtener_datos_lotes_cajas_sin_pallet = async (cajas) => {
     const lotes = await sendData({...request, fn:"GET", client: "listaDeEmpaque"});
     for(let i = 0; i<cajas.length; i++){
       const lote = lotes.response.data.find(item => item._id.toString() === cajas[i].lote);
-      cajas[i].lote = {enf:lote.enf, predio:lote.predio.PREDIO};
+      cajas[i].lote = {enf:lote.enf, predio:lote.predio.PREDIO, _id:lote._id};
     }
     return cajas;
   } catch (e){

@@ -56,7 +56,7 @@ const getHistorialLotes = async data => {
   }
 };
 const getContenedores = async data => {
-  const contenedores = await Contenedores.find().populate(data.data.populate);
+  const contenedores = await Contenedores.find(data.data.query).populate(data.data.populate);
   if(contenedores === null){
     throw new Error("Error en la busqueda no se econtraron contenedores");
   }

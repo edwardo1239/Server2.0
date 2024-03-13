@@ -93,7 +93,7 @@ const llenar_pruebas_plataforma = async (worksheet, lote) => {
     lote.calidad.calidadInterna.brix,
     lote.calidad.calidadInterna.acidez,
     lote.calidad.calidadInterna.ratio,
-    lote.calidad.calidadInterna.zumo
+    (lote.calidad.calidadInterna.zumo * 100) / lote.calidad.peso
   ];
   for(let i=0; i<celdas.length; i++){
     worksheet = await llenar_celda(worksheet, celdas[i], data[i]);
@@ -133,19 +133,20 @@ const agregar_fotos = async (workbook, worksheet, lote) => {
   const keys = Object.keys(fotosPaths);
   let i = 0;
   let n = 0;
+  let j = 0;
   while(i < keys.length){
     const imageId = workbook.addImage({
       buffer: fs.readFileSync(fotosPaths[keys[i]]),
       extension: "png",
     });
     
-    if(n === 0){
-      worksheet.addImage(imageId, `A${73 + (i * 10)}:E${82 + (i * 10)}`);
-      worksheet = await llenar_celda(worksheet, `A${83 + (i * 10)}`, keys[i]);
+    if(n%2 === 0){
+      worksheet.addImage(imageId, `A${73 + (j * 11)}:E${82 + (j * 11)}`);
+      worksheet = await llenar_celda(worksheet, `A${83 + (j * 11)}`, keys[i]);
     } else {
-      worksheet.addImage(imageId, `F${73 + (i * 10)}:H${82 + (i * 10)}`);
-      worksheet = await llenar_celda(worksheet, `F${83 + (i * 10)}`, keys[i]);
-      n = 0;
+      worksheet.addImage(imageId, `F${73 + (j * 11)}:H${82 + (j  * 11)}`);
+      worksheet = await llenar_celda(worksheet, `F${83 + (j * 11)}`, keys[i]);
+      j++;
     }
     n++;
     i++;

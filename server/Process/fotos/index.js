@@ -3,7 +3,7 @@ const socketIO = require("socket.io");
 const { apiFotosCalidad } = require("./reduce");
 
 const hostname = "192.168.0.172";
-const port = 3006;
+const port = 3002;
 
 const server = http.createServer();
 const io = socketIO(server, { maxHttpBufferSize: 5 * 1024 * 1024 });

@@ -14,7 +14,7 @@ const apiProcesoPUT = {
     return response;
   },
   contenedores: async(data) => {
-    if(data.action === "putContenedores"){
+    if(data.action === "putContenedor"){
       const response = await putContenedor(data);
       return response;
     } else if (data.action === "agregarSettingsPallet"){

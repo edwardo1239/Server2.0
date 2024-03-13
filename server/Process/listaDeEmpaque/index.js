@@ -3,7 +3,7 @@ const socketIO = require("socket.io");
 const { apiListaEmpaque } = require("./reduce");
 
 const hostname = "192.168.0.172";
-const port = 3004;
+const port = 3003;
 
 const server = http.createServer();
 const io = socketIO(server, { maxHttpBufferSize: 5 * 1024 * 1024 });

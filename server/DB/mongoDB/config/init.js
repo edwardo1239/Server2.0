@@ -7,7 +7,7 @@ const { logger } = require("../../../error/config");
 
 const startMongoDB = () => {
   return new Promise((resolve, reject) => {
-    exec("mongod --port 27017 --dbpath ./serverless/DB/data", (error, stdout) => {
+    exec("mongod --port 27017", (error, stdout) => {
       if (error) {
         reject(`Error al iniciar MongoDB: ${error}`);
       } else {

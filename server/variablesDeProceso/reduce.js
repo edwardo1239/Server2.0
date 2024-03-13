@@ -7,7 +7,7 @@ const clientePromise = iniciarRedisDB();
 const apiVariablesProceso = {
   obtenerEF1: async data => {
     try {
-      const pathIDs = "./serverless/variablesDeProceso/ids.json";
+      const pathIDs = "./server/variablesDeProceso/ids.json";
       if (!fs.existsSync(pathIDs)) {
         fs.writeFileSync(pathIDs, JSON.stringify({}));
       }
@@ -20,7 +20,7 @@ const apiVariablesProceso = {
   },
   generarEF1: async data => {
     try {
-      const pathIDs = "./serverless/variablesDeProceso/ids.json";
+      const pathIDs = "./server/variablesDeProceso/ids.json";
       if (!fs.existsSync(pathIDs)) {
         fs.writeFileSync(pathIDs, JSON.stringify({}));
       }
@@ -47,9 +47,9 @@ const apiVariablesProceso = {
   },
   procesarEF1: async data => {
     try {
-      const pathListaEmpaqueIDs = "./serverless/variablesDeProceso/listaEmpaque/predioListaEmpaque.json";
+      const pathListaEmpaqueIDs = "./server/variablesDeProceso/listaEmpaque/predioListaEmpaque.json";
       // const pathDescartesIDs = "./serverless/variablesDeProceso/descartes/predioDescartes.json";
-      const pathIDs = "./serverless/variablesDeProceso/ids.json";
+      const pathIDs = "./server/variablesDeProceso/ids.json";
 
       const idsJSON = fs.readFileSync(pathIDs);
       const ids = JSON.parse(idsJSON);
@@ -116,7 +116,7 @@ const apiVariablesProceso = {
   },
   obtenerEF1ListaEmpaque: async data => {
     try {
-      const pathListaEmpaqueIDs = "./serverless/variablesDeProceso/listaEmpaque/predioListaEmpaque.json";
+      const pathListaEmpaqueIDs = "./server/variablesDeProceso/listaEmpaque/predioListaEmpaque.json";
       const idsJSON = fs.readFileSync(pathListaEmpaqueIDs);
       const ids = JSON.parse(idsJSON);
       return { ...data, response: {...ids, status: 200, message: "Ok"} };
@@ -154,7 +154,7 @@ const apiVariablesProceso = {
   },
   generarCelifrut: async data => {
     try {
-      const pathIDs = "./serverless/variablesDeProceso/ids.json";
+      const pathIDs = "./server/variablesDeProceso/ids.json";
       const idsJSON = fs.readFileSync(pathIDs);
       const ids = JSON.parse(idsJSON);
       
@@ -191,7 +191,7 @@ const apiVariablesProceso = {
   },
   obtenerOrdenDeVaceo: async data => {
     try {
-      const pathOrdenDeVaceo = "./serverless/variablesDeProceso/desktop/ordenDeVaceo.json";
+      const pathOrdenDeVaceo = "./server/variablesDeProceso/desktop/ordenDeVaceo.json";
       const ordenVaceoJSON = fs.readFileSync(pathOrdenDeVaceo);
       const orden = JSON.parse(ordenVaceoJSON);
       return { ...data, response: orden, status: 200, message: "Ok" };
@@ -201,7 +201,7 @@ const apiVariablesProceso = {
   },
   guardarOrdenDeVaceo: async data => {
     try {
-      const pathOrdenDeVaceo = "./serverless/variablesDeProceso/desktop/ordenDeVaceo.json";
+      const pathOrdenDeVaceo = "./server/variablesDeProceso/desktop/ordenDeVaceo.json";
       const newOrdenJSON = JSON.stringify(data.data);
       fs.writeFileSync(pathOrdenDeVaceo, newOrdenJSON);
       return { response:{status: 200, message: "Ok" }};

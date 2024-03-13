@@ -54,6 +54,7 @@ const putCliente = async data => {
 };
 const putContenedor = async data => {
   try {
+
     const id = new mongoose.Types.ObjectId(data.data.contenedor._id);
     await Contenedores.updateOne({ _id: id }, data.data.contenedor);
 
