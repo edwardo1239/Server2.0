@@ -7,7 +7,7 @@ const fs = require("fs");
 const path = require("path");
 const { Contenedores } = require("../DB/mongoDB/schemas/contenedores/schemaContenedores");
 const { default: mongoose } = require("mongoose");
-const { llenar_cabecera, llenar_exportacion, llenar_descarte_Limon, llenar_pruebas_plataforma, llenar_observaciones, agregar_fotos } = require("./crear_informe_calidad");
+const { llenar_cabecera, llenar_exportacion, llenar_descarte_Limon, llenar_pruebas_plataforma, llenar_observaciones, agregar_fotos, llenar_descarte_Naranja } = require("./crear_informe_calidad");
 
 const reiniciar_valores_del_sistema = async () => {
   try{
@@ -79,6 +79,8 @@ const crear_informes_calidad = async (data) => {
     if(lote.tipoFruta === "Limon"){
       await workbook.xlsx.readFile("C:/Users/USER-PC/Documents/Servidor/Servidor2.0/server/doc/informeCalidad/FORMATO INFORME LIMON TAHITI.xlsx");
       sheetName = "Informe Limón ";
+    } else {
+      await workbook.xlsx.readFile("C:/Users/USER-PC/Documents/Servidor/Servidor2.0/server/doc/informeCalidad/FORMATO INFORME NARANJA.xlsx");
     }
     let  worksheet = workbook.getWorksheet(sheetName);
     //se llena la cabecera del informe
@@ -88,6 +90,8 @@ const crear_informes_calidad = async (data) => {
     //llenar descarte
     if(lote.tipoFruta === "Limon"){
       worksheet = await llenar_descarte_Limon(worksheet, lote);
+    } else {
+      worksheet = await llenar_descarte_Naranja(worksheet, lote);
     }
     //se llena las pruebas de plataforma
     worksheet = await llenar_pruebas_plataforma(worksheet, lote);
@@ -103,6 +107,9 @@ const crear_informes_calidad = async (data) => {
     let ruta;
     if(lote.tipoFruta === "Limon"){
       ruta =  "G:/Mi unidad/Informes_Calidad/Informes Limon";
+    } else {
+      ruta =  "G:/Mi unidad/Informes_Calidad/Informes Naranja";
+
     }
     const rutaAño = path.join(ruta, String(año));
     const rutaMes = path.join(rutaAño, String(mes));
@@ -116,6 +123,19 @@ const crear_informes_calidad = async (data) => {
     await workbook.xlsx.writeFile(
       `${rutaMes}/${lote.enf} ${lote.predio.PREDIO} ${lote.tipoFruta}.xlsx`,
     );
+
+    setTimeout(async () => {
+      try {
+        const responseJSON = await fetch(`
+        https://script.google.com/macros/s/AKfycbxCMhgsJEW_ySOH6M16LjHUF5RG0mqDs1eUUXgjDKqQZYf2iLsB51aX88njGnG2zLN6/exec?nombre=${lote.enf} ${lote.predio.PREDIO} ${lote.tipoFruta}.xlsx
+        `);
+        const response = await responseJSON.json();
+        
+        lote.urlInformeCalidad = response;
+      } catch (e) {
+        console.error(e);
+      } 
+    }, 10000);
 
   } catch(e){
     console.log(e);

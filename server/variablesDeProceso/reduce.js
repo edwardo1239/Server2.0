@@ -1,5 +1,7 @@
 const fs = require("fs");
 const { iniciarRedisDB } = require("../../DB_redis/config/init");
+const { updateApi } = require("./update/reduce");
+const { modificar_predio_proceso_descartes, modificar_predio_proceso, modificar_predio_proceso_listaEmpaque } = require("./update/functions");
 
 const clientePromise = iniciarRedisDB();
 
@@ -47,8 +49,6 @@ const apiVariablesProceso = {
   },
   procesarEF1: async data => {
     try {
-      const pathListaEmpaqueIDs = "./server/variablesDeProceso/listaEmpaque/predioListaEmpaque.json";
-      // const pathDescartesIDs = "./serverless/variablesDeProceso/descartes/predioDescartes.json";
       const pathIDs = "./server/variablesDeProceso/ids.json";
 
       const idsJSON = fs.readFileSync(pathIDs);
@@ -77,25 +77,10 @@ const apiVariablesProceso = {
       await cliente.set("descarteLavado", 0);
       await cliente.set("descarteEncerado", 0);
       await cliente.set("kilosVaciadosHoy", kilosVaciadosRedis);
-      await cliente.hSet("predioProcesando", {
-        _id: lote._id,
-        enf: lote.enf,
-        predio: lote.predio._id,
-        nombrePredio: lote.predio.PREDIO,
-        tipoFruta: lote.tipoFruta,
-      });
-      await cliente.hSet("predioProcesandoDescartes", {
-        _id: lote._id,
-        enf: lote.enf,
-        predio: lote.predio._id,
-        nombrePredio: lote.predio.PREDIO,
-        tipoFruta: lote.tipoFruta,
-      });
+      await modificar_predio_proceso(lote);
+      await modificar_predio_proceso_descartes(lote);
+      await modificar_predio_proceso_listaEmpaque(lote);
 
-      // const newidsDescartesJSON = JSON.stringify(obj);
-      // fs.writeFileSync(pathDescartesIDs, newidsDescartesJSON);
-      const newidsListaEmpaqueJSON = JSON.stringify(obj);
-      fs.writeFileSync(pathListaEmpaqueIDs, newidsListaEmpaqueJSON);
       const newIdsJSON = JSON.stringify(ids);
       fs.writeFileSync(pathIDs, newIdsJSON);
 
@@ -107,7 +92,7 @@ const apiVariablesProceso = {
   obtenerEF1Descartes: async data => {
     try {
       const cliente = await clientePromise;
-      const predioData = await cliente.hGetAll("predioProcesando");
+      const predioData = await cliente.hGetAll("predioProcesandoDescartes");
 
       return { ...data, response: predioData, status: 200, message: "Ok" };
     } catch (e) {
@@ -116,10 +101,9 @@ const apiVariablesProceso = {
   },
   obtenerEF1ListaEmpaque: async data => {
     try {
-      const pathListaEmpaqueIDs = "./server/variablesDeProceso/listaEmpaque/predioListaEmpaque.json";
-      const idsJSON = fs.readFileSync(pathListaEmpaqueIDs);
-      const ids = JSON.parse(idsJSON);
-      return { ...data, response: {...ids, status: 200, message: "Ok"} };
+      const cliente = await clientePromise;
+      const predioData = await cliente.hGetAll("predioProcesandoDescartes");
+      return { ...data, response: {...predioData, status: 200, message: "Ok"} };
     } catch (e) {
       return { ...data, response: {status: 402, message: "Error obteniendo el EF1" }};
     }
@@ -252,6 +236,9 @@ const apiVariablesProceso = {
       console.error(`Error en ingresarExportacion, ${e}`);
       return {response:{ status: 402, message: `Error en ingreso exportacion variables proceso, ${e}`} };
     }
+  },
+  modificar_sistema: async data => {
+    return await updateApi[data.query](data);
   }
 };
 

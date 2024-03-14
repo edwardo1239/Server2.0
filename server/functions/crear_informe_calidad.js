@@ -87,8 +87,52 @@ const llenar_descarte_Limon = async (worksheet, lote) => {
 
   return worksheet;
 };
+const llenar_descarte_Naranja = async (worksheet, lote) => {
+  const descarte = lote.descarteEncerado.descarteGeneral + lote.descarteLavado.descarteGeneral + lote.descarteEncerado.suelo;
+  const data = [
+    lote.calidad.clasificacionCalidad.acaro,
+    lote.calidad.clasificacionCalidad.trips,
+    lote.calidad.clasificacionCalidad.melanosis,
+    lote.calidad.clasificacionCalidad.piel,
+    lote.calidad.clasificacionCalidad.oleocelosis,
+    lote.calidad.clasificacionCalidad.herbicida,
+    lote.calidad.clasificacionCalidad.dannosMecanicos,
+    lote.calidad.clasificacionCalidad.grillo,
+    lote.calidad.clasificacionCalidad.escama,
+    lote.calidad.clasificacionCalidad.frutaVerde,
+    lote.calidad.clasificacionCalidad.frutaMadura,
+    lote.calidad.clasificacionCalidad.division,
+    lote.calidad.clasificacionCalidad.nutrientes,
+
+    lote.calidad.clasificacionCalidad.alsinoe + lote.calidad.clasificacionCalidad.fumagina + lote.calidad.clasificacionCalidad.antracnosis + 
+    lote.calidad.clasificacionCalidad.frutaRajada + lote.calidad.clasificacionCalidad.ombligona +lote.calidad.clasificacionCalidad.despezonada,
+  ];
+  for(let i=0; i<data.length; i++){
+    worksheet = await llenar_celda(worksheet, `E${i+17}`, (data[i]* descarte)/100);
+  }
+
+  const descarteData = [    
+    lote.descarteEncerado.extra,
+    lote.descarteEncerado.pareja + lote.descarteLavado.pareja,
+    lote.descarteEncerado.balin + lote.descarteLavado.balin,
+    lote.frutaNacional + lote.directoNacional,
+    lote.descarteEncerado.descompuesta + lote.descarteLavado.descompuesta + lote.descarteLavado.piel,
+    lote.descarteLavado.hojas,
+  ];
+
+  for(let i=0; i<descarteData.length; i++){
+    worksheet = await llenar_celda(worksheet, `E${i+32}`, descarteData[i]);
+  }
+  return worksheet;
+};
 const llenar_pruebas_plataforma = async (worksheet, lote) => {
-  const celdas = ["B45", "D45", "F45", "H45"];
+  let celdas;
+  if(lote.tipoFruta === "Limon"){
+    celdas = ["B45", "D45", "F45", "H45"];
+  } else {
+    celdas = ["B48", "D48", "F48", "H48"];
+
+  }
   const data = [
     lote.calidad.calidadInterna.brix,
     lote.calidad.calidadInterna.acidez,
@@ -101,7 +145,12 @@ const llenar_pruebas_plataforma = async (worksheet, lote) => {
   return worksheet;
 };
 const llenar_observaciones = async (worksheet, lote) => {
-//   const descarte = lote.descarteEncerado.descarteGeneral + lote.descarteLavado.descarteGeneral + lote.descarteEncerado.suelo;
+  let celda ;
+  if(lote.tipoFruta === "Limon"){
+    celda = 46;
+  } else {
+    celda = 49;
+  }
   const observaciones = {
     dannosMecanicos: "Se evidencia alto porcentaje de fruta con oleocelosis y daños mecánicos.",
     oleocelosis: "Se evidencia alto porcentaje de fruta con oleocelosis y daños mecánicos.",
@@ -124,7 +173,7 @@ const llenar_observaciones = async (worksheet, lote) => {
     .slice(0, 3)
     .map(([key,]) => key);
   for(let i=0; i<top3Keys.length; i++){
-    worksheet = await llenar_y_sumar_celda(worksheet, `A${i + 46}`, observaciones[top3Keys[i]]);
+    worksheet = await llenar_y_sumar_celda(worksheet, `A${i + celda}`, observaciones[top3Keys[i]]);
   }
   return worksheet;
 };
@@ -159,5 +208,6 @@ module.exports = {
   llenar_descarte_Limon,
   llenar_pruebas_plataforma,
   llenar_observaciones,
-  agregar_fotos
+  agregar_fotos,
+  llenar_descarte_Naranja
 };
