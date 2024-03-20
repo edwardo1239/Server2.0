@@ -2,6 +2,7 @@ const fs = require("fs");
 const { iniciarRedisDB } = require("../../DB_redis/config/init");
 const { updateApi } = require("./update/reduce");
 const { modificar_predio_proceso_descartes, modificar_predio_proceso, modificar_predio_proceso_listaEmpaque } = require("./update/functions");
+const { getApi } = require("./get/reduce");
 
 const clientePromise = iniciarRedisDB();
 
@@ -173,26 +174,6 @@ const apiVariablesProceso = {
       return { status: 402, message: `Error obteniendo las cajas, ${e}` };
     }
   },
-  obtenerOrdenDeVaceo: async data => {
-    try {
-      const pathOrdenDeVaceo = "./server/variablesDeProceso/desktop/ordenDeVaceo.json";
-      const ordenVaceoJSON = fs.readFileSync(pathOrdenDeVaceo);
-      const orden = JSON.parse(ordenVaceoJSON);
-      return { ...data, response: orden, status: 200, message: "Ok" };
-    } catch (e) {
-      return { status: 402, message: `Error obteniendo el orden de vaceo, ${e}` };
-    }
-  },
-  guardarOrdenDeVaceo: async data => {
-    try {
-      const pathOrdenDeVaceo = "./server/variablesDeProceso/desktop/ordenDeVaceo.json";
-      const newOrdenJSON = JSON.stringify(data.data);
-      fs.writeFileSync(pathOrdenDeVaceo, newOrdenJSON);
-      return { response:{status: 200, message: "Ok" }};
-    } catch (e) {
-      return {response:{ status: 402, message: `Error obteniendo el orden de vaceo, ${e}`} };
-    }
-  },
   ingresoDescarte: async data => {
     try {
       const kilos = data.data.lote.$inc;
@@ -239,6 +220,9 @@ const apiVariablesProceso = {
   },
   modificar_sistema: async data => {
     return await updateApi[data.query](data);
+  },
+  obtener_datos_sistem: async data => {
+    return await getApi[data.query](data);
   }
 };
 

@@ -4,7 +4,7 @@ require("dotenv").config();
 const { fork } = require("child_process");
 const EventEmitter = require("events");
 const cron = require("node-cron");
-const { valoresDelSistema_por_hora, reiniciar_valores_del_sistema } = require("./server/functions/sistema");
+const { valoresDelSistema_por_hora, reiniciar_valores_del_sistema, check_CelifrutDesktopApp_upload } = require("./server/functions/sistema");
 // Declare variables for different tasks
 let CelifrutApp; 
 let Descartes; 
@@ -73,6 +73,9 @@ emitter.on("request", msg => {
   } 
   else if (msg.fn === "procesoContenedor"){
     ListaDeEmpaque.send(msg);
+  } 
+  else if(msg.fn === "OrdenVaciado"){
+    CelifrutApp.send(msg);
   }
 });
 
@@ -89,7 +92,7 @@ emitter.on("response", msg => {
 });
 
 //reiniciar valores del sistema
-cron.schedule("1 9 * * *", async () => {
+cron.schedule("20 8 * * *", async () => {
   await reiniciar_valores_del_sistema();
 });
 
@@ -97,6 +100,14 @@ cron.schedule("1 9 * * *", async () => {
 cron.schedule("*/1 * * * *", async () => {
   await valoresDelSistema_por_hora();
 });
+
+
+//checkear actualizaciones de electron
+cron.schedule("58 14 * * *", async () => {
+  await check_CelifrutDesktopApp_upload();
+});
+
+
 
 // }
 // If the script is not run in development or production mode

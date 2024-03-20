@@ -4,6 +4,7 @@ const { iniciarRedisDB } = require("../../../DB_redis/config/init");
 const { apiUser } = require("./sections/user/reducer");
 const { apiDesktop } = require("./sections/reduce");
 const codeError = require("../../error/codeErrors.json");
+const { isNewVersion, getVersionDocument, getCelifrutAppFile } = require("./functions/functions");
 
 // Load environment variables from .env file
 require("dotenv").config({ path: "../../.env" });
@@ -11,7 +12,28 @@ require("dotenv").config({ path: "../../.env" });
 const hostname = process.env.HOST_NAME;
 const port = process.env.DESKTOP;
 // Create a new HTTP server
-const server = http.createServer();
+const server = http.createServer( async (req, res) => {
+  if(req.method === "GET"){
+    const [action, value] = req.url.split("=");
+    if(action === "/newVersion"){
+      const response = await isNewVersion(value);
+      res.writeHead(200, { "Content-Type": "text/plain" });
+      res.end(String(response));
+    } else if( action === "/latest.yml?noCache"){
+      const file = await getVersionDocument();
+      res.writeHead(200, { "Content-Type": "text/yaml" });
+      res.end(file);
+    } else {
+      const response = await getCelifrutAppFile(action);
+      console.log(req);
+      res.writeHead(200, { "Content-Type": "application/octet-stream" });
+      res.end(response);
+    } 
+  } else {
+    console.log(req);
+  }
+
+});
 // Create a new Socket.IO server
 const io = socketIO(server, 
   { maxHttpBufferSize: 5 * 1024 * 1024,
@@ -81,7 +103,11 @@ io.on("connection", socket => {
 });
 // Handle messages from parent process
 process.on("message", msg => {
-  if(msg.fn === "descartesToDescktop" || msg.fn === "vaciado" || msg.fn === "ingresoLote" || msg.fn === "procesoLote" ){ 
+  if(msg.fn === "descartesToDescktop" || 
+     msg.fn === "vaciado" ||
+     msg.fn === "ingresoLote" || 
+     msg.fn === "procesoLote" ||
+     msg.fn === "OrdenVaciado"){ 
     io.emit("serverToDesktop", msg);
   } 
 });

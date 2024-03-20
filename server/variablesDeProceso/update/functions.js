@@ -1,4 +1,5 @@
 const { iniciarRedisDB } = require("../../../DB_redis/config/init");
+const fs = require("fs");
 
 const clientePromise = iniciarRedisDB();
 
@@ -40,11 +41,19 @@ const modificar_predio_proceso_listaEmpaque = async lote => {
 
   return { response: { status: 200, message: "Ok" } };
 };
+const add_orden_de_vaceo = async data => {
+  const pathOrdenDeVaceo = "./server/variablesDeProceso/ordenDeVaceo.json";
+  const newOrdenJSON = JSON.stringify(data);
+  fs.writeFileSync(pathOrdenDeVaceo, newOrdenJSON);
+  process.send({data:data, fn:"OrdenVaciado", status:200});
+  return { response:{status: 200, message: "Ok" }};
+};
 
 
 
 module.exports = {
   modificar_predio_proceso,
   modificar_predio_proceso_descartes,
-  modificar_predio_proceso_listaEmpaque
+  modificar_predio_proceso_listaEmpaque,
+  add_orden_de_vaceo
 };
