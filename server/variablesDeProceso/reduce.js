@@ -119,16 +119,21 @@ const apiVariablesProceso = {
       const kilosExportacionHoy = await cliente.get("kilosExportacionHoy");
       const kilosProcesadosHora = await cliente.get("kilosProcesadosHora");
       const kilosExportacionHora = await cliente.get("kilosExportacionHora");
-      const renimientoTotal = (Number(kilosExportacionHoy) * 100) / Number(kilosProcesadosHoy);
+      let rendimientoTotal;
+      if(Number(kilosProcesadosHoy) === 0)
+        rendimientoTotal = 0;
+      else
+        rendimientoTotal = (Number(kilosExportacionHoy) * 100) / Number(kilosProcesadosHoy);
+      console.log(kilosProcesadosHora);
       return { ...data, response: {
         predioProcesando: predioData, 
         kilosVaciadosHoy: Number(kilosVaciadosHoy),
         kilosProcesadosHoy: Number(kilosProcesadosHoy),
         inicioProceso: inicioProceso,
-        kilosProcesadosHora: Number(kilosProcesadosHora),
+        kilosProcesadosHora: isNaN(kilosProcesadosHora) ? 0 : Number(kilosProcesadosHora),
         kilosExportacionHoy: Number(kilosExportacionHoy),
-        kilosExportacionHora: Number(kilosExportacionHora),
-        rendimiento: Number(renimientoTotal)
+        kilosExportacionHora: isNaN(kilosExportacionHora) ? 0 : Number(kilosExportacionHora),
+        rendimiento: Number(rendimientoTotal)
       }, 
       status: 200,
       message: "Ok" 

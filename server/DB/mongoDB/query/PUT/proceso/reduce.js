@@ -1,4 +1,4 @@
-const { putLote, putProveedor, putCliente, putContenedor, agregarSettingsPallet, addPallet, eliminarItem, restarItem, liberarPallet, putHistorialLote } = require("./putProceso");
+const { putLote, putProveedor, putCliente, putContenedor, agregarSettingsPallet, addPallet, eliminarItem, restarItem, liberarPallet, putHistorialLote, cerrarContenedor, actualizar_contenedor } = require("./putProceso");
 
 const apiProcesoPUT = {
   lotes: async(data) => {
@@ -14,6 +14,7 @@ const apiProcesoPUT = {
     return response;
   },
   contenedores: async(data) => {
+
     if(data.action === "putContenedor"){
       const response = await putContenedor(data);
       return response;
@@ -32,7 +33,12 @@ const apiProcesoPUT = {
     } else if (data.action === "liberarPallet"){
       const response = await liberarPallet(data);
       return response;
-    } 
+    } else if (data.action === "cerrarContenedor"){
+      const response = await cerrarContenedor(data);
+      return response;
+    } else if (data.action === "actualizar_contenedor"){
+      return await actualizar_contenedor(data);
+    }
   },
   historialLotes: async(data) => {
     const response = await putHistorialLote(data);

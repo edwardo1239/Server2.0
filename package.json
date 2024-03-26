@@ -11,6 +11,7 @@
     "test": "jest",
     "start": "node index.js",
     "dev": "nodemon index.js",
+    "dev-inspect": "nodemon --inspect index.js",
     "listaEmpaque": "npm run --workspace=servidorListaEmpaque start",
     "Celifrut": "npm run --workspace=AppDesktopCelifrut start"
   },

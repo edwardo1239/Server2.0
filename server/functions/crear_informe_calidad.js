@@ -209,5 +209,7 @@ module.exports = {
   llenar_pruebas_plataforma,
   llenar_observaciones,
   agregar_fotos,
-  llenar_descarte_Naranja
+  llenar_descarte_Naranja,
+  llenar_celda,
+  llenar_y_sumar_celda
 };

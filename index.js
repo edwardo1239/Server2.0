@@ -1,5 +1,5 @@
 // Load environment variables from .env file
-require("dotenv").config();
+require("dotenv").config("./.env");
 // Import necessary modules
 const { fork } = require("child_process");
 const EventEmitter = require("events");
@@ -92,7 +92,7 @@ emitter.on("response", msg => {
 });
 
 //reiniciar valores del sistema
-cron.schedule("20 8 * * *", async () => {
+cron.schedule("0 8 * * *", async () => {
   await reiniciar_valores_del_sistema();
 });
 
@@ -103,10 +103,9 @@ cron.schedule("*/1 * * * *", async () => {
 
 
 //checkear actualizaciones de electron
-cron.schedule("58 14 * * *", async () => {
+cron.schedule("10 16 * * *", async () => {
   await check_CelifrutDesktopApp_upload();
 });
-
 
 
 // }

@@ -5,7 +5,7 @@ const { historialDescarte } = require("../../../schemas/lotes/schemaHistorialDes
 const { Lotes } = require("../../../schemas/lotes/schemaLotes");
 const { recordLotes } = require("../../../schemas/lotes/schemaRecordLotes");
 const { Proveedores } = require("../../../schemas/proveedores/schemaProveedores");
-const { oobtener_datos_lotes_to_listaEmpaque } = require("../../../functions/proceso");
+const { oobtener_datos_lotes_to_listaEmpaque, oobtener_datos_lotes_to_informe } = require("../../../functions/proceso");
 
 const getProveedores = async data => {
   const proveedores = await Proveedores.find(data.data.query);
@@ -56,6 +56,7 @@ const getHistorialLotes = async data => {
   }
 };
 const getContenedores = async data => {
+
   const contenedores = await Contenedores.find(data.data.query).populate(data.data.populate);
   if(contenedores === null){
     throw new Error("Error en la busqueda no se econtraron contenedores");
@@ -63,6 +64,21 @@ const getContenedores = async data => {
   if(Object.prototype.hasOwnProperty.call(contenedores[0]._doc,"pallets")){
     const new_conts = contenedores.map(contenedor => contenedor.toObject());
     const new_contenedores = await oobtener_datos_lotes_to_listaEmpaque(new_conts);
+    Promise.all(new_contenedores);
+    return {...data, response:{status:200, message:"OK", data:new_contenedores}};
+  }
+  return {...data, response:{status:200, message:"OK", data:contenedores}};
+};
+const getContenedoresInforme = async data => {
+  const contenedores = await Contenedores.find(data.data.query)
+    .populate(data.data.populate)
+    .sort(data.data.sort);
+  if(contenedores === null){
+    throw new Error("Error en la busqueda no se econtraron contenedores");
+  }
+  if(Object.prototype.hasOwnProperty.call(contenedores[0]._doc,"pallets")){
+    const new_conts = contenedores.map(contenedor => contenedor.toObject());
+    const new_contenedores = await oobtener_datos_lotes_to_informe(new_conts);
     Promise.all(new_contenedores);
     return {...data, response:{status:200, message:"OK", data:new_contenedores}};
   }
@@ -87,5 +103,6 @@ module.exports = {
   getlotes,
   getHistorialLotes,
   getContenedores,
-  getHistorialDescartes
+  getHistorialDescartes,
+  getContenedoresInforme
 };

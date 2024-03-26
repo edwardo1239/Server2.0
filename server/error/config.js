@@ -9,7 +9,7 @@ const logger = winston.createLogger({
     // - Write all logs with importance level of `error` or less to `error.log`
     // - Write all logs with importance level of `info` or less to `combined.log`
     //
-    new winston.transports.File({ filename: "C:/Users/USER-PC/Documents/Servidor/Servidor2.0/server/error/error.log", level: "error" }),
+    new winston.transports.File({ filename: "C:/Users/SISTEMA/Documents/Servidor/Server2.0/server/error/error.log", level: "error" }),
   ],
 });
 module.exports.logger = logger;

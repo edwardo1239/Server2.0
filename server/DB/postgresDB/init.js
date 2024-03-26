@@ -3,9 +3,9 @@ const { Client } = require("pg");
 const client = new Client({
   host: "localhost",
   port: 5432,
-  user: "EdwarStheven",
+  user: "Edwar",
   password: "calidadstopyse",
-  database: "Personal"
+  database: "users"
 });
 
 client.connect(err => {
@@ -16,7 +16,7 @@ client.connect(err => {
   }
 });
 
-// client.query('select * FROM "Users"', (err, res) => {
+// client.query('select * FROM "usuarios"', (err, res) => {
 //   if (err) {
 //     console.error("Error al realizar la consulta", err.stack);
 //   } else {

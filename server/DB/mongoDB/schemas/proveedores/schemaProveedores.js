@@ -2,7 +2,7 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const conn = mongoose.createConnection("mongodb://localhost:27017/proceso");
+const conn = mongoose.createConnection(process.env.MONGODB_PROCESO);
 
 const PredioSchema = new Schema({
   PREDIO: { type: String, required: true },

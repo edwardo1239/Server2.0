@@ -245,6 +245,15 @@ const apiContenedores = {
     process.send({fn:"listaEmpaqueToDescktop", status:200});
     return { ...data, response:{status:200, message:"Ok"} };
   },
+  cerrarContenedor: async data => {
+    const response = await sendData({ ...data, fn: "PUT" });
+    if(response.response.status !== 200)
+      throw new Error(`${response.response.message}`);
+    
+    
+    process.send({fn:"listaEmpaqueToDescktop", status:200});
+    return { ...data, response:{status:200, message:"Ok"} };
+  },
 };
 
 module.exports.apiContenedores = apiContenedores;

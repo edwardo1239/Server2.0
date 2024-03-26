@@ -13,7 +13,7 @@ process.on("message", async contenedor => {
     
     const proveedores = await Proveedores.find();
     const workbook = new ExcelJS.Workbook();
-    await workbook.xlsx.readFile("./Files/listaDeEmpaque/plantillaListaDeEmpaque.xlsx");
+    await workbook.xlsx.readFile("C:/Users/SISTEMA/Documents/Servidor/Server2.0/server/doc/listaDeEmpaque/");
     const worksheet = workbook.getWorksheet("Lista de empaque");
 
     //Cliente

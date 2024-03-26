@@ -6,6 +6,7 @@ package-lock.json
 
 # Ignorar las variables de entorno
 .env
+.env.dev
 develop.env
 .log
 

@@ -20,7 +20,7 @@ const isNewVersion = async (data) => {
 const getVersionDocument = async () => {
   try{
     let fileContents = fs.readFileSync(
-      "C:/Users/USER-PC/Documents/Servidor/Servidor2.0/Files/celifrutAppDeskTop/latest.yml",
+      "C:/Users/SISTEMA/Documents/Servidor/Server2.0/Files/celifrutAppDeskTop/latest.yml",
       "utf8",
     );
     return fileContents;
@@ -31,9 +31,8 @@ const getVersionDocument = async () => {
 };
 const getCelifrutAppFile = async (data) => {
   try{
-    console.log(data)
     let fileContents = fs.readFileSync(
-      `C:/Users/USER-PC/Documents/Servidor/Servidor2.0/Files/celifrutAppDeskTop${data}`
+      `C:/Users/SISTEMA/Documents/Servidor/Server2.0/Files/celifrutAppDeskTop${data}`
     );
     return fileContents;
             
@@ -41,6 +40,8 @@ const getCelifrutAppFile = async (data) => {
     logger.error("getCelifrutSetupBlockMap", e);
   }
 };
+
+
 
 module.exports = {
   isNewVersion,

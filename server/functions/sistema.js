@@ -1,6 +1,7 @@
+require("dotenv").config("../../.env");
+
 const { logger } = require("../error/config");
 const { iniciarRedisDB } = require("../../DB_redis/config/init");
-const { connectProcesoDB } = require("../../DB/config/configDB");
 const { Lotes } = require("../DB/mongoDB/schemas/lotes/schemaLotes");
 const ExcelJS = require("exceljs");
 const fs = require("fs");
@@ -18,6 +19,7 @@ const {
   llenar_descarte_Naranja,
 } = require("./crear_informe_calidad");
 const { Octokit } = require("octokit");
+const { connectProcesoDB } = require("../DB/mongoDB/config/configDB");
 
 const reiniciar_valores_del_sistema = async () => {
   try {
@@ -86,12 +88,12 @@ const crear_informes_calidad = async data => {
     let sheetName;
     if (lote.tipoFruta === "Limon") {
       await workbook.xlsx.readFile(
-        "C:/Users/USER-PC/Documents/Servidor/Servidor2.0/server/doc/informeCalidad/FORMATO INFORME LIMON TAHITI.xlsx",
+        "C:/Users/SISTEMA/Documents/Servidor/Server2.0/server/doc/informeCalidad/FORMATO INFORME LIMON TAHITI.xlsx",
       );
       sheetName = "Informe Limón ";
     } else {
       await workbook.xlsx.readFile(
-        "C:/Users/USER-PC/Documents/Servidor/Servidor2.0/server/doc/informeCalidad/FORMATO INFORME NARANJA.xlsx",
+        "C:/Users/SISTEMA/Documents/Servidor/Server2.0/server/doc/informeCalidad/FORMATO INFORME NARANJA.xlsx",
       );
     }
     let worksheet = workbook.getWorksheet(sheetName);
@@ -156,7 +158,7 @@ const check_CelifrutDesktopApp_upload = async () => {
     // Octokit.js
     // https://github.com/octokit/core.js#readme
     const octokit = new Octokit({
-      auth: "",
+      auth: process.env.GITHUB_TOKEN,
     });
 
     const response = await octokit.request(
@@ -171,7 +173,7 @@ const check_CelifrutDesktopApp_upload = async () => {
     );
 
     let fileContents = fs.readFileSync(
-      "C:/Users/USER-PC/Documents/Servidor/Servidor2.0/Files/celifrutAppDeskTop/latest.yml",
+      "C:/Users/SISTEMA/Documents/Servidor/Server2.0/Files/celifrutAppDeskTop/latest.yml",
       "utf8",
     );
     let data = yaml.load(fileContents);
@@ -188,7 +190,7 @@ const check_CelifrutDesktopApp_upload = async () => {
         });
         const buffer = await Buffer.from(response2.data);
         fs.writeFileSync(
-          path.join("C:/Users/USER-PC/Documents/Servidor/Servidor2.0/Files/celifrutAppDeskTop/", asset.name),
+          path.join("C:/Users/SISTEMA/Documents/Servidor/Server2.0/Files/celifrutAppDeskTop/", asset.name),
           buffer,
         );
       }
@@ -198,6 +200,7 @@ const check_CelifrutDesktopApp_upload = async () => {
     console.error(e.message);
   }
 };
+
 
 module.exports = {
   valoresDelSistema_por_hora,

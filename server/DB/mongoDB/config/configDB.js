@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const connectProcesoDB = async () => {
-  let tipoBaseDatos = "mongodb://localhost:27017/proceso";
+  let tipoBaseDatos = process.env.MONGODB_PROCESO;
 
   //process.send(tipoBaseDatos);
 
@@ -16,7 +16,7 @@ const connectProcesoDB = async () => {
   return db;
 };
 const connectPersonalDB = async () => {
-  let tipoBaseDatos = "mongodb://localhost:27017/personal";
+  let tipoBaseDatos = process.env.MONGODB_PERSONAL;
 
   const db = mongoose.createConnection(tipoBaseDatos);
 

@@ -7,6 +7,7 @@
     "./Files/*",
     "./serverless/variablesDeProceso/*",
     "./server/variablesDeProceso/*",
-    "./server/error/*"
+    "./server/error/*",
+    ".env.dev*"
   ]
 }

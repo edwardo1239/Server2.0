@@ -1,4 +1,3 @@
-
 const { exec } = require("child_process");
 const { api } = require("./reducer");
 const { connectPersonalDB, connectProcesoDB } = require("./configDB");
@@ -34,6 +33,7 @@ process.on("message", async (msg) => {
     await api[msg.fn](msg);
   } catch(e){
     logger.error("Error mongoDB init => ", e.message);
+    console.error("Error", e.message);
     return {response:{status:504, message:e.message}};
   }
 });
