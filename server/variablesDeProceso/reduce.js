@@ -94,7 +94,6 @@ const apiVariablesProceso = {
     try {
       const cliente = await clientePromise;
       const predioData = await cliente.hGetAll("predioProcesandoDescartes");
-
       return { ...data, response: predioData, status: 200, message: "Ok" };
     } catch (e) {
       return { status: 402, message: "Error obteniendo el EF1" };

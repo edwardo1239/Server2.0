@@ -55,28 +55,20 @@ emitter.on("request", msg => {
     ListaDeEmpaque.send(msg);
     CelifrutApp.send(msg);
   } 
-  else if(msg.fn === "descartesToDescktop"){
-    CelifrutApp.send(msg);
-  } 
   else if(msg.fn === "listaEmpaqueToDescktop"){
     CelifrutApp.send(msg);
     ListaDeEmpaque.send(msg);
   }
-  else if (msg.fn === "listaEmpaqueToDescktopSinPallet"){
+  else if (msg.fn === "listaEmpaqueToDescktopSinPallet" || msg.fn === "procesoContendor"){
     ListaDeEmpaque.send(msg);
   }
-  else if(msg.fn === "ingresoLote"){
+  else if(msg.fn === "ingresoLote" || msg.fn === "procesarLote" || msg.fn === "OrdenVaciado" || msg.fn === "descartesToDescktop"){
     CelifrutApp.send(msg);
   }
-  else if(msg.fn === "procesoLote"){
-    CelifrutApp.send(msg);
-  } 
-  else if (msg.fn === "procesoContenedor"){
-    ListaDeEmpaque.send(msg);
-  } 
-  else if(msg.fn === "OrdenVaciado"){
-    CelifrutApp.send(msg);
+  else if(msg.fn === "Login"){
+    postgresDB.send(msg);
   }
+
 });
 
 emitter.on("response", msg => {
@@ -103,7 +95,7 @@ cron.schedule("*/1 * * * *", async () => {
 
 
 //checkear actualizaciones de electron
-cron.schedule("10 16 * * *", async () => {
+cron.schedule("1 12 * * *", async () => {
   await check_CelifrutDesktopApp_upload();
 });
 

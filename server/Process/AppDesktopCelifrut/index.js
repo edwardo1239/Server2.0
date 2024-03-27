@@ -8,6 +8,7 @@ const codeError = require("../../error/codeErrors.json");
 const { isNewVersion, getVersionDocument, getCelifrutAppFile } = require("./functions/functions");
 const { logger } = require("../../error/config");
 const { send_app_Tv, send_assets_app_Tv } = require("../../app/sendApps");
+const { sendData } = require("./utils/sendData");
 
 
 // Define hostname and port from environment variables
@@ -25,7 +26,7 @@ const server = http.createServer(async (req, res) => {
       const file = await getVersionDocument();
       res.writeHead(200, { "Content-Type": "text/yaml" });
       res.end(file);
-    } else if ( action.startsWith("/celifrutdesktopap")) {
+    } else if (action.startsWith("/celifrutdesktopap")) {
       const response = await getCelifrutAppFile(action);
       res.writeHead(200, { "Content-Type": "application/octet-stream" });
       res.end(response);
@@ -38,31 +39,42 @@ const server = http.createServer(async (req, res) => {
       const response = await send_assets_app_Tv(action);
       console.log(formato);
 
-      if(formato[formato.length - 1] !== "TTF"){
+      if (formato[formato.length - 1] !== "TTF") {
         res.writeHead(200, { "Content-Type": "application/javascript" });
         res.end(response);
-      }else{
+      } else {
         res.writeHead(200, { "Content-Type": "application/x-font-ttf" });
         res.end(response);
       }
-   
+
     }
-  } else if(req.method === "POST"){
-    if(req.url === "/signIn"){
+  } else if (req.method === "POST") {
+    if (req.url === "/signIn") {
       let body = "";
       req.on("data", chunk => {
         body += chunk.toString();
       });
 
-      req.on("end", () => {
+      req.on("end", async () => {
         const data = JSON.parse(body);
-        console.log(data);
+        const request = {
+          data: data,
+          collection: "users",
+          action: "signIn",
+          query: "personal",
+          fn:"Login",
+          client: "Desktop", 
+        };
+        const response = await sendData(request);
+        res.writeHead(200, { "Content-Type": "application/json" }); // Cambiado a application/json para enviar un objeto JSON
+        res.end(JSON.stringify(response.response));
+
       });
     }
 
-  
+
   }
-  
+
   else {
     console.log("asdasd");
   }

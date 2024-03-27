@@ -1,4 +1,6 @@
 const { Client } = require("pg");
+const { logger } = require("../../error/config");
+const { api } = require("./reduce");
 
 const client = new Client({
   host: "localhost",
@@ -16,11 +18,21 @@ client.connect(err => {
   }
 });
 
-// client.query('select * FROM "usuarios"', (err, res) => {
-//   if (err) {
-//     console.error("Error al realizar la consulta", err.stack);
-//   } else {
-//     console.log(res.rows);
-//   }
-// });
+
   
+process.on("message", async (msg) => {
+  try{
+    const response = await api[msg.fn](msg, client);
+    process.send(response);
+  } catch(e){
+    logger.error("Error postgresDB init => ", e.message);
+    console.error("Error", e.message);
+    return {response:{status:504, message:e.message}};
+  }
+});
+
+// Manejar el evento de error en otro lugar de tu aplicación
+process.on("errorOccured", (error) => {
+  // Aquí podrías enviar una respuesta al cliente u otra acción relacionada con el manejo de errores.
+  console.error("Error occurred:", error.message);
+});

@@ -464,3 +464,86 @@
 {"level":"error","message":"Error mongoDB init => ","service":"user-service"}
 {"level":"error","message":"Error mongoDB init => ","service":"user-service"}
 {"level":"error","message":"Error mongoDB init => ","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"data":{"action":"guardarLote","collection":"lotes","data":{"canastillas":"5","canastillasVacias":"0","descarteEncerado":{"balin":0,"descarteGeneral":0,"descompuesta":0,"extra":0,"pareja":0,"suelo":0},"descarteLavado":{"balin":0,"descarteGeneral":0,"descompuesta":0,"hojas":0,"pareja":0,"piel":0},"inventarioActual":{"descarteEncerado":{"balin":0,"descarteGeneral":0,"extra":0,"pareja":0},"descarteLavado":{"balin":0,"descarteGeneral":0,"pareja":0},"inventario":5},"kilos":"100","observaciones":"predio de prueba","placa":"QWE123","predio":"Naranja","promedio":20,"tipoFruta":"655e68b24e055637327c2f08"},"query":"proceso","record":"crearLote"},"level":"error","message":"Error en la funcion addLote","service":"user-service"}
+{"data":{"action":"guardarLote","collection":"lotes","data":{"canastillas":"5","canastillasVacias":"0","descarteEncerado":{"balin":0,"descarteGeneral":0,"descompuesta":0,"extra":0,"pareja":0,"suelo":0},"descarteLavado":{"balin":0,"descarteGeneral":0,"descompuesta":0,"hojas":0,"pareja":0,"piel":0},"inventarioActual":{"descarteEncerado":{"balin":0,"descarteGeneral":0,"extra":0,"pareja":0},"descarteLavado":{"balin":0,"descarteGeneral":0,"pareja":0},"inventario":5},"kilos":"100","observaciones":"qweqwe","placa":"QWE123","predio":"Naranja","promedio":20,"tipoFruta":"655e68b24e055637327c2f06"},"query":"proceso","record":"crearLote"},"level":"error","message":"Error en la funcion addLote","service":"user-service"}
+{"data":{"action":"guardarLote","collection":"lotes","data":{"canastillas":"5","canastillasVacias":"0","descarteEncerado":{"balin":0,"descarteGeneral":0,"descompuesta":0,"extra":0,"pareja":0,"suelo":0},"descarteLavado":{"balin":0,"descarteGeneral":0,"descompuesta":0,"hojas":0,"pareja":0,"piel":0},"inventarioActual":{"descarteEncerado":{"balin":0,"descarteGeneral":0,"extra":0,"pareja":0},"descarteLavado":{"balin":0,"descarteGeneral":0,"pareja":0},"inventario":5},"kilos":"100","observaciones":"12qweq","placa":"QWE123","predio":"","promedio":20,"tipoFruta":"Naranja"},"query":"proceso","record":"crearLote"},"level":"error","message":"Error en la funcion addLote","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2403314, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2403319, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2403314, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2403319, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2403314, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2403319, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2403314, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2403319, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error mongoDB init => ","service":"user-service"}
+{"level":"error","message":"Error mongoDB init => ","service":"user-service"}
+{"level":"error","message":"Error mongoDB init => ","service":"user-service"}
+{"level":"error","message":"Error mongoDB init => ","service":"user-service"}
+{"level":"error","message":"Error mongoDB init => ","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2403314, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2403319, falta un elemento de calidad","service":"user-service"}
+{"data":{"action":"obtenerEF1Descarte","collection":"variablesDesktop","query":"variablesDelProceso"},"level":"error","message":"apiDesktop Function don't found on on variablesDesktop","service":"user-service"}
+{"data":{"action":"obtenerEF1Descarte","collection":"variablesDesktop","query":"variablesDelProceso"},"level":"error","message":"apiDesktop Function don't found on on variablesDesktop","service":"user-service"}
+{"data":{"action":"obtenerEF1Descarte","collection":"variablesDesktop","query":"variablesDelProceso"},"level":"error","message":"apiDesktop Function don't found on on variablesDesktop","service":"user-service"}
+{"data":{"action":"obtenerEF1Descarte","collection":"variablesDesktop","query":"variablesDelProceso"},"level":"error","message":"apiDesktop Function don't found on on variablesDesktop","service":"user-service"}
+{"data":{"action":"obtenerEF1Descarte","collection":"variablesDesktop","query":"variablesDelProceso"},"level":"error","message":"apiDesktop Function don't found on on variablesDesktop","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error mongoDB init => ","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error mongoDB init => ","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error mongoDB init => ","service":"user-service"}
+{"level":"error","message":"Error mongoDB init => ","service":"user-service"}
+{"level":"error","message":"Error mongoDB init => ","service":"user-service"}
+{"level":"error","message":"Error mongoDB init => ","service":"user-service"}
+{"level":"error","message":"Error mongoDB init => ","service":"user-service"}
+{"level":"error","message":"Error mongoDB init => ","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error mongoDB init => ","service":"user-service"}
+{"level":"error","message":"Error mongoDB init => ","service":"user-service"}
+{"level":"error","message":"Error mongoDB init => ","service":"user-service"}
+{"data":{"action":"putLote","collection":"lotes","data":{"lote":{"$inc":{"descarteLavado.balin":0,"descarteLavado.descarteGeneral":1,"descarteLavado.descompuesta":0,"descarteLavado.hojas":0,"descarteLavado.pareja":0,"descarteLavado.piel":0,"inventarioActual.descarteLavado.balin":0,"inventarioActual.descarteLavado.descarteGeneral":1,"inventarioActual.descarteLavado.pareja":0},"_id":"65f4b4a93a7bca4f8f8c9397"}},"query":"proceso","record":"ingreso descarte desde app"},"level":"error","message":"apiDesktop Function don't found on on lotes","service":"user-service"}
+{"level":"error","message":"Error mongoDB init => ","service":"user-service"}
+{"level":"error","message":"Error mongoDB init => ","service":"user-service"}
+{"level":"error","message":"Error mongoDB init => ","service":"user-service"}
