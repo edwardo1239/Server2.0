@@ -36,6 +36,10 @@ const apiUser = {
     const response = await sendData({...data, fn:"PUT"});
     return {...response, satatus:response.response.status, message:response.response.message};
   },
+  addOperario: async (data) => {
+    const response = await sendData({...data, fn:"PUT"});
+    return {...response, satatus:response.response.status, message:response.response.message};
+  }
 };
 
 module.exports.apiUser = apiUser;

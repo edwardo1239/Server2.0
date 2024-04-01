@@ -547,3 +547,21 @@
 {"level":"error","message":"Error mongoDB init => ","service":"user-service"}
 {"level":"error","message":"Error mongoDB init => ","service":"user-service"}
 {"level":"error","message":"Error mongoDB init => ","service":"user-service"}
+{"level":"error","message":"Cannot read properties of undefined (reading 'fotosCalidad')","service":"user-service"}
+{"level":"error","message":"Cannot read properties of undefined (reading 'fotosCalidad')","service":"user-service"}
+{"level":"error","message":"Cannot read properties of undefined (reading 'fotosCalidad')","service":"user-service"}
+{"level":"error","message":"Error mongoDB init => ","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2403331, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2403331, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2403340, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2403343, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2403345, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error mongoDB init => ","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2403347, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2403348, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2403351, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2403343, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2403345, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2403347, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2403348, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2403351, falta un elemento de calidad","service":"user-service"}

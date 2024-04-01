@@ -47,28 +47,34 @@ postgresDB.on("message", msg => {
 });
   
 emitter.on("request", msg => {
-  if(msg.fn === "GET" || msg.fn === "POST" || msg.fn === "PUT" || msg.fn === "DELETE"){
-    mongoBD.send(msg);
-  } 
-  else if(msg.fn === "vaciado"){
-    Descartes.send(msg);
-    ListaDeEmpaque.send(msg);
-    CelifrutApp.send(msg);
-  } 
-  else if(msg.fn === "listaEmpaqueToDescktop"){
-    CelifrutApp.send(msg);
-    ListaDeEmpaque.send(msg);
-  }
-  else if (msg.fn === "listaEmpaqueToDescktopSinPallet" || msg.fn === "procesoContendor"){
-    ListaDeEmpaque.send(msg);
-  }
-  else if(msg.fn === "ingresoLote" || msg.fn === "procesarLote" || msg.fn === "OrdenVaciado" || msg.fn === "descartesToDescktop"){
-    CelifrutApp.send(msg);
-  }
-  else if(msg.fn === "Login"){
-    postgresDB.send(msg);
-  }
+  if(msg.DB === "postgresDb"){
+    if(msg.DB === "PUT"){
+      postgresDB.send(msg);
+    }
 
+  } else {
+    if(msg.fn === "GET" || msg.fn === "POST" || msg.fn === "PUT" || msg.fn === "DELETE"){
+      mongoBD.send(msg);
+    } 
+    else if(msg.fn === "vaciado"){
+      Descartes.send(msg);
+      ListaDeEmpaque.send(msg);
+      CelifrutApp.send(msg);
+    } 
+    else if(msg.fn === "listaEmpaqueToDescktop"){
+      CelifrutApp.send(msg);
+      ListaDeEmpaque.send(msg);
+    }
+    else if (msg.fn === "listaEmpaqueToDescktopSinPallet" || msg.fn === "procesoContendor"){
+      ListaDeEmpaque.send(msg);
+    }
+    else if(msg.fn === "ingresoLote" || msg.fn === "procesarLote" || msg.fn === "OrdenVaciado" || msg.fn === "descartesToDescktop"){
+      CelifrutApp.send(msg);
+    }
+    else if(msg.fn === "Login"){
+      postgresDB.send(msg);
+    }
+  }
 });
 
 emitter.on("response", msg => {

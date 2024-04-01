@@ -1,3 +1,4 @@
+// const { apiPut } = require("./query/PUT/PUT");
 
 const api = {
   Login: async (data, client) => {
@@ -33,6 +34,10 @@ const api = {
         }
       });
     });
+  },
+  PUT: async (data) => {
+    // const response = apiPut[]
+    console.log(data);
   }
 };
 

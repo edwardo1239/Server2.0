@@ -5,10 +5,11 @@ const { iniciarRedisDB } = require("../../../DB_redis/config/init");
 const { apiUser } = require("./sections/user/reducer");
 const { apiDesktop } = require("./sections/reduce");
 const codeError = require("../../error/codeErrors.json");
-const { isNewVersion, getVersionDocument, getCelifrutAppFile } = require("./functions/functions");
+// const { isNewVersion, getVersionDocument, getCelifrutAppFile } = require("./functions/functions");
 const { logger } = require("../../error/config");
-const { send_app_Tv, send_assets_app_Tv } = require("../../app/sendApps");
-const { sendData } = require("./utils/sendData");
+// const { send_app_Tv, send_assets_app_Tv } = require("../../app/sendApps");
+// const { sendData } = require("./utils/sendData");
+const { reduceMethod } = require("./routs/reducer");
 
 
 // Define hostname and port from environment variables
@@ -16,69 +17,12 @@ const hostname = process.env.HOST;
 const port = process.env.CELIFRUT_DESKTOP_PORT;
 // Create a new HTTP server
 const server = http.createServer(async (req, res) => {
-  if (req.method === "GET") {
-    const [action, value] = req.url.split("=");
-    if (action === "/newVersion") {
-      const response = await isNewVersion(value);
-      res.writeHead(200, { "Content-Type": "text/plain" });
-      res.end(String(response));
-    } else if (action === "/latest.yml?noCache") {
-      const file = await getVersionDocument();
-      res.writeHead(200, { "Content-Type": "text/yaml" });
-      res.end(file);
-    } else if (action.startsWith("/celifrutdesktopap")) {
-      const response = await getCelifrutAppFile(action);
-      res.writeHead(200, { "Content-Type": "application/octet-stream" });
-      res.end(response);
-    } else if (action === "/AppTV") {
-      const response = await send_app_Tv();
-      res.writeHead(200, { "Content-Type": "text/html" });
-      res.end(response);
-    } else {
-      const formato = action.split(".");
-      const response = await send_assets_app_Tv(action);
-      console.log(formato);
-
-      if (formato[formato.length - 1] !== "TTF") {
-        res.writeHead(200, { "Content-Type": "application/javascript" });
-        res.end(response);
-      } else {
-        res.writeHead(200, { "Content-Type": "application/x-font-ttf" });
-        res.end(response);
-      }
-
-    }
-  } else if (req.method === "POST") {
-    if (req.url === "/signIn") {
-      let body = "";
-      req.on("data", chunk => {
-        body += chunk.toString();
-      });
-
-      req.on("end", async () => {
-        const data = JSON.parse(body);
-        const request = {
-          data: data,
-          collection: "users",
-          action: "signIn",
-          query: "personal",
-          fn:"Login",
-          client: "Desktop", 
-        };
-        const response = await sendData(request);
-        res.writeHead(200, { "Content-Type": "application/json" }); // Cambiado a application/json para enviar un objeto JSON
-        res.end(JSON.stringify(response.response));
-
-      });
-    }
-
-
+  try{
+    await reduceMethod(req, res);
+  }catch(e){
+    console.error(e.message);
+    logger.error(e.message);
   }
-
-  else {
-    console.log("asdasd");
-  }
-
 });
 // Create a new Socket.IO server
 const io = socketIO(server,
