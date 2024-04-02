@@ -4,7 +4,7 @@ const { postReduce } = require("./post");
 const reduceMethod = async (req, res) => {
   if (req.method === "GET") {
     const [action, value] = req.url.split("=");
-    const [response, head ] = await getReduce(req, action, value);
+    const [response, head ] = await getReduce(action, value);
     res.writeHead(200, head);
     res.end(response);
   }
@@ -19,7 +19,6 @@ const reduceMethod = async (req, res) => {
       res.writeHead(200, { "Content-Type": "application/json" }); // Cambiado a application/json para enviar un objeto JSON
       res.end(JSON.stringify(response.response));
     });
-
   }
 };
 

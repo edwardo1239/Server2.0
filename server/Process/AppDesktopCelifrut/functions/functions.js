@@ -1,6 +1,7 @@
 const { logger } = require("../../../error/config");
 const yaml = require("js-yaml");
 const fs = require("fs");
+const { sendData } = require("../utils/sendData");
 
 
 const isNewVersion = async (data) => {
@@ -40,11 +41,17 @@ const getCelifrutAppFile = async (data) => {
     logger.error("getCelifrutSetupBlockMap", e);
   }
 };
+const getOperarios = async () => {
+  const response = await sendData(
+    {action:"getOperarios", fn:"GET", DB: "postgresDB", client:"Desktop"});
+  return response;
+};
 
 
 
 module.exports = {
   isNewVersion,
   getVersionDocument,
-  getCelifrutAppFile
+  getCelifrutAppFile,
+  getOperarios
 };

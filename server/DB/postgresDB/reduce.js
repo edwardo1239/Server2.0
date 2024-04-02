@@ -1,4 +1,6 @@
-// const { apiPut } = require("./query/PUT/PUT");
+const { apiGET } = require("./query/GET/GET");
+const { apiPOST } = require("./query/POST/POST");
+const { apiPut } = require("./query/PUT/PUT");
 
 const api = {
   Login: async (data, client) => {
@@ -35,9 +37,17 @@ const api = {
       });
     });
   },
-  PUT: async (data) => {
-    // const response = apiPut[]
-    console.log(data);
+  PUT: async (data, client) => {
+    const response = await apiPut[data.action](data, client);
+    return{...data, response:response};
+  },
+  GET: async (data, client) => {
+    const response = await apiGET[data.action](data, client);
+    return {...data, response:response};
+  },
+  POST: async (data, client) => {
+    const response = await apiPOST[data.action](data, client);
+    return {...data, response:response};
   }
 };
 

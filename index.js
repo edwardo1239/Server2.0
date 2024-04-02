@@ -47,8 +47,8 @@ postgresDB.on("message", msg => {
 });
   
 emitter.on("request", msg => {
-  if(msg.DB === "postgresDb"){
-    if(msg.DB === "PUT"){
+  if(msg.DB === "postgresDB"){
+    if(msg.fn === "PUT" || msg.fn === "GET" || msg.fn === "POST"){
       postgresDB.send(msg);
     }
 

@@ -18,6 +18,8 @@ const port = process.env.CELIFRUT_DESKTOP_PORT;
 // Create a new HTTP server
 const server = http.createServer(async (req, res) => {
   try{
+    res.setHeader("Access-Control-Allow-Origin", "*"); 
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
     await reduceMethod(req, res);
   }catch(e){
     console.error(e.message);
@@ -38,7 +40,7 @@ const clientePromise = iniciarRedisDB();
 // Handle new connections
 io.on("connection", socket => {
   console.log("an user has connected");
-  // Handle 'user' events
+  // Handle "user" events
   socket.on("user", async (data, callback) => {
     try {
       if (Object.prototype.hasOwnProperty.call(apiUser, data.data.action)) {
@@ -60,10 +62,11 @@ io.on("connection", socket => {
       callback({ status: codeError.STATUS_SERVER_ERROR.code, data: `${codeError.STATUS_SERVER_ERROR.message} user ${e}` });
     }
   });
-  // Handle 'Desktop' events
+  // Handle "Desktop" events
   let ongoingRequests = {};
   socket.on("Desktop", async (data, callback) => {
     try {
+      console.log(data);
       // If the request is already ongoing, return
       if (ongoingRequests[data.data.action]) {
         return;
