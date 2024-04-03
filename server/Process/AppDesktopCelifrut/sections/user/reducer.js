@@ -21,7 +21,7 @@ const apiUser = {
     return {...response, satatus:response.response.status, message:response.response.message};
   },
   getUsers: async (data) => {
-    const response = await sendData({...data, fn:"GET"});
+    const response = await sendData({...data, fn:"GET", DB:"postgresDB"});
     return {...response, satatus:response.response.status, message:response.response.message};
   },
   addUser: async (data) => {

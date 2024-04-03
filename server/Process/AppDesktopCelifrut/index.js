@@ -66,7 +66,6 @@ io.on("connection", socket => {
   let ongoingRequests = {};
   socket.on("Desktop", async (data, callback) => {
     try {
-      console.log(data);
       // If the request is already ongoing, return
       if (ongoingRequests[data.data.action]) {
         return;

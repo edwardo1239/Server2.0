@@ -26,6 +26,7 @@ ListaDeEmpaque = fork("./server/Process/listaDeEmpaque/index.js");
 Fotos = fork("./server/Process/fotos/index.js");
 mongoBD = fork("./server/DB/mongoDB/config/Init.js");
 postgresDB = fork("./server/DB/postgresDB/init.js");
+let formulariosApp = fork("./server/Process/formulariosCalidad/index.js");
 // Similar event handlers as above
 CelifrutApp.on("message", msg => {
   emitter.emit("request", msg);
@@ -45,7 +46,10 @@ mongoBD.on("message", msg => {
 postgresDB.on("message", msg => {
   emitter.emit("response", msg);
 });
-  
+formulariosApp.on("message", msg => {
+  emitter.emit("request", msg);
+});
+
 emitter.on("request", msg => {
   if(msg.DB === "postgresDB"){
     if(msg.fn === "PUT" || msg.fn === "GET" || msg.fn === "POST"){
@@ -86,6 +90,8 @@ emitter.on("response", msg => {
     ListaDeEmpaque.send(msg);
   } else if (msg.client === "fotos"){
     Fotos.send(msg);
+  } else if (msg.client === "formulariosWebApp"){
+    formulariosApp.send(msg);
   }
 });
 
