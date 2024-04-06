@@ -1,7 +1,8 @@
-const { send_app_Tv, send_assets_app_Tv, getPublic } = require("../../../app/sendApps");
+const { send_app_Tv, send_assets_app_Tv } = require("../../../app/sendApps");
 const { isNewVersion, getVersionDocument, getCelifrutAppFile } = require("../functions/functions");
 
 const getReduce = async (action, value) => {
+  console.log(action);
   if (action === "/newVersion") {
     const response = await isNewVersion(value);
     return [response, { "Content-Type": "text/plain" }];
@@ -22,10 +23,10 @@ const getReduce = async (action, value) => {
     const response = await send_assets_app_Tv(action);
     return [response, { "Content-Type": "application/javascript" }];
   }
-  else{
-    const response = await getPublic(action);
-    return [response.data, response.head];
-  }
+  // else{
+  //   const response = await getPublic(action);
+  //   return [response.data, response.head];
+  // }
 };
 
 module.exports.getReduce = getReduce;

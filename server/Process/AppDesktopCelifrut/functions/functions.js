@@ -9,9 +9,9 @@ const isNewVersion = async (data) => {
     const fileContents = await getVersionDocument(); 
     let dataVersion = yaml.load(fileContents);
     if(data === dataVersion.version ){
-      return false;
+      return "false";
     } else {
-      return true;
+      return "true";
     }
     
   }catch(e){

@@ -132,6 +132,7 @@ const dataSchema = new Schema({
   canastillas: String,
   tipoFruta: String,
   observaciones: String,
+  clasificacionCalidad: {type:String, default:"N/A"},
   kilos: Number,
   placa: String,
   kilosVaciados:{type:Number, default:0},

@@ -17,7 +17,7 @@ const apiUser = {
     return {...response, satatus:response.response.status, message:response.response.message};
   },
   getPermisos: async (data) => {
-    const response = await sendData({...data, fn:"GET"});
+    const response = await sendData({...data, fn:"GET", DB:"postgresDB"});
     return {...response, satatus:response.response.status, message:response.response.message};
   },
   getUsers: async (data) => {
@@ -25,12 +25,14 @@ const apiUser = {
     return {...response, satatus:response.response.status, message:response.response.message};
   },
   addUser: async (data) => {
-    const response = await sendData({...data, fn:"POST"});
-    return {...response, satatus:response.response.status, message:response.response.message};
+    const response = await sendData({...data, fn:"PUT", DB: "postgresDB"});
+    process.send({fn:"cambio-usuario", DB:"postgresDB", status:200});
+    return response;
   },
   deleteUser: async (data) => {
-    const response = await sendData({...data, fn:"DELETE"});
-    return {...response, satatus:response.response.status, message:response.response.message};
+    const response = await sendData({...data, fn:"DELETE", DB: "postgresDB"});
+    process.send({fn:"cambio-usuario", DB: "postgresDB", status:200});
+    return response;
   },
   putUser: async (data) => {
     const response = await sendData({...data, fn:"PUT"});
@@ -39,7 +41,12 @@ const apiUser = {
   addOperario: async (data) => {
     const response = await sendData({...data, fn:"PUT", DB: "postgresDB"});
     return response;
-  }
+  },
+  getCargos: async (data) => {
+    const response = await sendData({...data, fn:"GET", DB:"postgresDB"});
+    return {...response, satatus:response.response.status, message:response.response.message};
+  },
+
 };
 
 module.exports.apiUser = apiUser;

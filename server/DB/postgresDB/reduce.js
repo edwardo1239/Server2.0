@@ -1,3 +1,4 @@
+const { apiDELETE } = require("./query/DELETE/DELETE");
 const { apiGET } = require("./query/GET/GET");
 const { apiPOST } = require("./query/POST/POST");
 const { apiPut } = require("./query/PUT/PUT");
@@ -48,7 +49,11 @@ const api = {
   POST: async (data, client) => {
     const response = await apiPOST[data.action](data, client);
     return {...data, response:response};
-  }
+  },
+  DELETE: async (data, client) => {
+    const response = await apiDELETE[data.action](data, client);
+    return {...data, response:response};
+  },
 };
 
 module.exports.api = api;
