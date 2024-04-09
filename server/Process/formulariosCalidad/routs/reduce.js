@@ -1,5 +1,5 @@
 const { send_add_formularios_calidad, getPublic } = require("../../../app/sendApps");
-const { getOperarios } = require("../services/getData");
+const { getOperarios, getSeleccionadoras } = require("../services/getData");
 
 const getReduce = async (action) => {
 //   console.log(action);
@@ -9,6 +9,11 @@ const getReduce = async (action) => {
   } 
   else if(action === "/getOperarios") {
     const response = await getOperarios();
+    const responseJSON = JSON.stringify(response);
+    return [responseJSON, {  "Content-Type": "text/plain" }];
+  }
+  else if(action === "/getSeleccionadoras") {
+    const response = await getSeleccionadoras();
     const responseJSON = JSON.stringify(response);
     return [responseJSON, {  "Content-Type": "text/plain" }];
   }

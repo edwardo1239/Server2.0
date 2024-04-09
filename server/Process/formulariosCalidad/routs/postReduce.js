@@ -13,6 +13,18 @@ const postReduce = async(req, body) => {
     const response = await sendData(request);
     return response;
 
+  } else if (req.url === "/ingresar-higiene-personal"){
+    const data = JSON.parse(body);
+    const request = {
+      data: data,
+      DB: "postgresDB",
+      action: "ingresar_higiene_personal",
+      fn:"POST",
+      client: "formulariosWebApp", 
+    };
+    const response = await sendData(request);
+    return response;
+    
   }
 };
 

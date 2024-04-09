@@ -109,7 +109,7 @@ cron.schedule("*/1 * * * *", async () => {
 
 
 //checkear actualizaciones de electron
-cron.schedule("59 13 * * *", async () => {
+cron.schedule("15 16 * * *", async () => {
   await check_CelifrutDesktopApp_upload();
 });
 

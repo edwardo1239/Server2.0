@@ -35,8 +35,9 @@ const apiUser = {
     return response;
   },
   putUser: async (data) => {
-    const response = await sendData({...data, fn:"PUT"});
-    return {...response, satatus:response.response.status, message:response.response.message};
+    const response = await sendData({...data, fn:"PUT", DB: "postgresDB"});
+    process.send({fn:"cambio-usuario", DB: "postgresDB", status:200});
+    return response;
   },
   addOperario: async (data) => {
     const response = await sendData({...data, fn:"PUT", DB: "postgresDB"});

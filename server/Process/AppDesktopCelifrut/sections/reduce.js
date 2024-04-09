@@ -11,6 +11,7 @@ const apiModules = {
   historialDescartes: require("./lotes/reducer"),
   permisos: require("./user/reducer"),
   users: require("./user/reducer"),
+  calidad: require("./calidad/reducer")
 };
 
 // Creamos un nuevo objeto para almacenar las funciones API
