@@ -51,7 +51,12 @@ formulariosApp.on("message", msg => {
 });
 
 emitter.on("request", msg => {
-  if(msg.DB === "postgresDB"){
+  if(msg.DB === "mongoDB"){
+    if(msg.fn === "GET" || msg.fn === "POST" || msg.fn === "PUT" || msg.fn === "DELETE"){
+      mongoBD.send(msg);
+    } 
+  }
+  else if(msg.DB === "postgresDB"){
     if(msg.fn === "PUT" || msg.fn === "GET" || msg.fn === "POST" || msg.fn === "DELETE"){
       postgresDB.send(msg);
     } else if(msg.fn === "cambio-usuario") {
@@ -109,7 +114,7 @@ cron.schedule("*/1 * * * *", async () => {
 
 
 //checkear actualizaciones de electron
-cron.schedule("15 16 * * *", async () => {
+cron.schedule("0 16 * * *", async () => {
   await check_CelifrutDesktopApp_upload();
 });
 

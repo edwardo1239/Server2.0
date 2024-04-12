@@ -132,12 +132,18 @@ const crear_informes_calidad = async data => {
       fs.mkdirSync(rutaMes, { recursive: true });
     }
     //Se guarda el documento
-    await workbook.xlsx.writeFile(`${rutaMes}/${lote.enf} ${lote.predio.PREDIO} ${lote.tipoFruta}.xlsx`);
+    const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+
+    const fechaIngreso = new Date(lote.fechaIngreso);
+    const diaIngreso = fechaIngreso.getDate();
+    const mesIngreso = meses[fechaIngreso.getMonth()];
+    const yearIngreso = fechaIngreso.getFullYear();
+    await workbook.xlsx.writeFile(`${rutaMes}/${lote.enf} ${lote.predio.PREDIO} ${lote.tipoFruta} ${lote.kilos}.xlsx`);
 
     setTimeout(async () => {
       try {
         const responseJSON = await fetch(`
-        https://script.google.com/macros/s/AKfycbxCMhgsJEW_ySOH6M16LjHUF5RG0mqDs1eUUXgjDKqQZYf2iLsB51aX88njGnG2zLN6/exec?nombre=${lote.enf} ${lote.predio.PREDIO} ${lote.tipoFruta}.xlsx
+        https://script.google.com/macros/s/AKfycbzn5M6Nl0jdIPcmJPnKYsQefbSl8JZaYPfM5sp6ZlpFrZ24I45rEHH1EX19x1v4V-cf/exec?nombre=${lote.enf} ${lote.predio.PREDIO}kg ${diaIngreso} ${mesIngreso} ${yearIngreso}.xlsx&tipoFruta=${lote.tipoFruta}
         `);
         const response = await responseJSON.json();
 
@@ -148,7 +154,7 @@ const crear_informes_calidad = async data => {
       }
     }, 10000);
   } catch (e) {
-    console.log(e);
+    console.log(e.message);
     logger.error(e.message);
   }
 };

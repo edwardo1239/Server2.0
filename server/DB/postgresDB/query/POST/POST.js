@@ -83,6 +83,45 @@ const apiPOST = {
       });
     });
   },
+  ingresar_control_plagas_control: async (data, client) => {
+    const responsable = data.data.responsable;
+
+    for(const item of data.data.data){
+      const values =  [responsable, item.elemento, item.cumple, item.observaciones, item.acciones, new Date()];
+
+      const query = {
+        text: "INSERT INTO control_plagas_control (responsable, elemento, cumple, observaciones, acciones, fecha_creacion) VALUES ($1, $2, $3, $4, $5, $6)",
+        values: values // Aplanar el array de arrays
+      };
+      await client.query(query);
+    }
+    return {response:{status:200, message:"Ok"}};
+  },
+  ingresar_control_plagas_cebo: async (data, client) => {
+    const {responsable, elemento, cumple, observaciones, acciones} = data.data;
+    const values =  [responsable, elemento, cumple, observaciones, acciones, new Date()];
+
+    const query = {
+      text: "INSERT INTO control_plagas_cebo (responsable, elemento, cumple, observaciones, acciones, fecha_creacion) VALUES ($1, $2, $3, $4, $5, $6)",
+      values: values // Aplanar el array de arrays
+    };
+    await client.query(query);
+    return {response:{status:200, message:"Ok"}};
+  },
+  ingresar_control_plagas_hallazgos: async (data, client) => {
+    const responsable = data.data.responsable;
+
+    for(const item of data.data.data){
+      const values =  [responsable, item.elemento, item.cumple, item.observaciones, item.acciones, new Date()];
+
+      const query = {
+        text: "INSERT INTO control_plagas_hallazgos (responsable, elemento, cumple, observaciones, acciones, fecha_creacion) VALUES ($1, $2, $3, $4, $5, $6)",
+        values: values // Aplanar el array de arrays
+      };
+      await client.query(query);
+    }
+    return {response:{status:200, message:"Ok"}};
+  },
 };
 
 module.exports.apiPOST = apiPOST;

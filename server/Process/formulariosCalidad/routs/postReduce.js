@@ -25,6 +25,39 @@ const postReduce = async(req, body) => {
     const response = await sendData(request);
     return response;
     
+  } else if (req.url === "/ingresar-control-plagas-control"){
+    const data = JSON.parse(body);
+    const request = {
+      data:data,
+      DB: "postgresDB",
+      action: "ingresar_control_plagas_control",
+      fn:"POST",
+      client: "formulariosWebApp", 
+    };
+    const response = await sendData(request);
+    return response;
+  } else if (req.url === "/ingresar-control-plagas-cebo"){
+    const data = JSON.parse(body);
+    const request = {
+      data:data,
+      DB: "postgresDB",
+      action: "ingresar_control_plagas_cebo",
+      fn:"POST",
+      client: "formulariosWebApp", 
+    };
+    const response = await sendData(request);
+    return response;
+  } else if (req.url === "/ingresar-control-plagas-hallazgos"){
+    const data = JSON.parse(body);
+    const request = {
+      data:data,
+      DB: "postgresDB",
+      action: "ingresar_control_plagas_hallazgos",
+      fn:"POST",
+      client: "formulariosWebApp", 
+    };
+    const response = await sendData(request);
+    return response;
   }
 };
 

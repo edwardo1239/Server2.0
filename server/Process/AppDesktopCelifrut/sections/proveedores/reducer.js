@@ -10,12 +10,12 @@ const apiProveedores = {
     return {...response, satatus:response.response.status, message:response.response.message};
   },
   addProveedor: async (data) => {
-    const response = await sendData({...data, fn:"POST"});
-    return {...response, satatus:response.response.status, message:response.response.message};
+    const response = await sendData({...data, fn:"POST", DB:"mongoDB"});
+    return response;
   },
   putProveedor: async (data) => {
-    const response = await sendData({...data, fn:"PUT"});
-    return {...response, satatus:response.response.status, message:response.response.message};
+    const response = await sendData({...data, fn:"PUT", DB:"mongoDB"});
+    return response;
   }
 };
 

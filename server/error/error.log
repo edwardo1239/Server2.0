@@ -814,3 +814,46 @@
 {"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
 {"data":{"action":"guardarLote","collection":"lotes","data":{"canastillas":"174","canastillasVacias":"0","descarteEncerado":{"balin":0,"descarteGeneral":0,"descompuesta":0,"extra":0,"pareja":0,"suelo":0},"descarteLavado":{"balin":0,"descarteGeneral":0,"descompuesta":0,"hojas":0,"pareja":0,"piel":0},"inventarioActual":{"descarteEncerado":{"balin":0,"descarteGeneral":0,"extra":0,"pareja":0},"descarteLavado":{"balin":0,"descarteGeneral":0,"pareja":0},"inventario":174},"kilos":"3248","observaciones":"LN","placa":"TJB015","predio":"","promedio":18.666666666666668,"tipoFruta":"Limon"},"query":"proceso","record":"crearLote"},"level":"error","message":"Error en la funcion addLote","service":"user-service"}
 {"level":"error","message":"Error al crear el informe EF1-2404377, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404376, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404385, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404385, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"The \"path\" argument must be of type string or an instance of Buffer or URL. Received an instance of Object","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404383, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404384, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error postgresDB init => ","service":"user-service"}
+{"level":"error","message":"Error postgresDB init => ","service":"user-service"}
+{"level":"error","message":"Error postgresDB init => ","service":"user-service"}
+{"level":"error","message":"Error postgresDB init => ","service":"user-service"}
+{"level":"error","message":"Error postgresDB init => ","service":"user-service"}
+{"level":"error","message":"Error postgresDB init => ","service":"user-service"}
+{"level":"error","message":"Error postgresDB init => ","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404367, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404396, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"The \"path\" argument must be of type string or an instance of Buffer or URL. Received an instance of Object","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404400, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404400, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404400, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404400, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404400, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404400, falta un elemento de calidad","service":"user-service"}
+{"data":{"action":"guardarLote","collection":"lotes","data":{"canastillas":"85","canastillasVacias":"0","descarteEncerado":{"balin":0,"descarteGeneral":0,"descompuesta":0,"extra":0,"pareja":0,"suelo":0},"descarteLavado":{"balin":0,"descarteGeneral":0,"descompuesta":0,"hojas":0,"pareja":0,"piel":0},"inventarioActual":{"descarteEncerado":{"balin":0,"descarteGeneral":0,"extra":0,"pareja":0},"descarteLavado":{"balin":0,"descarteGeneral":0,"pareja":0},"inventario":85},"kilos":"1828","observaciones":"LN","placa":"SQF206","predio":"","promedio":21.50588235294118,"tipoFruta":"Limon"},"query":"proceso","record":"crearLote"},"level":"error","message":"Error en la funcion addLote","service":"user-service"}

@@ -39,6 +39,8 @@ const clasificacionCalidadSchema = new Schema({
   frutaRajada: Number,
   ombligona: Number,
   despezonada: Number,
+  variegacion: Number,
+  otrasPlagas: Number,
   fecha: {type:Date, default: Date.now}
 
 }, { _id : false });
@@ -85,7 +87,8 @@ const descarteEnceradoInventarioSchema = new Schema({
   descarteGeneral: {type:Number, default:0},
   pareja: {type:Number, default:0},
   balin: {type:Number, default:0},
-  extra: {type:Number, default:0}
+  extra: {type:Number, default:0},
+  suelo: {type:Number, default:0},
 }, { _id : false });
 
 const inventarioSchema = new Schema({

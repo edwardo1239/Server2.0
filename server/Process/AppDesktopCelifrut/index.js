@@ -1,8 +1,8 @@
 
 const http = require("http");
 const socketIO = require("socket.io");
-const { iniciarRedisDB } = require("../../../DB_redis/config/init");
-const { apiUser } = require("./sections/user/reducer");
+// const { iniciarRedisDB } = require("../../../DB_redis/config/init");
+// const { apiUser } = require("./sections/user/reducer");
 const { apiDesktop } = require("./sections/reduce");
 const codeError = require("../../error/codeErrors.json");
 // const { isNewVersion, getVersionDocument, getCelifrutAppFile } = require("./functions/functions");
@@ -36,32 +36,32 @@ const io = socketIO(server,
     }
   });
 // Initialize Redis database
-const clientePromise = iniciarRedisDB();
+// const clientePromise = iniciarRedisDB();
 // Handle new connections
 io.on("connection", socket => {
   console.log("an user has connected");
   // Handle "user" events
-  socket.on("user", async (data, callback) => {
-    try {
-      if (Object.prototype.hasOwnProperty.call(apiUser, data.data.action)) {
-        const response = await apiUser[data.data.action]({ ...data.data, client: "Desktop", socketId: socket.id });
-        if (response.action === "logIn" && response.status === 200) {
-          const cliente = await clientePromise;
-          await cliente.hSet(`${socket.id}`, {
-            user: response.response.data[0].user,
-            cargo: response.response.data[0].cargo,
-            fecha: new Date().toDateString(),
-          });
-        }
-        console.log(response);
-        callback(response.response);
-      } else {
-        callback({ status: codeError.STATUS_USER_NOT_FOUND.code, message: codeError.STATUS_DESKTOP_NOT_FOUND.message });
-      }
-    } catch (e) {
-      callback({ status: codeError.STATUS_SERVER_ERROR.code, data: `${codeError.STATUS_SERVER_ERROR.message} user ${e}` });
-    }
-  });
+  // socket.on("user", async (data, callback) => {
+  //   try {
+  //     if (Object.prototype.hasOwnProperty.call(apiUser, data.data.action)) {
+  //       const response = await apiUser[data.data.action]({ ...data.data, client: "Desktop", socketId: socket.id });
+  //       if (response.action === "logIn" && response.status === 200) {
+  //         const cliente = await clientePromise;
+  //         await cliente.hSet(`${socket.id}`, {
+  //           user: response.response.data[0].user,
+  //           cargo: response.response.data[0].cargo,
+  //           fecha: new Date().toDateString(),
+  //         });
+  //       }
+  //       console.log(response);
+  //       callback(response.response);
+  //     } else {
+  //       callback({ status: codeError.STATUS_USER_NOT_FOUND.code, message: codeError.STATUS_DESKTOP_NOT_FOUND.message });
+  //     }
+  //   } catch (e) {
+  //     callback({ status: codeError.STATUS_SERVER_ERROR.code, data: `${codeError.STATUS_SERVER_ERROR.message} user ${e}` });
+  //   }
+  // });
   // Handle "Desktop" events
   let ongoingRequests = {};
   socket.on("Desktop", async (data, callback) => {
