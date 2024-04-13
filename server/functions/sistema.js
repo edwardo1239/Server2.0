@@ -138,12 +138,12 @@ const crear_informes_calidad = async data => {
     const diaIngreso = fechaIngreso.getDate();
     const mesIngreso = meses[fechaIngreso.getMonth()];
     const yearIngreso = fechaIngreso.getFullYear();
-    await workbook.xlsx.writeFile(`${rutaMes}/${lote.enf} ${lote.predio.PREDIO} ${lote.tipoFruta} ${lote.kilos}.xlsx`);
+    await workbook.xlsx.writeFile(`${rutaMes}/${lote.enf} ${lote.predio.PREDIO} ${lote.kilos}kg ${diaIngreso} ${mesIngreso} ${yearIngreso}.xlsx`);
 
     setTimeout(async () => {
       try {
         const responseJSON = await fetch(`
-        https://script.google.com/macros/s/AKfycbzn5M6Nl0jdIPcmJPnKYsQefbSl8JZaYPfM5sp6ZlpFrZ24I45rEHH1EX19x1v4V-cf/exec?nombre=${lote.enf} ${lote.predio.PREDIO}kg ${diaIngreso} ${mesIngreso} ${yearIngreso}.xlsx&tipoFruta=${lote.tipoFruta}
+        https://script.google.com/macros/s/AKfycbzn5M6Nl0jdIPcmJPnKYsQefbSl8JZaYPfM5sp6ZlpFrZ24I45rEHH1EX19x1v4V-cf/exec?nombre=${lote.enf} ${lote.predio.PREDIO} ${lote.kilos}kg ${diaIngreso} ${mesIngreso} ${yearIngreso}.xlsx&tipoFruta=${lote.tipoFruta}
         `);
         const response = await responseJSON.json();
 

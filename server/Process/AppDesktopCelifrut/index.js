@@ -103,7 +103,8 @@ process.on("message", msg => {
     msg.fn === "ingresoLote" ||
     msg.fn === "procesoLote" ||
     msg.fn === "OrdenVaciado" ||
-    msg.fn === "cambio-usuario") {
+    msg.fn === "cambio-usuario" ||
+    msg.fn === "cambio-proveedor") {
     io.emit("serverToDesktop", msg);
   }
 });

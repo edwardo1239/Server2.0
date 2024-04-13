@@ -37,7 +37,7 @@ const putLote = async data => {
 };
 const putProveedor = async data => {
   try {
-    const id = new mongoose.Types.ObjectId(data.data._id);
+    const id = data._id;
     await Proveedores.updateOne({ _id: id }, data.data);
 
     return { ...data, response: { status: 200, message: "Ok" } };

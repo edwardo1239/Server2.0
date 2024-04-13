@@ -15,7 +15,8 @@ const PredioSchema = new Schema({
   M: String,
   PROVEEDORES: String,
   DEPARTAMENTO: String,
-  urlArchivos: [String]
+  urlArchivos: [String],
+  activo: { type: Boolean, required: true, default: true },
 });
 
 

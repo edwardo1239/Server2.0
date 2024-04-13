@@ -4,7 +4,8 @@ const { Clientes } = require("../../../schemas/clientes/schemaClientes");
 
 const deleteProveedores = async data => {
   try {
-    const id = new mongoose.Types.ObjectId(data.data.id);
+    // const id = new mongoose.Types.ObjectId(data.data.id);
+    const id = data.data;
     await Proveedores.findByIdAndDelete(id);
     return {...data, response:{status:200, message:"proveedor eliminado con exito"}};
   } catch(e) {

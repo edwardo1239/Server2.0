@@ -85,6 +85,9 @@ emitter.on("request", msg => {
     else if(msg.fn === "Login"){
       postgresDB.send(msg);
     }
+    else if(msg.fn === "cambio-proveedor"){
+      CelifrutApp.send(msg);
+    }
   }
 });
 
