@@ -2,6 +2,7 @@ const { Clientes } = require("../../../schemas/clientes/schemaClientes");
 const { Contenedores } = require("../../../schemas/contenedores/schemaContenedores");
 const { historialDescarte } = require("../../../schemas/lotes/schemaHistorialDescarte");
 const { Lotes } = require("../../../schemas/lotes/schemaLotes");
+const { precioFrutaProveedor } = require("../../../schemas/lotes/schemaPrecioProveedor");
 const { Proveedores } = require("../../../schemas/proveedores/schemaProveedores");
 
 const addLote = async data => {
@@ -59,11 +60,23 @@ const addCliente = async data => {
     return { ...data, response: { status: 400, message: `Error en la funcion addCliente: ${e}` } };
   }
 };
+const addPrecio = async data => {
+  try {
+    const cliente = new precioFrutaProveedor(data.data);
+    await cliente.save();
+
+    return {...data, response: {status:200, message:"Ok"}};
+  } catch (e) {
+    console.error(e);
+    return { ...data, response: { status: 400, message: `Error en la funcion addPrecio: ${e}` } };
+  }
+};
 
 module.exports = {
   addLote,
   addContenedor,
   addHistorialDescarte,
   addProveedor,
-  addCliente
+  addCliente,
+  addPrecio
 };

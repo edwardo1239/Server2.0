@@ -40,6 +40,7 @@ const clasificacionCalidadSchema = new Schema({
   ombligona: Number,
   despezonada: Number,
   variegacion: Number,
+  verdeManzana: Number,
   otrasPlagas: Number,
   fecha: {type:Date, default: Date.now}
 

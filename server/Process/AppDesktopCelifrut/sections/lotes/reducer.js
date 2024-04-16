@@ -70,7 +70,8 @@ const apiLotes = {
   },
   addHistorialDescarte: data => sendAndHandleData(data, "POST"),
   getHistorialDescartes: data => sendAndHandleData(data, "GET"),
-  putHistorialLote: data => sendAndHandleData(data, "PUT")
+  putHistorialLote: data => sendAndHandleData(data, "PUT"),
+  addPrecio: data => sendAndHandleData(data, "POST"),
 };
 
 module.exports.apiLotes = apiLotes;

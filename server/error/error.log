@@ -875,3 +875,83 @@
 {"data":{"action":"putLotes","collection":"lotes","data":{"lote":{"_id":"","calidad":{"clasificacionCalidad":{"acaro":31.5,"alsinoe":0,"dannosMecanicos":8.5,"deshidratada":4,"division":8,"escama":0,"frutaMadura":0,"frutaVerde":0,"fumagina":0,"grillo":3,"herbicida":0,"lote":"","mancha":0,"melanosis":0,"oleocelosis":29.5,"otrasPlagas":15.5,"piel":0,"sombra":0,"trips":0,"wood":0}},"enf":"","predio":{"PREDIO":""},"tipoFruta":"Limon"}},"query":"proceso","record":"ingresoClasificacionCalidad"},"level":"error","message":"Error en la funcion putLoteinput must be a 24 character hex string, 12 byte Uint8Array, or an integer","service":"user-service"}
 {"DB":"mongoDB","action":"putProveedor","client":"Desktop","collection":"proveedors","data":{"CODIGO INTERNO":"251","DEPARTAMENTO":"dsdfdsf","FECHA VENCIMIENTO GGN":"","GGN":"","ICA":"000000","L":"","M":"X","N":"X","PREDIO":"predio mentira 2251","PROVEEDORES":"rwerwer","activo":"false"},"fn":"PUT","id":"luydrtpcfq9t3bj6j","level":"error","message":{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"luydrtpcfq9t3bj6j\" (type string) at path \"_id\" for model \"Proveedor\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"luydrtpcfq9t3bj6j\"","value":"luydrtpcfq9t3bj6j","valueType":"string"},"query":"proceso","service":"user-service","socketId":"8kHZlacAnMNi3kVwAAAD","user_id":"6619a6b425eff9ef23771882"}
 {"DB":"mongoDB","action":"putProveedor","client":"Desktop","collection":"proveedors","data":{"CODIGO INTERNO":"251","DEPARTAMENTO":"dsdfdsf","FECHA VENCIMIENTO GGN":"","GGN":"","ICA":"000000","L":"","M":"X","N":"X","PREDIO":"predio mentira 2251","PROVEEDORES":"rwerwer","activo":"false"},"fn":"PUT","id":"luyds1djmg9243nq2","level":"error","message":{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"luyds1djmg9243nq2\" (type string) at path \"_id\" for model \"Proveedor\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"luyds1djmg9243nq2\"","value":"luyds1djmg9243nq2","valueType":"string"},"query":"proceso","service":"user-service","socketId":"8kHZlacAnMNi3kVwAAAD","user_id":"6619a6b425eff9ef23771882"}
+{"level":"error","message":"The \"path\" argument must be of type string or an instance of Buffer or URL. Received an instance of Object","service":"user-service"}
+{"level":"error","message":"The \"path\" argument must be of type string or an instance of Buffer or URL. Received an instance of Object","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404407, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404407, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404410, falta un elemento de calidad","service":"user-service"}
+{"action":"precios","descarte":"","exportacion1":"","exportacion15":"","level":"error","message":"Cannot read properties of undefined (reading 'action')","nacional":"","service":"user-service","tipoFruta":"Limon"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"ENOENT: no such file or directory, open 'C:\\Users\\SISTEMA\\Documents\\Servidor\\Server2.0\\\"G:\\Mi unidad\\fotos_frutas\\661a677b25eff9ef23771930_ACARO .png\"'","service":"user-service"}
+{"level":"error","message":"ENOENT: no such file or directory, open 'C:\\Users\\SISTEMA\\Documents\\Servidor\\Server2.0\\\"G:\\Mi unidad\\fotos_frutas\\661a677b25eff9ef23771930_ACARO .png\"'","service":"user-service"}
+{"level":"error","message":"ENOENT: no such file or directory, open 'C:\\Users\\SISTEMA\\Documents\\Servidor\\Server2.0\\\"G:\\Mi unidad\\fotos_frutas\\661a677b25eff9ef23771930_ACARO .png\"'","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404411, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"action":"addPrecios","collection":"users","data":{"descarte":"","exportacion1":"1","exportacion15":"","nacional":"","semana":4,"tipoFruta":"Limon"},"level":"error","message":"callback is not a function","query":"postgreDB","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404407, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404415, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404415, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404411, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"ENOENT: no such file or directory, open 'C:\\Users\\SISTEMA\\Documents\\Servidor\\Server2.0\\\"G:\\Mi unidad\\fotos_frutas\\661a677b25eff9ef23771930_ACARO .png\"'","service":"user-service"}
+{"level":"error","message":"ENOENT: no such file or directory, open 'C:\\Users\\SISTEMA\\Documents\\Servidor\\Server2.0\\\"G:\\Mi unidad\\fotos_frutas\\661a677b25eff9ef23771930_ACARO .png\"'","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404415, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404415, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404415, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404415, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404415, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404415, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404415, falta un elemento de calidad","service":"user-service"}
+{"action":"putLotes","client":"Desktop","collection":"lotes","data":{"lote":{"_id":"","calidad":{"clasificacionCalidad":{"acaro":0,"alsinoe":8.5,"dannosMecanicos":22.5,"deshidratada":0,"division":5,"escama":0,"frutaMadura":22.5,"frutaVerde":0,"fumagina":0,"grillo":0,"herbicida":0,"lote":"","mancha":0,"melanosis":2.5,"oleocelosis":39,"otrasPlagas":0,"piel":0,"sombra":0,"trips":0,"wood":0}},"enf":"","predio":{"PREDIO":""},"tipoFruta":"Limon"}},"fn":"PUT","id":"lv2fye7pxj9waptpi","level":"error","message":{},"query":"proceso","record":"ingresoClasificacionCalidad","service":"user-service","socketId":"ENAePIoazvRl-pJzAAAT"}
+{"level":"error","message":{"action":"putLotes","client":"Desktop","collection":"lotes","data":{"lote":{"_id":"","calidad":{"clasificacionCalidad":{"acaro":0,"alsinoe":8.5,"dannosMecanicos":22.5,"deshidratada":0,"division":5,"escama":0,"frutaMadura":22.5,"frutaVerde":0,"fumagina":0,"grillo":0,"herbicida":0,"lote":"","mancha":0,"melanosis":2.5,"oleocelosis":39,"otrasPlagas":0,"piel":0,"sombra":0,"trips":0,"wood":0}},"enf":"","predio":{"PREDIO":""},"tipoFruta":"Limon"}},"fn":"PUT","id":"lv2fye7pxj9waptpi","query":"proceso","record":"ingresoClasificacionCalidad","socketId":"ENAePIoazvRl-pJzAAAT"},"service":"user-service"}
+{"action":"putLotes","client":"Desktop","collection":"lotes","data":{"lote":{"_id":"","calidad":{"clasificacionCalidad":{"acaro":0,"alsinoe":8.5,"dannosMecanicos":22.5,"deshidratada":0,"division":5,"escama":0,"frutaMadura":22.5,"frutaVerde":0,"fumagina":0,"grillo":0,"herbicida":0,"lote":"","mancha":0,"melanosis":2.5,"oleocelosis":39,"otrasPlagas":0,"piel":0,"sombra":0,"trips":0,"wood":0}},"enf":"","predio":{"PREDIO":""},"tipoFruta":"Limon"}},"fn":"PUT","id":"lv2fye7pxj9waptpi","level":"error","message":{},"query":"proceso","record":"ingresoClasificacionCalidad","service":"user-service","socketId":"ENAePIoazvRl-pJzAAAT"}
+{"data":{"action":"putLotes","collection":"lotes","data":{"lote":{"_id":"","calidad":{"clasificacionCalidad":{"acaro":0,"alsinoe":8.5,"dannosMecanicos":22.5,"deshidratada":0,"division":5,"escama":0,"frutaMadura":22.5,"frutaVerde":0,"fumagina":0,"grillo":0,"herbicida":0,"lote":"","mancha":0,"melanosis":2.5,"oleocelosis":39,"otrasPlagas":0,"piel":0,"sombra":0,"trips":0,"wood":0}},"enf":"","predio":{"PREDIO":""},"tipoFruta":"Limon"}},"query":"proceso","record":"ingresoClasificacionCalidad"},"level":"error","message":"Error en la funcion putLoteinput must be a 24 character hex string, 12 byte Uint8Array, or an integer","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404420, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404416, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404421, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404421, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404416, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404416, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404416, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404416, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404416, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404416, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404416, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404421, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404421, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404421, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404421, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404421, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404421, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"ENOENT: no such file or directory, open 'C:\\Users\\SISTEMA\\Documents\\Servidor\\Server2.0\\\"G:\\Mi unidad\\fotos_frutas\\661a677b25eff9ef23771930_ACARO .png\"'","service":"user-service"}
+{"level":"error","message":"ENOENT: no such file or directory, open 'C:\\Users\\SISTEMA\\Documents\\Servidor\\Server2.0\\\"G:\\Mi unidad\\fotos_frutas\\661a677b25eff9ef23771930_ACARO .png\"'","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404421, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404421, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404421, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404421, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404421, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404415, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404414, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404422, falta un elemento de calidad","service":"user-service"}
+{"data":{"action":"get_control_plagas_cebo","collection":"users","fecha":"","page":1,"responsable":""},"level":"error","message":"apiDesktop Function don't found on on users","service":"user-service"}
+{"data":{"action":"get_control_plagas_cebo","collection":"users","fecha":"","page":1,"responsable":""},"level":"error","message":"apiDesktop Function don't found on on users","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404424, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404420, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404424, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404424, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404424, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404422, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404424, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404401, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error postgresDB init => ","service":"user-service"}
+{"level":"error","message":"Error postgresDB init => ","service":"user-service"}

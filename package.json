@@ -23,6 +23,7 @@
     "dotenv": "16.3.1",
     "exceljs": "^4.4.0",
     "js-yaml": "^4.1.0",
+    "moment": "^2.30.1",
     "mongoose": "8.0.3",
     "node-cron": "^3.0.3",
     "octokit": "^3.1.2",

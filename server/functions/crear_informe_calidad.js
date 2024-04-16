@@ -65,6 +65,7 @@ const llenar_descarte_Limon = async (worksheet, lote) => {
     lote.calidad.clasificacionCalidad.sombra,
     lote.calidad.clasificacionCalidad.division,
     lote.calidad.clasificacionCalidad.trips,
+    lote.calidad.clasificacionCalidad.verdeManzana ? lote.calidad.clasificacionCalidad.verdeManzana : 0,
     lote.calidad.clasificacionCalidad.grillo + lote.calidad.clasificacionCalidad.piel + lote.calidad.clasificacionCalidad.fumagina +
     lote.calidad.clasificacionCalidad.mancha + lote.calidad.clasificacionCalidad.deshidratada + lote.calidad.clasificacionCalidad.escama +
     lote.calidad.clasificacionCalidad.otrasPlagas ? lote.calidad.clasificacionCalidad.otrasPlagas : 0,
@@ -84,7 +85,7 @@ const llenar_descarte_Limon = async (worksheet, lote) => {
   ];
 
   for(let i=0; i<descarteData.length; i++){
-    worksheet = await llenar_celda(worksheet, `E${i+30}`, descarteData[i]);
+    worksheet = await llenar_celda(worksheet, `E${i+31}`, descarteData[i]);
   }
 
   return worksheet;
@@ -132,10 +133,9 @@ const llenar_descarte_Naranja = async (worksheet, lote) => {
 const llenar_pruebas_plataforma = async (worksheet, lote) => {
   let celdas;
   if(lote.tipoFruta === "Limon"){
-    celdas = ["B45", "D45", "F45", "H45"];
+    celdas = ["B46", "D46", "F46", "H46"];
   } else {
     celdas = ["B48", "D48", "F48", "H48"];
-
   }
   const data = [
     lote.calidad.calidadInterna.brix,
@@ -151,7 +151,7 @@ const llenar_pruebas_plataforma = async (worksheet, lote) => {
 const llenar_observaciones = async (worksheet, lote) => {
   let celda ;
   if(lote.tipoFruta === "Limon"){
-    celda = 46;
+    celda = 47;
   } else {
     celda = 49;
   }
@@ -225,6 +225,30 @@ const agregar_fotos = async (workbook, worksheet, lote) => {
   }
   return worksheet;
 };
+const llenar_precios = async (worksheet, precios, lote) => {
+  worksheet = await llenar_celda(worksheet, "G13", precios.exportacion1);
+  worksheet = await llenar_celda(worksheet, "G14", precios.exportacion15);
+  let descarteStop;
+  if(lote.tipoFruta === "Limon"){
+    descarteStop = 33;
+
+  } else {
+    descarteStop = 36;
+  }
+  for(let i = 17; i<= descarteStop; i++){
+    worksheet = await llenar_celda(worksheet, `G${i}`, precios.descarte);
+  }
+
+  if(lote.tipoFruta === "Limon"){
+    worksheet = await llenar_celda(worksheet, "G36", precios.nacional);
+  } else {
+    worksheet = await llenar_celda(worksheet, "G33", precios.pareja);
+    worksheet = await llenar_celda(worksheet, "G35", precios.nacional);
+  }
+  return worksheet;
+
+};
+
 module.exports = {
   llenar_cabecera,
   llenar_exportacion,
@@ -234,5 +258,6 @@ module.exports = {
   agregar_fotos,
   llenar_descarte_Naranja,
   llenar_celda,
-  llenar_y_sumar_celda
+  llenar_y_sumar_celda,
+  llenar_precios
 };

@@ -5,6 +5,7 @@ const apiModules = {
   proveedors: require("./proveedores/reducer"),
   clientes: require("./clientes/reducer"),
   lotes: require("./lotes/reducer"),
+  precios: require("./lotes/reducer"),
   historialLotes: require("./lotes/reducer"),
   contenedores: require("./contenedores/reducer"),
   variablesDesktop: require("../../../variablesDeProceso/reduce"),

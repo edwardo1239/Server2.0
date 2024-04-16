@@ -177,6 +177,151 @@ const apiGET = {
       });
     });
   },
+  get_control_plagas_control: async (data, client) => {
+    const offset = (data.page - 1) * 50;
+    let query = `SELECT * 
+                  FROM control_plagas_control`;
+           
+    let paramCount = 1;
+    const queryParams = [];
+    let whereClauseAdded = false; 
+
+    if (data.responsable !== "") {
+      query += ` WHERE LOWER(responsable) LIKE '%' || LOWER($${paramCount}) || '%'`;
+      queryParams.push(data.responsable.toLowerCase());
+      paramCount++;
+      whereClauseAdded = true; 
+    }
+
+    if (data.area !== "") {
+      query += whereClauseAdded ? ` AND` : ` WHERE`;
+      query += ` control_plagas_control.elemento = $${paramCount}`;
+      queryParams.push(data.area);
+      paramCount++;
+      whereClauseAdded = true;
+
+    }
+
+    if (data.fecha !== "") {
+      query += whereClauseAdded ? ` AND` : ` WHERE`;
+      query += ` control_plagas_control.fecha_creacion BETWEEN $${paramCount} AND $${paramCount + 1}`;
+      queryParams.push(data.fecha_inicio, new Date());
+      paramCount += 2;
+    }
+
+    query += ` ORDER BY fecha_creacion DESC
+    LIMIT 50
+    OFFSET $${paramCount}`;
+
+    queryParams.push(offset);
+
+    return new Promise((resolve, reject) => {
+      client.query(query,queryParams, (err, res) => {
+        if (err) {
+          console.error(err);
+          reject(new Error(err));
+        }
+      
+        resolve({ status: 200, message: "Ok", data: res.rows });
+        return;
+   
+      });
+    });
+  },
+  get_control_plagas_cebo: async (data, client) => {
+    const offset = (data.page - 1) * 50;
+    let query = `SELECT * 
+                  FROM control_plagas_cebo`;
+           
+    let paramCount = 1;
+    const queryParams = [];
+    let whereClauseAdded = false; 
+
+    if (data.responsable !== "") {
+      query += ` WHERE LOWER(responsable) LIKE '%' || LOWER($${paramCount}) || '%'`;
+      queryParams.push(data.responsable.toLowerCase());
+      paramCount++;
+      whereClauseAdded = true; 
+    }
+
+    if (data.fecha !== "") {
+      query += whereClauseAdded ? ` AND` : ` WHERE`;
+      query += ` control_plagas_cebo.fecha_creacion BETWEEN $${paramCount} AND $${paramCount + 1}`;
+      queryParams.push(data.fecha_inicio, new Date());
+      paramCount += 2;
+      
+    }
+
+    query += ` ORDER BY fecha_creacion DESC
+    LIMIT 50
+    OFFSET $${paramCount}`;
+
+    queryParams.push(offset);
+
+    return new Promise((resolve, reject) => {
+      client.query(query,queryParams, (err, res) => {
+        if (err) {
+          console.error(err);
+          reject(new Error(err));
+        }
+      
+        resolve({ status: 200, message: "Ok", data: res.rows });
+        return;
+   
+      });
+    });
+  },
+  get_control_plagas_hallazgos: async (data, client) => {
+    const offset = (data.page - 1) * 50;
+    let query = `SELECT * 
+                  FROM control_plagas_hallazgos`;
+           
+    let paramCount = 1;
+    const queryParams = [];
+    let whereClauseAdded = false; 
+
+    if (data.responsable !== "") {
+      query += ` WHERE LOWER(responsable) LIKE '%' || LOWER($${paramCount}) || '%'`;
+      queryParams.push(data.responsable.toLowerCase());
+      paramCount++;
+      whereClauseAdded = true; 
+    }
+
+    if (data.area !== "") {
+      query += whereClauseAdded ? ` AND` : ` WHERE`;
+      query += ` control_plagas_hallazgos.elemento = $${paramCount}`;
+      queryParams.push(data.area);
+      paramCount++;
+      whereClauseAdded = true;
+
+    }
+
+    if (data.fecha !== "") {
+      query += whereClauseAdded ? ` AND` : ` WHERE`;
+      query += ` control_plagas_hallazgos.fecha_creacion BETWEEN $${paramCount} AND $${paramCount + 1}`;
+      queryParams.push(data.fecha_inicio, new Date());
+      paramCount += 2;
+    }
+
+    query += ` ORDER BY fecha_creacion DESC
+    LIMIT 50
+    OFFSET $${paramCount}`;
+
+    queryParams.push(offset);
+
+    return new Promise((resolve, reject) => {
+      client.query(query,queryParams, (err, res) => {
+        if (err) {
+          console.error(err);
+          reject(new Error(err));
+        }
+      
+        resolve({ status: 200, message: "Ok", data: res.rows });
+        return;
+   
+      });
+    });
+  },
 };
 
 module.exports.apiGET = apiGET;

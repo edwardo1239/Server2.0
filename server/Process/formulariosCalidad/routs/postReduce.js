@@ -58,6 +58,17 @@ const postReduce = async(req, body) => {
     };
     const response = await sendData(request);
     return response;
+  } else if (req.url === "/ingresar-limpieza-postcosecha"){
+    const data = JSON.parse(body);
+    const request = {
+      data:data,
+      DB: "postgresDB",
+      action: "ingresar_limpieza_postcosecha",
+      fn:"POST",
+      client: "formulariosWebApp", 
+    };
+    const response = await sendData(request);
+    return response;
   }
 };
 

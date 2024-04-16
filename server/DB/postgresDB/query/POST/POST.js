@@ -122,6 +122,21 @@ const apiPOST = {
     }
     return {response:{status:200, message:"Ok"}};
   },
+  ingresar_limpieza_postcosecha: async (data, client) => {
+    console.log(data);
+    const responsable = data.data.responsable;
+
+    for(const item of data.data.data){
+      const values =  [responsable, item.area, item.elemento, item.cumple, item.observaciones, new Date()];
+
+      const query = {
+        text: "INSERT INTO limpieza_postcosecha (responsable, area, elemento, cumple, observaciones, fecha_ingreso) VALUES ($1, $2, $3, $4, $5, $6)",
+        values: values // Aplanar el array de arrays
+      };
+      await client.query(query);
+    }
+    return {response:{status:200, message:"Ok"}};
+  },
 };
 
 module.exports.apiPOST = apiPOST;

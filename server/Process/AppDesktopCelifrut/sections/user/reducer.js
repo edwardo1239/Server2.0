@@ -46,7 +46,19 @@ const apiUser = {
   getCargos: async (data) => {
     const response = await sendData({...data, fn:"GET", DB:"postgresDB"});
     return {...response, satatus:response.response.status, message:response.response.message};
-  }
+  },
+  get_control_plagas_control: async (data) => {
+    const response = await sendData({...data, fn:"GET", DB: "postgresDB"});
+    return response;
+  },
+  get_control_plagas_cebo: async (data) => {
+    const response = await sendData({...data, fn:"GET", DB: "postgresDB"});
+    return response;
+  },
+  get_control_plagas_hallazgos: async (data) => {
+    const response = await sendData({...data, fn:"GET", DB: "postgresDB"});
+    return response;
+  },
 };
 
 module.exports.apiUser = apiUser;

@@ -1,5 +1,6 @@
 require("dotenv").config("../../.env");
 
+const moment = require("moment");
 const { logger } = require("../error/config");
 const { iniciarRedisDB } = require("../../DB_redis/config/init");
 const { Lotes } = require("../DB/mongoDB/schemas/lotes/schemaLotes");
@@ -17,9 +18,11 @@ const {
   llenar_observaciones,
   agregar_fotos,
   llenar_descarte_Naranja,
+  llenar_precios,
 } = require("./crear_informe_calidad");
 const { Octokit } = require("octokit");
 const { connectProcesoDB } = require("../DB/mongoDB/config/configDB");
+const { precioFrutaProveedor } = require("../DB/mongoDB/schemas/lotes/schemaPrecioProveedor");
 
 const reiniciar_valores_del_sistema = async () => {
   try {
@@ -80,6 +83,13 @@ const crear_informes_calidad = async data => {
     const contIds = lote.contenedores.map(item => new mongoose.Types.ObjectId(item));
     const contenedores = await Contenedores.find({ _id: contIds });
 
+    const fechaLote = new Date(lote.fechaIngreso);
+    const annoLote = fechaLote.getFullYear();
+    const fechaLoteSemana = moment(lote.fechaIngreso);
+    const semanaLote = fechaLoteSemana.week();
+    const precios = await precioFrutaProveedor.find({ anno: annoLote, semana: semanaLote })
+      .sort({fechaIngreso:-1});
+
     if (!(lote.calidad.fotosCalidad && lote.calidad.calidadInterna && lote.calidad.clasificacionCalidad)) {
       logger.error(`Error al crear el informe ${lote.enf}, falta un elemento de calidad`);
       return null;
@@ -114,9 +124,14 @@ const crear_informes_calidad = async data => {
     //se agregan las fotos
     await agregar_fotos(workbook, worksheet, lote);
 
+    if(precios.length > 0){
+      worksheet = await llenar_precios(worksheet, precios[0], lote);
+    }
+
     const fecha = new Date();
     const año = fecha.getFullYear();
     const mes = fecha.getMonth() + 1;
+
     let ruta;
     if (lote.tipoFruta === "Limon") {
       ruta = "G:/Mi unidad/Informes_Calidad/Informes Limon";

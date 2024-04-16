@@ -147,7 +147,7 @@ const apiPut = {
         return;
       });
     });
-  },
+  }
 };
 
 module.exports.apiPut = apiPut;

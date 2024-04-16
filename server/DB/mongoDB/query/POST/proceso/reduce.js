@@ -1,8 +1,12 @@
-const { addLote, addContenedor, addHistorialDescarte, addProveedor, addCliente } = require("./postProceso");
+const { addLote, addContenedor, addHistorialDescarte, addProveedor, addCliente, addPrecio } = require("./postProceso");
 
 const apiProcesoPOST = {
   lotes: async(data) => {
     const response = await addLote(data);
+    return response;
+  },
+  precios: async(data) => {
+    const response = await addPrecio(data);
     return response;
   },
   contenedores: async(data) => {
