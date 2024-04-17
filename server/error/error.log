@@ -955,3 +955,10 @@
 {"level":"error","message":"Error al crear el informe EF1-2404401, falta un elemento de calidad","service":"user-service"}
 {"level":"error","message":"Error postgresDB init => ","service":"user-service"}
 {"level":"error","message":"Error postgresDB init => ","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404430, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404407, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"ENOENT: no such file or directory, open 'C:\\Users\\SISTEMA\\Documents\\Servidor\\Server2.0\\\"G:\\Mi unidad\\fotos_frutas\\661a677b25eff9ef23771930_ACARO .png\"'","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404411, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404415, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"ENOENT: no such file or directory, write","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404433, falta un elemento de calidad","service":"user-service"}

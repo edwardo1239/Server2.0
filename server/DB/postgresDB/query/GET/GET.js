@@ -1,6 +1,6 @@
 const apiGET = {
   getOperarios: async (data, client) => {
-    const query = `SELECT nombre, apellido, id 
+    const query = `SELECT * 
                     FROM operarios`;
     return new Promise((resolve, reject) => {
       client.query(query, (err, res) => {
@@ -304,6 +304,52 @@ const apiGET = {
     }
 
     query += ` ORDER BY fecha_creacion DESC
+    LIMIT 50
+    OFFSET $${paramCount}`;
+
+    queryParams.push(offset);
+
+    return new Promise((resolve, reject) => {
+      client.query(query,queryParams, (err, res) => {
+        if (err) {
+          console.error(err);
+          reject(new Error(err));
+        }
+      
+        resolve({ status: 200, message: "Ok", data: res.rows });
+        return;
+   
+      });
+    });
+  },
+  get_limpieza_post_cosecha: async (data, client) => {
+    const offset = (data.page - 1) * 50;
+    let query = `SELECT * 
+                  FROM limpieza_postcosecha`;
+           
+    let paramCount = 1;
+    const queryParams = [];
+
+
+    query += ` WHERE limpieza_postcosecha.area = $${paramCount}`;
+    queryParams.push(data.area);
+    paramCount++;
+    
+
+    if (data.elemento !== "") {
+      query += ` AND limpieza_postcosecha.elemento = $${paramCount}`;
+      queryParams.push(data.elemento);
+      paramCount++;
+    }
+
+    if (data.fecha !== "") {
+      query += ` AND limpieza_postcosecha.fecha_ingreso BETWEEN $${paramCount} AND $${paramCount + 1}`;
+      queryParams.push(new Date(0), data.fecha);
+      paramCount += 2;
+    }
+
+
+    query += ` ORDER BY fecha_ingreso DESC
     LIMIT 50
     OFFSET $${paramCount}`;
 

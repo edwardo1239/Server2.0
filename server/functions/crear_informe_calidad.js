@@ -190,7 +190,6 @@ const llenar_observaciones = async (worksheet, lote) => {
   let filteredObj = Object.fromEntries(
     Object.entries(lote.calidad.clasificacionCalidad._doc).filter(([key,]) => key !== "fecha" && key !== "descarteGenerl"));
   filteredObj = {...filteredObj,...lote.descarteLavado._doc,...lote.descarteEncerado._doc, balin:balin, extra:extra, descompuesta:descompuesta };
-  console.log(filteredObj);
   const top3Keys = Object.entries(filteredObj)
     .sort(([,a],[,b]) => b - a)
     .slice(0, 3)

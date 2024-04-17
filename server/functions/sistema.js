@@ -87,8 +87,10 @@ const crear_informes_calidad = async data => {
     const annoLote = fechaLote.getFullYear();
     const fechaLoteSemana = moment(lote.fechaIngreso);
     const semanaLote = fechaLoteSemana.week();
-    const precios = await precioFrutaProveedor.find({ anno: annoLote, semana: semanaLote })
+    const precios = await precioFrutaProveedor.find({ anno: annoLote, semana: semanaLote, tipoFruta:lote.tipoFruta })
       .sort({fechaIngreso:-1});
+      
+    console.log(precios);
 
     if (!(lote.calidad.fotosCalidad && lote.calidad.calidadInterna && lote.calidad.clasificacionCalidad)) {
       logger.error(`Error al crear el informe ${lote.enf}, falta un elemento de calidad`);

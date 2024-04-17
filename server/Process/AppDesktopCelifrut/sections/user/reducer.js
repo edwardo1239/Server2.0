@@ -59,6 +59,18 @@ const apiUser = {
     const response = await sendData({...data, fn:"GET", DB: "postgresDB"});
     return response;
   },
+  get_limpieza_post_cosecha: async (data) => {
+    const response = await sendData({...data, fn:"GET", DB: "postgresDB"});
+    return response;
+  },
+  getOperarios: async (data) => {
+    const response = await sendData({...data, fn:"GET", DB: "postgresDB"});
+    return response;
+  },
+  deleteOperario: async (data) => {
+    const response = await sendData({...data, fn:"DELETE", DB: "postgresDB"});
+    return response;
+  },
 };
 
 module.exports.apiUser = apiUser;
