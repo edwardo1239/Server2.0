@@ -1,4 +1,4 @@
-const { default: mongoose } = require("mongoose");
+
 const { Proveedores } = require("../../../schemas/proveedores/schemaProveedores");
 const { Clientes } = require("../../../schemas/clientes/schemaClientes");
 
@@ -15,7 +15,7 @@ const deleteProveedores = async data => {
 };
 const deleteCliente = async data => {
   try {
-    const id = new mongoose.Types.ObjectId(data.data._id);
+    const id = data.data;
     await Clientes.findByIdAndDelete(id);
     return {...data, response:{status:200, message:"Cliente eliminado con exito"}};
   } catch(e) {

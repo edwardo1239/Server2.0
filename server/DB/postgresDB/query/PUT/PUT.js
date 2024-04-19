@@ -147,7 +147,56 @@ const apiPut = {
         return;
       });
     });
-  }
+  },
+  putOperario: async (data, client) => {
+    const { 
+      nombre, 
+      apellido,
+      fechaNacimiento,
+      genero,
+      direccion,
+      telefono,
+      email,
+      estado,
+      cargo
+    } = data.data;
+ 
+    const query =  
+      `UPDATE operarios
+       SET  
+        nombre = $1,
+        apellido = $2,
+        fecha_nacimiento = $3,
+        genero = $4,
+        direccion = $5,
+        telefono = $6,
+        correo_electronico = $7,
+        estado = $8,
+        cargo = $9
+      WHERE id = $10;`;
+
+    return new Promise ((resolve, reject) => {
+      client.query(query, [ 
+        nombre, 
+        apellido,
+        fechaNacimiento,
+        genero,
+        direccion,
+        telefono,
+        email,
+        estado,
+        cargo,
+        data.id_operario
+      ], (err, ) => {
+        if(err){
+          console.error(err);
+          reject(new Error(err));
+        }
+        resolve({status:200, message:"Operario modificado con éxito"});
+        return;
+      });
+    });
+  },
 };
 
 module.exports.apiPut = apiPut;

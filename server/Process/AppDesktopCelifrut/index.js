@@ -99,12 +99,14 @@ io.on("connection", socket => {
 // Handle messages from parent process
 process.on("message", msg => {
   if (msg.fn === "descartesToDescktop" ||
-    msg.fn === "vaciado" ||
-    msg.fn === "ingresoLote" ||
-    msg.fn === "procesoLote" ||
-    msg.fn === "OrdenVaciado" ||
-    msg.fn === "cambio-usuario" ||
-    msg.fn === "cambio-proveedor") {
+      msg.fn === "vaciado" ||
+      msg.fn === "ingresoLote" ||
+      msg.fn === "procesoLote" ||
+      msg.fn === "OrdenVaciado" ||
+      msg.fn === "cambio-usuario" ||
+      msg.fn === "cambio-operario" ||
+      msg.fn === "cambio-cliente" ||
+      msg.fn === "cambio-proveedor") {
     io.emit("serverToDesktop", msg);
   }
 });

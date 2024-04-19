@@ -69,6 +69,17 @@ const postReduce = async(req, body) => {
     };
     const response = await sendData(request);
     return response;
+  } else if (req.url === "/ingresar-limpieza-mensual"){
+    const data = JSON.parse(body);
+    const request = {
+      data:data,
+      DB: "postgresDB",
+      action: "ingresar_limpieza_mensual",
+      fn:"POST",
+      client: "formulariosWebApp", 
+    };
+    const response = await sendData(request);
+    return response;
   }
 };
 

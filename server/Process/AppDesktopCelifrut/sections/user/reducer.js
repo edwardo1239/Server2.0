@@ -1,6 +1,7 @@
 const { sendData } = require("../../utils/sendData");
 
 const apiUser = {
+  // #region Users
   logIn: async (data) => {
     const response = await sendData({...data, fn:"GET"});
     if(response.response.data.length === 0){
@@ -39,14 +40,12 @@ const apiUser = {
     process.send({fn:"cambio-usuario", DB: "postgresDB", status:200});
     return response;
   },
-  addOperario: async (data) => {
-    const response = await sendData({...data, fn:"PUT", DB: "postgresDB"});
-    return response;
-  },
   getCargos: async (data) => {
     const response = await sendData({...data, fn:"GET", DB:"postgresDB"});
     return {...response, satatus:response.response.status, message:response.response.message};
   },
+
+  // #region Formularios calidad
   get_control_plagas_control: async (data) => {
     const response = await sendData({...data, fn:"GET", DB: "postgresDB"});
     return response;
@@ -63,12 +62,29 @@ const apiUser = {
     const response = await sendData({...data, fn:"GET", DB: "postgresDB"});
     return response;
   },
+  get_limpieza_mensual: async (data) => {
+    const response = await sendData({...data, fn:"GET", DB: "postgresDB"});
+    return response;
+  },
+
+  // #region Operarios
+  addOperario: async (data) => {
+    const response = await sendData({...data, fn:"PUT", DB: "postgresDB"});
+    process.send({fn:"cambio-operario", DB: "postgresDB", status:200});
+    return response;
+  },
   getOperarios: async (data) => {
     const response = await sendData({...data, fn:"GET", DB: "postgresDB"});
     return response;
   },
   deleteOperario: async (data) => {
     const response = await sendData({...data, fn:"DELETE", DB: "postgresDB"});
+    process.send({fn:"cambio-operario", DB: "postgresDB", status:200});
+    return response;
+  },
+  putOperario: async (data) => {
+    const response = await sendData({...data, fn:"PUT", DB: "postgresDB"});
+    process.send({fn:"cambio-operario", DB: "postgresDB", status:200});
     return response;
   },
 };
