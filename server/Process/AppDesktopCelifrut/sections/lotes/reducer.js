@@ -72,6 +72,34 @@ const apiLotes = {
   getHistorialDescartes: data => sendAndHandleData(data, "GET"),
   putHistorialLote: data => sendAndHandleData(data, "PUT"),
   addPrecio: data => sendAndHandleData(data, "POST"),
+  modificar_lote: async data => {
+    if(data.user.cargo !== "admin"){
+      return{...data, response:{status:301,message:"No tiene los permisos para modificar la informacion de lotes"}};
+    }
+    const response = await sendData({ ...data, fn:"PUT", action:"putLotes"});
+    let changes = {};
+    for (let key in data.data.lote) {
+      if (response.response.record[key] !== data.data.lote[key]) {
+        changes[key] = {
+          from: response.response.record[key],
+          to: data.data.lote[key]
+        };
+      }
+    }
+    const cambios = JSON.stringify(changes);
+    process.send({ fn: "ingresoLote", status:200 });
+
+    await process.send({
+      fn:"lotes",
+      DB: "recordDB", 
+      record:cambios, 
+      tipo:data.record, 
+      action:"modificar_lote",
+      user:data.user.user});
+
+    
+    return response;
+  }
 };
 
 module.exports.apiLotes = apiLotes;

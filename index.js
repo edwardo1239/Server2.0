@@ -24,6 +24,7 @@ Fotos = fork("./server/Process/fotos/index.js");
 mongoBD = fork("./server/DB/mongoDB/config/Init.js");
 postgresDB = fork("./server/DB/postgresDB/init.js");
 let formulariosApp = fork("./server/Process/formulariosCalidad/index.js");
+const recordsDB = fork("./server/DB/recordsDB/init.js");
 // Similar event handlers as above
 CelifrutApp.on("message", msg => {
   emitter.emit("request", msg);
@@ -43,9 +44,13 @@ mongoBD.on("message", msg => {
 postgresDB.on("message", msg => {
   emitter.emit("response", msg);
 });
+recordsDB.on("message", msg => {
+  emitter.emit("response", msg);
+});
 formulariosApp.on("message", msg => {
   emitter.emit("request", msg);
 });
+
 
 // #region Request
 emitter.on("request", msg => {
@@ -65,7 +70,10 @@ emitter.on("request", msg => {
       CelifrutApp.send(msg);
     } 
   } 
-  
+
+  else if (msg.DB === "recordDB"){
+    recordsDB.send(msg);
+  }
   
   
   else {

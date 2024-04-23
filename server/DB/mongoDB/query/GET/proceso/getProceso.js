@@ -37,8 +37,8 @@ const getlotes = async data => {
   const lotes = await Lotes.find(data.data.query, data.data.select)
     .populate(data.data.populate)
     .sort(data.data.sort)
-    .limit(data.data.limit);
-
+    .limit(data.data.limit)
+    .skip(data.data.skip);
   if(lotes === null){
     throw new Error("Error en la busqueda");
   } else {

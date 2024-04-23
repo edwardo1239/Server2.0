@@ -9,8 +9,8 @@ const { logger } = require("../../../../../error/config");
 
 const putLote = async data => {
   try {
-    console.log(data.data.lote.$inc);
-    const id = new mongoose.Types.ObjectId(data.data.lote._id);
+    const id = data.data.lote._id;
+    const originalLote = await Lotes.findById(id);
     const lote = await Lotes.findOneAndUpdate({ _id: id }, data.data.lote, { new: true });
     const lote_obj = new Object(lote.toObject());
     const deshidratacion = await deshidratacion_lote(lote_obj);
@@ -25,12 +25,11 @@ const putLote = async data => {
 
     await record.save();
 
-    return { ...data, response: { status: 200, message: "Ok" } };
+    return { ...data, response: { status: 200, message: "Ok", record:originalLote } };
   } catch (e) {
     logger.error(e, data);
     console.error(data);
     logger.error(data);
-    logger.error(e, data);
 
     return { ...data, response: { status: 400, message: "Error en la funcion putLote" + e.message } };
   }
