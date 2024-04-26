@@ -79,11 +79,21 @@ const apiLotes = {
     const response = await sendData({ ...data, fn:"PUT", action:"putLotes"});
     let changes = {};
     for (let key in data.data.lote) {
-      if (response.response.record[key] !== data.data.lote[key]) {
-        changes[key] = {
-          from: response.response.record[key],
-          to: data.data.lote[key]
-        };
+      if(typeof response.response.record[key] === "number"){
+        if (response.response.record[key].toFixed(2) !== data.data.lote[key].toFixed(2)) {
+          changes[key] = {
+            from: response.response.record[key],
+            to: data.data.lote[key]
+          };
+        }
+      }
+      else {
+        if (response.response.record[key] != data.data.lote[key]) {
+          changes[key] = {
+            from: response.response.record[key],
+            to: data.data.lote[key]
+          };
+        }
       }
     }
     const cambios = JSON.stringify(changes);

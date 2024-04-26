@@ -1069,3 +1069,14 @@
 {"level":"error","message":"Error al crear el informe EF1-2404463, falta un elemento de calidad","service":"user-service"}
 {"data":{"action":"modificar_lote","collection":"lotes","data":{"lote":{"_id":"65f1e79dc93cada11da000f7","canastillas":"273","enf":"EF1-2403299","fechaIngreso":"2024-02-25","kilos":5179,"observaciones":"Se edito 19","placa":"SQE866","predio":"655e68b24e055637327c2f65","tipoFruta":"Limon"}},"query":"proceso","record":"Modificación","user":{"cargo":"admin","user":"edwarsthat"}},"level":"error","message":"Cannot read properties of undefined (reading 'cargo')","service":"user-service"}
 {"data":{"action":"modificar_lote","collection":"lotes","data":{"lote":{"_id":"65f1e79dc93cada11da000f7","canastillas":"273","enf":"EF1-2403299","fechaIngreso":"2024-02-25","kilos":5179,"observaciones":"Se edito 19","placa":"SQE866","predio":"655e68b24e055637327c2f65","tipoFruta":"Limon"}},"query":"proceso","record":"Modificación","user":{"cargo":"admin","user":"edwarsthat"}},"level":"error","message":"Cannot read properties of undefined (reading 'cargo')","service":"user-service"}
+{"level":"error","message":"Error mongoDB init => ","service":"user-service"}
+{"level":"error","message":"Error mongoDB init => ","service":"user-service"}
+{"level":"error","message":"Error mongoDB init => ","service":"user-service"}
+{"level":"error","message":"Error al iniciar MongoDB: Error: Command failed: mongod --port 27017\n","service":"user-service"}
+{"level":"error","message":"Error postgresDB init => ","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404473, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404470, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404470, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error al crear el informe EF1-2404470, falta un elemento de calidad","service":"user-service"}
+{"level":"error","message":"Error mongoDB init => ","service":"user-service"}
+{"level":"error","message":"Error mongoDB init => ","service":"user-service"}

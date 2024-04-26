@@ -1,7 +1,7 @@
 // Load environment variables from .env file
 require("dotenv").config("./.env");
 // Import necessary modules
-const { fork } = require("child_process");
+const { fork, exec } = require("child_process");
 const EventEmitter = require("events");
 const cron = require("node-cron");
 const { valoresDelSistema_por_hora, reiniciar_valores_del_sistema, check_CelifrutDesktopApp_upload } = require("./server/functions/sistema");
@@ -12,6 +12,17 @@ let ListaDeEmpaque;
 let mongoBD;
 let Fotos;
 let postgresDB;
+
+
+exec("start wsl redis-server ", (error, stdout, stderr) => {
+  if (error) {
+    console.error(`Error ejecutando el comando: ${error}`);
+    return;
+  }
+  console.log(`Resultado: ${stdout}`);
+  console.error(`Errores: ${stderr}`);
+});
+
 
 
 // Create a new instance of EventEmitter for inter-process communication
@@ -135,4 +146,17 @@ cron.schedule("*/1 * * * *", async () => {
 //checkear actualizaciones de electron
 cron.schedule("10 16 * * *", async () => {
   await check_CelifrutDesktopApp_upload();
+});
+
+
+//reiniciar el pc 
+cron.schedule("10 5 * * *", async () => {
+  exec("shutdown -r", (error, stdout, stderr) => {
+    if (error) {
+      console.error(`Error al ejecutar el comando: ${error}`);
+      return;
+    }
+    console.log(`Salida del comando: ${stdout}`);
+    console.error(`Errores del comando: ${stderr}`);
+  });
 });

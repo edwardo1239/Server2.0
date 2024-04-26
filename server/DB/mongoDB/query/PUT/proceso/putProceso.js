@@ -15,6 +15,7 @@ const putLote = async data => {
     const lote_obj = new Object(lote.toObject());
     const deshidratacion = await deshidratacion_lote(lote_obj);
     const rendimiento = await rendimiento_lote(lote_obj);
+    console.log(deshidratacion);
     lote.deshidratacion = deshidratacion;
     lote.rendimiento = rendimiento;
     await lote.save();
